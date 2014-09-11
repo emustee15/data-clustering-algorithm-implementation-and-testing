@@ -22,6 +22,11 @@ public class RankedData
 		return (data[getPosition(number)] > 0);
 	}
 	
+	public boolean isIndexPositive(int index)
+	{
+		return (data[index] > 0);
+	}
+	
 
 	
 	public int getPosition(int number)
