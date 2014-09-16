@@ -1,39 +1,43 @@
+import java.util.ArrayList;
+
 public class RankedData
 {
 
-	private int[] data;
+	private ArrayList<Integer> data;
 	private int[] originalData;
 	public int length;
 
 	public RankedData(int[] data)
 	{
-		this.data = data;
+		this.data = new ArrayList<Integer>();
+		for (int i : data)
+		{
+			this.data.add(i);
+		}
 		length = data.length;
 		originalData = data.clone();
 	}
 
 	public int get(int index)
 	{
-		return data[index];
+		return data.get(index);
 	}
 	
 	public boolean isPositive(int number)
 	{
-		return (data[getPosition(number)] > 0);
+		return (data.get(getPosition(number)) > 0);
 	}
 	
 	public boolean isIndexPositive(int index)
 	{
-		return (data[index] > 0);
+		return (data.get(index) > 0);
 	}
-	
-
 	
 	public int getPosition(int number)
 	{
-		for (int i = 0; i < data.length; i++)
+		for (int i = 0; i < data.size(); i++)
 		{
-			if (data[i] == number || data[i] == -number)
+			if (data.get(i) == number || data.get(i) == -number)
 			{
 				return i;
 			}
@@ -49,19 +53,52 @@ public class RankedData
 			return;
 		}
 
-		int temp[] = data.clone();
-		data[indexA] = data[indexB];
+		ArrayList<Integer> temp = (ArrayList<Integer>) data.clone();
+		data.set(indexA,data.get(indexB));
 		for (int i = indexA+1; i <= indexB; i++)
 		{
-			data[i] = temp[i-1];
+			data.set(i,temp.get(i-1));
 		}
 	}
 	
 	public void reset()
 	{
+		for (int i = data.size()-1; i >= 0; i--)
+		{
+			data.remove(i);
+		}
 		for (int index = 0; index < originalData.length; index++)
 		{
-			data[index] = originalData[index];
+			data.add(originalData[index]);
 		}
+	}
+	
+	public void addToList(int i)
+	{
+		data.add(i);
+	}
+	
+	public void makeCompatableWithList(RankedData list)
+	{
+		for (int i = 0; i < list.length; i++)
+		{
+			if (!data.contains(list.get(i)))
+			{
+				data.add(list.get(i));
+			}
+		}
+	}
+	
+	public boolean isCompatableWithList(RankedData list)
+	{
+		for (int i = 0; i < list.length; i++)
+		{
+			if (!data.contains(list.get(i)))
+			{
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }

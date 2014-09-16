@@ -1,37 +1,42 @@
 public class DistanceRanker
 {
 
-	public int getDistance(RankedData data1, RankedData data2)
+	public int getDistance(RankedData list, RankedData completeList)
 	{
-		if (data1.length == 0)
+		if (!list.isCompatableWithList(completeList))
+		{
+			list.makeCompatableWithList(completeList);
+		}
+		if (list.length == 0)
 		{
 			return 0;
 		}
 
 		int totalDistance = 0;
 
-		for (int i = 0; i < data1.length; i++)
+		for (int i = 0; i < list.length; i++)
 		{
 
-			int neededNumberAtPosition = data2.get(i);
-			if (data2.isIndexPositive(i) && data1.isPositive(neededNumberAtPosition) || 
-					(!data2.isIndexPositive(i) && !data1.isPositive(neededNumberAtPosition)))
+			int neededNumberAtPosition = completeList.get(i);
+			if (completeList.isIndexPositive(i) && list.isPositive(neededNumberAtPosition) || 
+					(!completeList.isIndexPositive(i) && !list.isPositive(neededNumberAtPosition)))
 			{
-				int positionOfNeededNumber = data1.getPosition(neededNumberAtPosition);
+				int positionOfNeededNumber = list.getPosition(neededNumberAtPosition);
 				totalDistance += (positionOfNeededNumber - i);
-				data1.swapPositions(i, positionOfNeededNumber);
+				list.swapPositions(i, positionOfNeededNumber);
 			}
 			else
 			{
-				int positionOfNeededNumber = data1.getPosition(neededNumberAtPosition);
-				int distanceToEnd = data1.length -1- i;
-				int distanceToDesiredSpot = data1.length -1-positionOfNeededNumber;
+				int positionOfNeededNumber = list.getPosition(neededNumberAtPosition);
+				int distanceToEnd = list.length -1- i;
+				int distanceToDesiredSpot = list.length -1-positionOfNeededNumber;
 				totalDistance += (distanceToEnd + distanceToDesiredSpot + 1);
-				data1.swapPositions(i, positionOfNeededNumber);
+				list.swapPositions(i, positionOfNeededNumber);
 			}
 		}
 
-		data1.reset();
+		list.reset();
 		return totalDistance;
 	}
+	
 }
