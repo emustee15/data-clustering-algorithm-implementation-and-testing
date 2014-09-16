@@ -5,7 +5,6 @@ public class RankedData
 
 	private ArrayList<Integer> data;
 	private int[] originalData;
-	public int length;
 
 	public RankedData(int[] data)
 	{
@@ -14,7 +13,6 @@ public class RankedData
 		{
 			this.data.add(i);
 		}
-		length = data.length;
 		originalData = data.clone();
 	}
 
@@ -78,11 +76,15 @@ public class RankedData
 		data.add(i);
 	}
 	
+	public int getSize()
+	{
+		return data.size();
+	}
 	public void makeCompatableWithList(RankedData list)
 	{
-		for (int i = 0; i < list.length; i++)
+		for (int i = 0; i < list.getSize(); i++)
 		{
-			if (!data.contains(list.get(i)))
+			if (!data.contains(list.get(i)) && !data.contains(-list.get(i)))
 			{
 				data.add(list.get(i));
 			}
@@ -91,9 +93,9 @@ public class RankedData
 	
 	public boolean isCompatableWithList(RankedData list)
 	{
-		for (int i = 0; i < list.length; i++)
+		for (int i = 0; i < list.getSize(); i++)
 		{
-			if (!data.contains(list.get(i)))
+			if (!data.contains(list.get(i)) && !data.contains(-(list.get(i))))
 			{
 				return false;
 			}
