@@ -80,6 +80,7 @@ public class RankedData
 	{
 		return data.size();
 	}
+	
 	public void makeCompatableWithList(RankedData list)
 	{
 		for (int i = 0; i < list.getSize(); i++)
