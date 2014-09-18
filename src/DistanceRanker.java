@@ -3,23 +3,12 @@ public class DistanceRanker
 
 	public int getDistance(RankedData list, RankedData completeList)
 	{
-		for (int i = 0; i < list.getSize(); i++)
-		{
-			System.out.print(list.get(i) + " ");
-		}
 		
-		System.out.println();
 		if (!list.isCompatableWithList(completeList))
 		{
 			list.makeCompatableWithList(completeList);
 		}
 		
-		for (int i = 0; i < list.getSize(); i++)
-		{
-			System.out.print(list.get(i) + " ");
-		}
-		
-		System.out.println();
 		if (list.getSize() == 0)
 		{
 			return 0;

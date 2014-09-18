@@ -109,4 +109,31 @@ public class RankedData
 	{
 		return data;
 	}
+	
+	public void print()
+	{
+		System.out.print("{");
+		for (int i = 0; i < data.size(); i++)
+		{
+			if (i != data.size()-1)
+			{
+				System.out.print(data.get(i) + ", ");
+			}
+			else
+			{
+				System.out.print(data.get(i));
+			}
+		}
+		System.out.print("}");
+	}
+	
+	public void saveCurrentDataAsDefault()
+	{
+		originalData = new int[data.size()];
+		
+		for (int i = 0; i < data.size(); i++)
+		{
+			originalData[i] = data.get(i);
+		}
+	}
 }
