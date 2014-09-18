@@ -103,4 +103,10 @@ public class RankedData
 		
 		return true;
 	}
+	
+	
+	public ArrayList<Integer> getListElements()
+	{
+		return data;
+	}
 }
