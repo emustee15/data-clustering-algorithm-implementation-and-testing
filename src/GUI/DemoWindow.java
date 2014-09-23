@@ -60,10 +60,11 @@ public class DemoWindow
 	{
 		Menu menuBar = new Menu(shell,SWT.BAR);
 		MenuItem cascadeFileMenu = new MenuItem(menuBar, SWT.CASCADE);
-		
-		
 		cascadeFileMenu.setText("&File");
 		Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
+		cascadeFileMenu.setMenu(fileMenu);
+		
+		
 		MenuItem openFile = new MenuItem(fileMenu,SWT.PUSH);
 		openFile.setText("Open");
 		
@@ -100,9 +101,10 @@ public class DemoWindow
 				
 			}
 		});
-		cascadeFileMenu.setMenu(fileMenu);
+		
 		MenuItem exitItem = new MenuItem(fileMenu,SWT.PUSH);
 		exitItem.setText("Exit");
+		
 		final MenuItem checkItem = new MenuItem(fileMenu, SWT.CHECK);
 		checkItem.setText("Check Me ;)");
 		checkItem.addSelectionListener(new SelectionListener()
