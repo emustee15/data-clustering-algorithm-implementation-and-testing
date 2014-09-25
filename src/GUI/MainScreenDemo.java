@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-public class DemoWindow
+public class MainScreenDemo
 {
 	
 	static Label label;
@@ -19,13 +19,13 @@ public class DemoWindow
 	{
 		Display display = new Display();
 		Shell shell = new Shell(display);
-		shell.setText("This is a test!");
+		shell.setText("ClusterAnalysis");
 		
 		createMenuBar(shell);
 
-		label = new Label(shell,SWT.BORDER);
+		/*label = new Label(shell,SWT.BORDER);
 		label.setText("HI!");
-		label.setBounds(10, 10, 20, 20);
+		label.setBounds(10, 10, 20, 20);*/
 		
 		Text text = new Text(shell,SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		text.setBounds(200, 50, 200, 200);
@@ -38,7 +38,7 @@ public class DemoWindow
 			public void widgetSelected(SelectionEvent e)
 			{
 				System.out.println("OK!");
-				new DemoWindow();
+				new MainScreenDemo();
 			}
 		});
 		//shell.setLayout(new RowLayout());
