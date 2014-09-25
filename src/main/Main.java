@@ -1,3 +1,4 @@
+package main;
 public class Main
 {
 	public static void main(String args[])
@@ -11,8 +12,7 @@ public class Main
 		FileLoader loader = new FileLoader();
 		
 		loader.loadFile("/Users/ericmustee/Desktop/file.txt");
-		RankedData masterRanking = loader.getMasterRanking();
-		
+		RankedData masterRanking = new RankedData(new int[] {1,2,3,4,5});
 		for (RankedData data : loader.getPartialRankings())
 		{
 			masterRanking.print();

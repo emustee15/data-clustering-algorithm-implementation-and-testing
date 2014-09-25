@@ -1,3 +1,4 @@
+package main;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -6,7 +7,6 @@ import java.util.ArrayList;
 
 public class FileLoader
 {
-	RankedData masterRanking;
 	ArrayList<RankedData> partialRankings;
 	
 	public void loadFile(String filePath)
@@ -16,8 +16,7 @@ public class FileLoader
 		try
 		{
 			reader = new BufferedReader(new FileReader(filePath));
-			String line = reader.readLine();
-			masterRanking = parseLineOfFile(line);
+			String line;
 			while ((line = reader.readLine()) != null)
 			{
 				partialRankings.add(parseLineOfFile(line));
@@ -50,11 +49,7 @@ public class FileLoader
 		
 	}
 	
-	
-	public RankedData getMasterRanking()
-	{
-		return masterRanking;
-	}
+
 	
 	public ArrayList<RankedData> getPartialRankings()
 	{
