@@ -1,6 +1,5 @@
 package main;
 import java.util.ArrayList;
-
 import computers.*;
 
 public class ClusterAnalyizer

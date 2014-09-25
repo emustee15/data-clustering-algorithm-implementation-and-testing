@@ -9,7 +9,7 @@ public class GFunctionComputer
 
 		for (int i = 0; i <= t+1; i++)
 		{
-			i *= (1 - Math.pow(x, 2*n-i));
+			denominator *= (1 - Math.pow(x, 2*n-i));
 		}
 
 		return numerator / denominator;

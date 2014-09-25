@@ -20,27 +20,26 @@ public class QVectorComputer
 		qVector = new QVector(numberClusters, piVector.size());
 		DistanceRanker dRanker = new DistanceRanker();
 		int numberOfCompleteRankings = sigmaVector.get(0).getSize();
-		for (int cluster = 0; cluster < numberClusters; cluster++)
+		for (int jCluster = 0; jCluster < numberClusters; jCluster++)
 		{
-			for (int ranking = 0; ranking < piVector.size(); ranking++)
+			for (int iRanking = 0; iRanking < piVector.size(); iRanking++)
 			{
 				double numerator = 0;
 				double denominator = 0;
-				int numberOfPartialRankings = piVector.get(ranking).getSize();
-				numerator = cVector.get(cluster);
-				numerator *= Math.pow(Math.E, -lambdaVector.get(cluster)*dRanker.getDistance(piVector.get(ranking), sigmaVector.get(cluster)));
-				numerator *= gFunction.compute(Math.pow(Math.E, -lambdaVector.get(cluster)),numberOfPartialRankings , numberOfCompleteRankings);
+				int numberOfPartialRankings = piVector.get(iRanking).getSize();
+				numerator = cVector.get(jCluster);
+				numerator *= Math.pow(Math.E, -lambdaVector.get(jCluster)*dRanker.getDistance(piVector.get(iRanking), sigmaVector.get(jCluster)));
+				numerator *= gFunction.compute(Math.pow(Math.E, -lambdaVector.get(jCluster)),numberOfPartialRankings , numberOfCompleteRankings);
 				
-				for (int l = 1; l <= numberClusters; l++)
+				for (int l = 0; l < numberClusters; l++)
 				{
-					double sum = 1;
-					sum *= cVector.get(l);
-					sum *= Math.pow(Math.E, -lambdaVector.get(l) * dRanker.getDistance(piVector.get(ranking), sigmaVector.get(l)));
-					sum *= gFunction.compute(Math.pow(Math.E, -lambdaVector.get(l)), piVector.get(ranking).getSize(), numberOfCompleteRankings);
+					double sum = cVector.get(l);
+					sum *= Math.pow(Math.E, -lambdaVector.get(l) * dRanker.getDistance(piVector.get(iRanking), sigmaVector.get(l)));
+					sum *= gFunction.compute(Math.pow(Math.E, -lambdaVector.get(l)), numberOfPartialRankings, numberOfCompleteRankings);
 					
 					denominator+=sum;
 				}
-				qVector.set(cluster, ranking, numerator/denominator);
+				qVector.set(jCluster, iRanking, numerator/denominator);
 			}
 		}
 	}
