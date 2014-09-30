@@ -41,5 +41,7 @@ public class Main
 			System.out.println("lamda(" + q + ") = " + lcompute.lambdaFunction(q, 0));
 		}
 		
+		System.out.println(lcompute.computeLambda(.01, 1, 0, .0000001));
+		
 	}
 }

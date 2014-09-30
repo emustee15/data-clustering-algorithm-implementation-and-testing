@@ -41,13 +41,60 @@ public class LambdaComputer
 
 			outerSum += ti / denominatorOuter + innerSum;
 		}
-		
+
 		double distanceSum = 0;
-		
+
 		for (int i = 0; i < piVector.size(); i++)
 		{
-			distanceSum += dRanker.getDistance(piVector.get(i), sigmaVector.get(k));
+			distanceSum += dRanker.getDistance(piVector.get(i),
+					sigmaVector.get(k));
 		}
-		return outerSum-distanceSum ;
+		return outerSum - distanceSum;
+	}
+
+	public double computeLambda(double minValue, double maxValue, int k,
+			double epsilon)
+	{
+
+		double functionalMinValue = lambdaFunction(minValue, k);
+
+		if (functionalMinValue < 0)
+		{
+			return computeLambda(minValue - .005, maxValue, k, epsilon);
+		}
+
+		double functionalMaxValue = lambdaFunction(maxValue, k);
+
+		if (functionalMaxValue > 0)
+		{
+			return computeLambda(minValue + .005, maxValue, 0, epsilon);
+		}
+
+		double lambda = computeLambdaInternal(minValue, maxValue, 0, k, epsilon);
+		return lambda;
+	}
+
+	private double computeLambdaInternal(double minValue, double maxValue,
+			int depth, int k, double epsilon)
+	{
+		depth++;
+		double functionalValue = lambdaFunction((minValue + maxValue) / 2d, k);
+
+		if (Math.abs(maxValue - minValue) < epsilon)
+		{
+			return (minValue + maxValue) / 2d;
+		}
+
+		if (functionalValue < 0)
+		{
+			maxValue = (minValue + maxValue) / 2d;
+		}
+		else
+		{
+			minValue = (minValue + maxValue) / 2d;
+		}
+
+		return computeLambdaInternal(minValue, maxValue, depth, k, epsilon);
+
 	}
 }
