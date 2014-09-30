@@ -12,6 +12,9 @@ public class LambdaComputer
 	ArrayList<Double> lambdaVector;
 	DistanceRanker dRanker;
 
+	public final static double MIN_VALUE = .01d;
+	public final static double MAX_VALUE = 1.5d;
+
 	public LambdaComputer(ArrayList<RankedData> sigmaVector,
 			ArrayList<RankedData> piVector, ArrayList<Double> lambdaVector)
 	{
@@ -50,6 +53,11 @@ public class LambdaComputer
 					sigmaVector.get(k));
 		}
 		return outerSum - distanceSum;
+	}
+
+	public double computeLambda(int k, double epsilon)
+	{
+		return computeLambda(MIN_VALUE, MAX_VALUE, k, epsilon);
 	}
 
 	public double computeLambda(double minValue, double maxValue, int k,
