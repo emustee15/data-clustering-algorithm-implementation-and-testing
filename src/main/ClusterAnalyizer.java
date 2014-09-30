@@ -22,7 +22,7 @@ public class ClusterAnalyizer
 	public ClusterAnalyizer(ArrayList<RankedData> piVector, int numberClusters)
 	{
 		cComputer = new CComputer();
-		lComputer = new LambdaComputer();
+		lComputer = new LambdaComputer(sigmaVector,piVector,lambdaVector);
 		qComputer = new QVectorComputer();
 		sComputer = new SigmaComputer();
 		

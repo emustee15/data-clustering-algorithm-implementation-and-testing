@@ -1,9 +1,9 @@
 package GUI;
+import java.awt.Event;
+
 import org.eclipse.swt.*;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -12,9 +12,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tracker;
 
 import selectionListeners.ExitBehavior;
 import selectionListeners.OpenFileBehavior;
@@ -33,8 +35,8 @@ public class DemoWindow
 		display = new Display();
 		Shell shell = new Shell(display);
 		shell.setText("This is a test!");
-		ExpandBar bar = new ExpandBar(shell, SWT.V_SCROLL);
-	
+		
+		final ExpandBar bar = new ExpandBar(shell, SWT.V_SCROLL);
 		Composite composite = new Composite(bar,SWT.None);
 		composite.setBackground(new Color(Display.getCurrent(),245,246,247));
 	    GridLayout compositeLayout = new GridLayout();
