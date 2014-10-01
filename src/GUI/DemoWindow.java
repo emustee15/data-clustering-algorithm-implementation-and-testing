@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Tracker;
 
 import selectionListeners.ExitBehavior;
 import selectionListeners.OpenFileBehavior;
+import selectionListeners.ShowOrHideExpandBar;
 import selectionListeners.ZoomInBehavior;
 
 public class DemoWindow
@@ -29,30 +30,35 @@ public class DemoWindow
 	static OpenFileBehavior openWindow;
 	static Text textView;
 	static Display display;
+	static ExpandBar exbar;
 	
 	public static void main(String[] args)
 	{
 		display = new Display();
 		Shell shell = new Shell(display);
 		shell.setText("This is a test!");
+		GridLayout shellLayout = new GridLayout(2, false);
+		shell.setLayout(shellLayout);
 		
-		final ExpandBar bar = new ExpandBar(shell, SWT.V_SCROLL);
-		Composite composite = new Composite(bar,SWT.None);
+		
+		exbar = new ExpandBar(shell, SWT.V_SCROLL);
+		GridData barGridData = new GridData(SWT.TOP,SWT.LEFT,false,false,1,1);;
+		exbar.setLayoutData(barGridData);
+		
+		Composite composite = new Composite(exbar,SWT.None);
 		composite.setBackground(new Color(Display.getCurrent(),245,246,247));
 	    GridLayout compositeLayout = new GridLayout();
 	    compositeLayout.marginLeft = compositeLayout.marginTop = compositeLayout.marginRight = compositeLayout.marginBottom = 10;
 	    compositeLayout.verticalSpacing = 10;
 	    composite.setLayout(compositeLayout);
 	    
-		GridLayout shellLayout = new GridLayout(4, false);
-		shell.setLayout(shellLayout);
-		GridData compositeLayoutData = new GridData(GridData.VERTICAL_ALIGN_FILL);
-		compositeLayoutData.grabExcessVerticalSpace = true;
-		bar.setLayoutData(compositeLayoutData);
-		bar.setBackground(new Color(Display.getCurrent(), 240,240,240));
+		
+		exbar.setBackground(new Color(Display.getCurrent(), 240,240,240));
+		
+	
 		Button button = new Button(composite, SWT.PUSH);
 		button.setText("I am a button!");
-		ExpandItem expandItem = new ExpandItem(bar, SWT.None);
+		ExpandItem expandItem = new ExpandItem(exbar, SWT.None);
 		expandItem.setText("This can be expanded");
 		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		expandItem.setControl(composite);
@@ -60,19 +66,15 @@ public class DemoWindow
 
 		textView = new Text(shell, SWT.MULTI | SWT.BORDER | SWT.WRAP
 				| SWT.V_SCROLL);
-		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL);
-		data.horizontalSpan = 3;
-		data.grabExcessVerticalSpace = true;
-		data.grabExcessHorizontalSpace = true;
+		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		
 		textView.setLayoutData(data);
-		textView.pack();
+		
 		createMenuBar(shell);
-		shell.pack();
 		shell.setSize(640, 480);
 		shell.open();
-		
-		GridData textGridData = (GridData)(textView.getLayoutData());
-		textGridData.horizontalSpan = 4;
+		shell.layout();
+	
 		
 		while (!shell.isDisposed())
 		{
@@ -114,7 +116,6 @@ public class DemoWindow
 		bar.addSelectionListener(new OpenFileBehavior(shell), "Open");
 		bar.addSelectionListener(new ExitBehavior(), "Exit");
 		bar.addSelectionListener(new ZoomInBehavior(textView, display), "Zoom in");
-
-		MenuItem openItem = bar.getItem("Open");
+		bar.addSelectionListener(new ShowOrHideExpandBar(exbar, shell,bar.getItem("Toggle View")), "Toggle View");
 	}
 }
