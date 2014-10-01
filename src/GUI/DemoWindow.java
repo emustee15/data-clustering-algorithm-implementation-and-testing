@@ -18,17 +18,22 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tracker;
 
+import selectionListeners.CopyBehavior;
+import selectionListeners.CutBehavior;
 import selectionListeners.ExitBehavior;
 import selectionListeners.OpenFileBehavior;
+import selectionListeners.PasteBehavior;
+import selectionListeners.SelectAllBehavior;
 import selectionListeners.ShowOrHideExpandBar;
 import selectionListeners.ZoomInBehavior;
+import selectionListeners.ZoomOutBehavior;
 
 public class DemoWindow
 {
 
 	static Label label;
 	static OpenFileBehavior openWindow;
-	static Text textView;
+	static Text text;
 	static Display display;
 	static ExpandBar exbar;
 	
@@ -64,11 +69,11 @@ public class DemoWindow
 		expandItem.setControl(composite);
 		expandItem.setExpanded(true);
 
-		textView = new Text(shell, SWT.MULTI | SWT.BORDER | SWT.WRAP
+		text = new Text(shell, SWT.MULTI | SWT.BORDER | SWT.WRAP
 				| SWT.V_SCROLL);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		
-		textView.setLayoutData(data);
+		text.setLayoutData(data);
 		
 		createMenuBar(shell);
 		shell.setSize(640, 480);
@@ -104,6 +109,8 @@ public class DemoWindow
 		bar.addMenuItem("Edit", "Cut");
 		bar.addMenuItem("Edit", "Copy");
 		bar.addMenuItem("Edit", "Paste");
+		bar.addSeperator("Edit");
+		bar.addMenuItem("Edit", "Select All");
 
 		bar.addMenuItem("View", "Zoom in");
 		bar.addMenuItem("View", "Zoom out");
@@ -115,7 +122,16 @@ public class DemoWindow
 
 		bar.addSelectionListener(new OpenFileBehavior(shell), "Open");
 		bar.addSelectionListener(new ExitBehavior(), "Exit");
-		bar.addSelectionListener(new ZoomInBehavior(textView, display), "Zoom in");
+		bar.addSelectionListener(new ZoomInBehavior(text, display, bar.getItem("Zoom out"),bar.getItem("Zoom in")), "Zoom in");
+		bar.addSelectionListener(new ZoomOutBehavior(text, display, bar.getItem("Zoom out"),bar.getItem("Zoom in")), "Zoom out");
 		bar.addSelectionListener(new ShowOrHideExpandBar(exbar, shell,bar.getItem("Toggle View")), "Toggle View");
+		bar.addSelectionListener(new SelectAllBehavior(text), "Select All");
+		bar.addSelectionListener(new CutBehavior(text), "Cut");
+		bar.addSelectionListener(new CopyBehavior(text), "Copy");
+		bar.addSelectionListener(new PasteBehavior(text), "Paste");
+		
+		bar.addAccelerator("Zoom in", SWT.CTRL + '+');
+		bar.addAccelerator("Zoom out", SWT.CTRL + '-');
+		bar.addAccelerator("Select All", SWT.CTRL + 'A');
 	}
 }

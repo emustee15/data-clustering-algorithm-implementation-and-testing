@@ -8,14 +8,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 
-public class ZoomInBehavior implements SelectionListener
+public class ZoomOutBehavior implements SelectionListener
 {
 	private Text textToZoom;
 	private Display display;
 	private MenuItem zoomOut, zoomIn;
 	
-	private final static int MAX_SIZE = 44;
-	public ZoomInBehavior(Text text, Display display, MenuItem zoomOut, MenuItem zoomIn)
+	private final static int MIN_SIZE = 4;
+	public ZoomOutBehavior(Text text, Display display, MenuItem zoomOut, MenuItem zoomIn)
 	{
 		textToZoom = text;
 		this.display = display;
@@ -38,15 +38,15 @@ public class ZoomInBehavior implements SelectionListener
 		for (int i = 0; i < data.length; i++)
 		{
 			
-			data[i].setHeight((data[i].getHeight() + 2 >= MAX_SIZE ? MAX_SIZE : data[i].getHeight() + 2));
+			data[i].setHeight((data[i].getHeight() - 2 <= MIN_SIZE ? MIN_SIZE : data[i].getHeight() - 2));
 		}
 		
-		if (data[0].getHeight() == MAX_SIZE)
+		if (data[0].getHeight() == MIN_SIZE)
 		{
-			zoomIn.setEnabled(false);
+			zoomOut.setEnabled(false);
 		}
 		
-		zoomOut.setEnabled(true);
+		zoomIn.setEnabled(true);
 		
 		Font biggerFont = new Font(display, data);
 		textToZoom.setFont(biggerFont);
