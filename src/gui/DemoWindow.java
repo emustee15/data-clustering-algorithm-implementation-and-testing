@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 import java.awt.Event;
 
 import org.eclipse.swt.*;

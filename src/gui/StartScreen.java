@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;

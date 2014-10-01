@@ -1,5 +1,7 @@
-package main;
+package tests;
 import static org.junit.Assert.*;
+import main.DistanceRanker;
+import main.RankedData;
 
 import org.junit.Test;
 

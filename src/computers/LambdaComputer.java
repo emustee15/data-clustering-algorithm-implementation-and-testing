@@ -14,6 +14,8 @@ public class LambdaComputer
 
 	public final static double MIN_VALUE = .01d;
 	public final static double MAX_VALUE = 1.5d;
+	public final static double SMALLEST_EPSILON = .00000000000000011103d;
+	public final static double EPSILON = 0.0000001d;
 
 	public LambdaComputer(ArrayList<RankedData> sigmaVector,
 			ArrayList<RankedData> piVector, ArrayList<Double> lambdaVector)
@@ -103,6 +105,13 @@ public class LambdaComputer
 		}
 
 		return computeLambdaInternal(minValue, maxValue, depth, k, epsilon);
-
+	}
+	
+	public void computeLambdaVector()
+	{
+		for (int index = 0; index < sigmaVector.size(); index++)
+		{
+			lambdaVector.set(index, computeLambda(index, EPSILON));
+		}
 	}
 }
