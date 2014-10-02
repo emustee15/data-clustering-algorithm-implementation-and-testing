@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 
 import computers.LambdaComputer;
+import computers.SigmaComputer;
 
 public class Main
 {
@@ -31,16 +32,24 @@ public class Main
 		lambdaVector.add(0d);
 		
 
-		LambdaComputer lcompute = new LambdaComputer(sigmaVector, piVector,
-				lambdaVector);
-		
-		lcompute.computeLambdaVector();
-		
-		for (Double d : lambdaVector)
-		{
-			System.out.println(d);
-		}
-
+//		LambdaComputer lcompute = new LambdaComputer(sigmaVector, piVector,
+//				lambdaVector);
+//		
+//		lcompute.computeLambdaVector();
+//		
+//		for (Double d : lambdaVector)
+//		{
+//			System.out.println(d);
+//		}
+//		
+//		SigmaComputer sCompute = new SigmaComputer(piVector, sigmaVector);
+//		
+//		ArrayList<RankedData> sigmaValues = sCompute.getSigmaValues(new RankedData(new int[]{1,2,3,4,5}));
+//		
+//		for (RankedData d : sigmaValues)
+//		{
+//			d.print();
+//		}
 		
 	}
 }

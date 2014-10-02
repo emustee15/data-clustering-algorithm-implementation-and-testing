@@ -25,7 +25,7 @@ public class DistanceRanker
 			{
 				int positionOfNeededNumber = list.getPosition(neededNumberAtPosition);
 				totalDistance += (positionOfNeededNumber - i);
-				list.swapPositions(i, positionOfNeededNumber);
+				list.push(i, positionOfNeededNumber);
 			}
 			else
 			{
@@ -33,7 +33,7 @@ public class DistanceRanker
 				int distanceToEnd = list.getSize() -1- i;
 				int distanceToDesiredSpot = list.getSize() -1-positionOfNeededNumber;
 				totalDistance += (distanceToEnd + distanceToDesiredSpot + 1);
-				list.swapPositions(i, positionOfNeededNumber);
+				list.push(i, positionOfNeededNumber);
 			}
 		}
 

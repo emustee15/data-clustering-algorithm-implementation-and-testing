@@ -45,7 +45,7 @@ public class RankedData
 		return -1;
 	}
 	
-	public void swapPositions(int indexA, int indexB)
+	public void push(int indexA, int indexB)
 	{
 		if (indexA == indexB)
 		{
@@ -58,6 +58,24 @@ public class RankedData
 		{
 			data.set(i,temp.get(i-1));
 		}
+	}
+	
+	public void swapPositions(int indexA, int indexB)
+	{
+		if (indexA == indexB)
+		{
+			return;
+		}
+		
+		ArrayList<Integer> newData = (ArrayList<Integer>) data.clone();
+		int temp = data.get(indexA);
+		data.set(indexA, data.get(indexB));
+		data.set(indexB, temp);
+	}
+	
+	public void negate(int index)
+	{
+		data.set(index, -data.get(index));
 	}
 	
 	public void reset()
@@ -139,5 +157,16 @@ public class RankedData
 		}
 	}
 	
+	public RankedData clone() 
+	{
+		int[] newData = new int[originalData.length];
+		
+		for (int i=0; i<originalData.length; i++)
+		{
+			newData[i] = originalData[i];
+		}
+		
+		return new RankedData(newData);
+	}
 	
 }
