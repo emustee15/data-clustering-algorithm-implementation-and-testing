@@ -7,11 +7,13 @@ public class GFunctionComputer
 		double numerator = Math.pow((1 - x), t);
 		double denominator = 1;
 
-		for (int i = 0; i <= t+1; i++)
+//		System.out.print("(1 - " + x +")^" + t +"/(");
+		for (int i = 2*n; i >= 2*(n-t+1); i-=2)
 		{
-			denominator *= (1 - Math.pow(x, 2*n-i));
+			denominator *= (1 - Math.pow(x, (i)));
+//			System.out.print("(1 - " + x +"^" + ((i)) +")");
 		}
-
+//		System.out.println(")");
 		return numerator / denominator;
 	}
 }

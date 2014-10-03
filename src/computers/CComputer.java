@@ -13,23 +13,27 @@ public class CComputer
 	ArrayList<RankedData> piVector;
 	
 	
-	public CComputer(QVector qVector, ArrayList<RankedData> piVector, int numberClusters)
+	public CComputer(QVector qVector, ArrayList<RankedData> piVector, ArrayList<Double> cVector, int numberClusters)
 	{
 		this.qVector = qVector;
 		this.numberClusters = numberClusters;
+		this.cVector = cVector;
 		this.piVector = piVector;
 		this.numRankings = piVector.size();
 	}
 	
 	public void computeCVector()
 	{
-		double sum = 0;
+		
 		for (int iCluster = 0; iCluster < numberClusters ; iCluster++)
 		{
+			double sum = 0;
 			for (int jRanking = 0; jRanking < numRankings; jRanking++)
 			{
 				sum += qVector.get(iCluster, jRanking);
 			}
+			
+			System.out.println(sum*(1.0/numRankings));
 			cVector.set(iCluster, (1.0/numRankings)*sum);
 		}
 	}

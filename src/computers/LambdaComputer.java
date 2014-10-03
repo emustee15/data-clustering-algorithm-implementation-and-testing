@@ -62,56 +62,61 @@ public class LambdaComputer
 		return computeLambda(MIN_VALUE, MAX_VALUE, k, epsilon);
 	}
 
-	public double computeLambda(double minValue, double maxValue, int k,
+	public double computeLambda(double leftBound, double rightBound, int k,
 			double epsilon)
 	{
 
-		double functionalMinValue = lambdaFunction(minValue, k);
+		if (rightBound>1000)
+		{
+			return Double.POSITIVE_INFINITY;
+		}
+		double functionalMinValue = lambdaFunction(leftBound, k);
 
 		if (functionalMinValue < 0)
 		{
-			return computeLambda(minValue - .005, maxValue, k, epsilon);
+			return computeLambda(leftBound - .005, rightBound, k, epsilon);
 		}
 
-		double functionalMaxValue = lambdaFunction(maxValue, k);
+		double functionalMaxValue = lambdaFunction(rightBound, k);
 
 		if (functionalMaxValue > 0)
 		{
-			return computeLambda(minValue + .005, maxValue, 0, epsilon);
+			return computeLambda(leftBound, rightBound+5, 0, epsilon);
 		}
 
-		double lambda = computeLambdaInternal(minValue, maxValue, 0, k, epsilon);
+		double lambda = computeLambdaInternal(leftBound, rightBound, k, epsilon);
 		return lambda;
 	}
 
-	private double computeLambdaInternal(double minValue, double maxValue,
-			int depth, int k, double epsilon)
+	private double computeLambdaInternal(double leftBound, double rightBound,
+		 int k, double epsilon)
 	{
-		depth++;
-		double functionalValue = lambdaFunction((minValue + maxValue) / 2d, k);
+		double functionalValue = lambdaFunction((leftBound + rightBound) / 2d, k);
 
-		if (Math.abs(maxValue - minValue) < epsilon)
+		if (Math.abs(rightBound - leftBound) < epsilon)
 		{
-			return (minValue + maxValue) / 2d;
+			return (leftBound + rightBound) / 2d;
 		}
 
 		if (functionalValue < 0)
 		{
-			maxValue = (minValue + maxValue) / 2d;
+			rightBound = (leftBound + rightBound) / 2d;
 		}
 		else
 		{
-			minValue = (minValue + maxValue) / 2d;
+			leftBound = (leftBound + rightBound) / 2d;
 		}
 
-		return computeLambdaInternal(minValue, maxValue, depth, k, epsilon);
+		return computeLambdaInternal(leftBound, rightBound, k, epsilon);
 	}
 	
-	public void computeLambdaVector()
+	public void computeLVector()
 	{
 		for (int index = 0; index < sigmaVector.size(); index++)
 		{
 			lambdaVector.set(index, computeLambda(index, EPSILON));
+			
+
 		}
 	}
 }

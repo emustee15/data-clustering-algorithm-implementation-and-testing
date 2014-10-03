@@ -10,14 +10,23 @@ public class QVectorComputer
 	
 	QVector qVector;
 	GFunctionComputer gFunction;
-	public QVectorComputer()
+	
+	private ArrayList<RankedData> sigmaVector, piVector;
+	private ArrayList<Double> lambdaVector, cVector;
+	private int numberClusters;
+	public QVectorComputer(ArrayList<RankedData> sigmaVector, ArrayList<RankedData> piVector, ArrayList<Double> lambdaVector, ArrayList<Double> cVector, int numberClusters, QVector qVector)
 	{
 		gFunction = new GFunctionComputer();
+		this.sigmaVector = sigmaVector;
+		this.piVector = piVector;
+		this.lambdaVector = lambdaVector;
+		this.cVector = cVector;
+		this.numberClusters = numberClusters;
+		this.qVector = qVector;
 	}
 	
-	public void computeQVector(ArrayList<RankedData> sigmaVector, ArrayList<RankedData> piVector, ArrayList<Double> lambdaVector, ArrayList<Double> cVector, int numberClusters)
+	public void computeQVector()
 	{
-		qVector = new QVector(numberClusters, piVector.size());
 		DistanceRanker dRanker = new DistanceRanker();
 		int numberOfCompleteRankings = sigmaVector.get(0).getSize();
 		for (int jCluster = 0; jCluster < numberClusters; jCluster++)

@@ -76,7 +76,7 @@ public class MenuBar
 	public void addSeperator(String topMenuName)
 	{
 		Menu topLevelMenu = topLevelMenus.get(topMenuName);
-		MenuItem seperator = new MenuItem(topLevelMenu, SWT.SEPARATOR);
+		new MenuItem(topLevelMenu, SWT.SEPARATOR);
 	}
 	
 	public void addAccelerator(String name, int accelerator)

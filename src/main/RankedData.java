@@ -52,6 +52,7 @@ public class RankedData
 			return;
 		}
 
+		@SuppressWarnings("unchecked")
 		ArrayList<Integer> temp = (ArrayList<Integer>) data.clone();
 		data.set(indexA,data.get(indexB));
 		for (int i = indexA+1; i <= indexB; i++)
@@ -67,7 +68,6 @@ public class RankedData
 			return;
 		}
 		
-		ArrayList<Integer> newData = (ArrayList<Integer>) data.clone();
 		int temp = data.get(indexA);
 		data.set(indexA, data.get(indexB));
 		data.set(indexB, temp);
@@ -144,7 +144,7 @@ public class RankedData
 				System.out.print(data.get(i));
 			}
 		}
-		System.out.print("}");
+		System.out.print("}\n");
 	}
 	
 	public void saveCurrentDataAsDefault()
@@ -167,6 +167,22 @@ public class RankedData
 		}
 		
 		return new RankedData(newData);
+	}
+	
+	public void randomize()
+	{
+		
+		for (int i = 0; i < 100;i++)
+		{
+			int positionA = (int) (Math.random()*data.size());
+			int positionB = (int) (Math.random()*data.size());
+		
+			swapPositions(positionA,positionB);	
+		}
+		
+		saveCurrentDataAsDefault();
+		
+		
 	}
 	
 }

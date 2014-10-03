@@ -41,4 +41,6 @@ public class DistanceRanker
 		return totalDistance;
 	}
 	
+
+	
 }
