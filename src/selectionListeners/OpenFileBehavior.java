@@ -10,10 +10,10 @@ import org.eclipse.swt.widgets.Shell;
 
 public class OpenFileBehavior implements SelectionListener
 {
-	private MainGUI shell;
+	private Shell shell;
 	private String selectedFile;
 	
-	public OpenFileBehavior(MainGUI shell)
+	public OpenFileBehavior(Shell shell)
 	{
 		this.shell = shell;
 	}
@@ -37,9 +37,9 @@ public class OpenFileBehavior implements SelectionListener
 		dialog.setFilterExtensions(filterExt);
 		selectedFile = dialog.open();
 		
-		if (selectedFile != null)
+		if (selectedFile != null && shell instanceof MainGUI)
 		{
-			shell.openPiVector(selectedFile);
+			((MainGUI)(shell)).openPiVector(selectedFile);
 		}
 		
 	}
