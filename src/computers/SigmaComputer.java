@@ -77,8 +77,6 @@ public class SigmaComputer
 			sigmaVector.set(s, testValues.get(minValueIndex));
 			sigmaVector.get(s).saveCurrentDataAsDefault();
 			
-			System.out.print("s" + s + " = " );
-			sigmaVector.get(s).print();
 			if (minValueIndex != 0)
 			{
 				hasMoved = true;

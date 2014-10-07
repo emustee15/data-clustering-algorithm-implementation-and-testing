@@ -1,5 +1,7 @@
 package selectionListeners;
 
+import gui.MainGUI;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -8,10 +10,10 @@ import org.eclipse.swt.widgets.Shell;
 
 public class OpenFileBehavior implements SelectionListener
 {
-	private Shell shell;
+	private MainGUI shell;
 	private String selectedFile;
 	
-	public OpenFileBehavior(Shell shell)
+	public OpenFileBehavior(MainGUI shell)
 	{
 		this.shell = shell;
 	}
@@ -34,6 +36,11 @@ public class OpenFileBehavior implements SelectionListener
 		String[] filterExt = {"*.txt"};
 		dialog.setFilterExtensions(filterExt);
 		selectedFile = dialog.open();
+		
+		if (selectedFile != null)
+		{
+			shell.openPiVector(selectedFile);
+		}
 		
 	}
 	

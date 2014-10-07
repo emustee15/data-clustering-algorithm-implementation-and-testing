@@ -57,7 +57,7 @@ public class ClusterTesting {
 		RankedData completeList = new RankedData(new int[] {5,4,3,2,1});
 		assertEquals(25,r.getDistance(data1, completeList));
 		assertEquals(25, r.getDistance(completeList, data1));
-	}
+	}	
 	
 	
 	//TEST CASES FOR THE RANKED DATA CLASS METHODS

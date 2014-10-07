@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tracker;
 
@@ -44,6 +45,8 @@ public class DemoWindow
 		shell.setText("This is a test!");
 		GridLayout shellLayout = new GridLayout(2, false);
 		shell.setLayout(shellLayout);
+		
+		final TabFolder tabFolder = new TabFolder(shell, SWT.BORDER);
 		
 		
 		exbar = new ExpandBar(shell, SWT.V_SCROLL);
@@ -120,7 +123,7 @@ public class DemoWindow
 		bar.addMenuItem("Help", "View Help");
 		bar.addMenuItem("Help", "About");
 
-		bar.addSelectionListener(new OpenFileBehavior(shell), "Open");
+		//bar.addSelectionListener(new OpenFileBehavior(shell), "Open");
 		bar.addSelectionListener(new ExitBehavior(), "Exit");
 		bar.addSelectionListener(new ZoomInBehavior(text, display, bar.getItem("Zoom out"),bar.getItem("Zoom in")), "Zoom in");
 		bar.addSelectionListener(new ZoomOutBehavior(text, display, bar.getItem("Zoom out"),bar.getItem("Zoom in")), "Zoom out");

@@ -32,8 +32,6 @@ public class CComputer
 			{
 				sum += qVector.get(iCluster, jRanking);
 			}
-			
-			System.out.println(sum*(1.0/numRankings));
 			cVector.set(iCluster, (1.0/numRankings)*sum);
 		}
 	}

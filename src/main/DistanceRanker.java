@@ -1,4 +1,5 @@
 package main;
+
 public class DistanceRanker
 {
 
@@ -19,6 +20,8 @@ public class DistanceRanker
 
 		for (int i = 0; i < list.getSize(); i++)
 		{
+			try
+			{
 			int neededNumberAtPosition = completeList.get(i);
 			if (completeList.isIndexPositive(i) && list.isPositive(neededNumberAtPosition) || 
 					(!completeList.isIndexPositive(i) && !list.isPositive(neededNumberAtPosition)))
@@ -35,12 +38,17 @@ public class DistanceRanker
 				totalDistance += (distanceToEnd + distanceToDesiredSpot + 1);
 				list.push(i, positionOfNeededNumber);
 			}
+			}
+			catch (IndexOutOfBoundsException ex)
+			{
+				System.out.println("ERROR c: ");
+				completeList.print();
+				list.print();
+			}
 		}
 
 		list.reset();
 		return totalDistance;
 	}
-	
 
-	
 }

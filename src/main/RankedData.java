@@ -185,4 +185,19 @@ public class RankedData
 		
 	}
 	
+	@Override
+	public String toString()
+	{
+		String string = "";
+		
+		string += "{";
+		for (int i = 0; i < data.size(); i++)
+		{
+			string += data.get(i);
+			string += (i != data.size()-1 ? ", " : "");
+		}
+		string += "}";
+		return string;
+	}
+	
 }
