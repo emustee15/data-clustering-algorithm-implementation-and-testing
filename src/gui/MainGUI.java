@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.graphics.Point;
 
 import selectionListeners.AnalyzeBehavior;
+import selectionListeners.HelpMenuBehavior;
 import selectionListeners.OpenFileBehavior;
 
 public class MainGUI extends Shell
@@ -133,11 +134,13 @@ public class MainGUI extends Shell
 		MenuItem mntmHelp = new MenuItem(menu, SWT.CASCADE);
 		mntmHelp.setText("Help");
 		
+		
 		Menu menu_4 = new Menu(mntmHelp);
 		mntmHelp.setMenu(menu_4);
 		
 		MenuItem mntmViewHelp = new MenuItem(menu_4, SWT.NONE);
 		mntmViewHelp.setText("View Help");
+		mntmViewHelp.addSelectionListener(new HelpMenuBehavior());
 		
 		MenuItem mntmAbout = new MenuItem(menu_4, SWT.NONE);
 		mntmAbout.setText("About");
@@ -183,6 +186,7 @@ public class MainGUI extends Shell
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		startAnalysis.addSelectionListener(new AnalyzeBehavior(this));
+		
 		
 		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));

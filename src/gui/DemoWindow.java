@@ -28,13 +28,14 @@ import selectionListeners.SelectAllBehavior;
 import selectionListeners.ShowOrHideExpandBar;
 import selectionListeners.ZoomInBehavior;
 import selectionListeners.ZoomOutBehavior;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.widgets.Menu;
 
 public class DemoWindow
 {
 
 	static Label label;
 	static OpenFileBehavior openWindow;
-	static Text text;
 	static Display display;
 	static ExpandBar exbar;
 	
@@ -46,12 +47,14 @@ public class DemoWindow
 		GridLayout shellLayout = new GridLayout(2, false);
 		shell.setLayout(shellLayout);
 		
+		Button button_1 = new Button(shell, SWT.NONE);
+		new Label(shell, SWT.NONE);
+		
 		final TabFolder tabFolder = new TabFolder(shell, SWT.BORDER);
 		
 		
-		exbar = new ExpandBar(shell, SWT.V_SCROLL);
-		GridData barGridData = new GridData(SWT.TOP,SWT.LEFT,false,false,1,1);;
-		exbar.setLayoutData(barGridData);
+		exbar = new ExpandBar(shell, SWT.V_SCROLL);;
+		exbar.setLayoutData(new GridData(SWT.TOP,SWT.LEFT,false,false,1,1));
 		
 		Composite composite = new Composite(exbar,SWT.None);
 		composite.setBackground(new Color(Display.getCurrent(),245,246,247));
@@ -71,15 +74,15 @@ public class DemoWindow
 		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		expandItem.setControl(composite);
 		expandItem.setExpanded(true);
-
-		text = new Text(shell, SWT.MULTI | SWT.BORDER | SWT.WRAP
-				| SWT.V_SCROLL);
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
-		
-		text.setLayoutData(data);
 		
 		createMenuBar(shell);
 		shell.setSize(640, 480);
+		
+		Menu menu = new Menu(shell, SWT.BAR);
+		shell.setMenuBar(menu);
+		
+		MenuItem mntmHelp = new MenuItem(menu, SWT.NONE);
+		mntmHelp.setText("Help");
 		shell.open();
 		shell.layout();
 	
@@ -125,13 +128,7 @@ public class DemoWindow
 
 		//bar.addSelectionListener(new OpenFileBehavior(shell), "Open");
 		bar.addSelectionListener(new ExitBehavior(), "Exit");
-		bar.addSelectionListener(new ZoomInBehavior(text, display, bar.getItem("Zoom out"),bar.getItem("Zoom in")), "Zoom in");
-		bar.addSelectionListener(new ZoomOutBehavior(text, display, bar.getItem("Zoom out"),bar.getItem("Zoom in")), "Zoom out");
 		bar.addSelectionListener(new ShowOrHideExpandBar(exbar, shell,bar.getItem("Toggle View")), "Toggle View");
-		bar.addSelectionListener(new SelectAllBehavior(text), "Select All");
-		bar.addSelectionListener(new CutBehavior(text), "Cut");
-		bar.addSelectionListener(new CopyBehavior(text), "Copy");
-		bar.addSelectionListener(new PasteBehavior(text), "Paste");
 		
 		bar.addAccelerator("Zoom in", SWT.CTRL + '+');
 		bar.addAccelerator("Zoom out", SWT.CTRL + '-');
