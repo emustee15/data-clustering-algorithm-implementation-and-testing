@@ -1,6 +1,6 @@
 package selectionListeners;
 
-import main.ClusterAnalyizer;
+import main.ClusterAnalyzer;
 
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -28,7 +28,7 @@ public class AnalyzeBehavior implements SelectionListener
 	{
 		if (shell.getPiVector() != null)
 		{
-			ClusterAnalyizer ca = new ClusterAnalyizer(shell.getPiVector(),
+			ClusterAnalyzer ca = new ClusterAnalyzer(shell.getPiVector(),
 					shell.getNumberClusters(), shell.getCompleteRankings());
 			ca.doAnalyisis();
 			shell.setClusterText(ca.getClusterCenterInformation());

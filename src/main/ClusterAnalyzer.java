@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import computers.*;
 
-public class ClusterAnalyizer
+public class ClusterAnalyzer
 {
 	CComputer cComputer;
 	LambdaComputer lComputer;
@@ -23,7 +23,7 @@ public class ClusterAnalyizer
 
 	String sigmaInformation;
 
-	public ClusterAnalyizer(ArrayList<RankedData> piVector, int numberClusters,
+	public ClusterAnalyzer(ArrayList<RankedData> piVector, int numberClusters,
 			int masterRankings)
 	{
 		qVector = new QVector(numberClusters, piVector.size());
