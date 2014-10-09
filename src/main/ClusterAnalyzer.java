@@ -2,6 +2,7 @@ package main;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import gui.MainGUI;
 
 import computers.*;
 
@@ -23,8 +24,7 @@ public class ClusterAnalyzer
 
 	String sigmaInformation;
 
-	public ClusterAnalyzer(ArrayList<RankedData> piVector, int numberClusters,
-			int masterRankings)
+	public ClusterAnalyzer(ArrayList<RankedData> piVector, int numberClusters, int masterRankings)
 	{
 		qVector = new QVector(numberClusters, piVector.size());
 		lambdaVector = new ArrayList<Double>();
@@ -44,20 +44,29 @@ public class ClusterAnalyzer
 
 		for (int i = oppositeRanking.length; i >= 1; i--)
 		{
-			oppositeRanking[i - 1] = (masterRankings-i+1);
+			oppositeRanking[i - 1] = (masterRankings - i + 1);
 		}
 
 		// Fill our lambda and sigma vectors with default values
 
-		if (numberClusters == 2)
+		if (!MainGUI.getInstance().getRandomizeSigma() && (numberClusters == 1 || numberClusters == 2))
 		{
-			for (int i = 0; i < numberClusters; i++)
+			if (numberClusters == 2)
+			{
+				for (int i = 0; i < numberClusters; i++)
+				{
+					lambdaVector.add(0d);
+					cVector.add(1.0d / piVector.size());
+				}
+				sigmaVector.add(new RankedData(oppositeRanking.clone()));
+				sigmaVector.add(new RankedData(masterRanking.clone()));
+			}
+			else if (numberClusters == 1)
 			{
 				lambdaVector.add(0d);
 				cVector.add(1.0d / piVector.size());
+				sigmaVector.add(new RankedData(masterRanking.clone()));
 			}
-			sigmaVector.add(new RankedData(oppositeRanking.clone()));
-			sigmaVector.add(new RankedData(masterRanking.clone()));
 		}
 		else
 		{
@@ -80,8 +89,7 @@ public class ClusterAnalyzer
 		}
 
 		lComputer = new LambdaComputer(sigmaVector, piVector, lambdaVector);
-		qComputer = new QVectorComputer(sigmaVector, piVector, lambdaVector,
-				cVector, numberClusters, qVector);
+		qComputer = new QVectorComputer(sigmaVector, piVector, lambdaVector, cVector, numberClusters, qVector);
 		sComputer = new SigmaComputer(piVector, sigmaVector, qVector);
 		cComputer = new CComputer(qVector, piVector, cVector, numberClusters);
 		lComputer.computeLVector();
@@ -118,8 +126,7 @@ public class ClusterAnalyzer
 		sigmaInformation += "Step " + step + ":\n";
 		for (int index = 0; index < sigmaVector.size(); index++)
 		{
-			sigmaInformation += "\ts" + index + ": "
-					+ sigmaVector.get(index).toString() + "\n";
+			sigmaInformation += "\ts" + index + ": " + sigmaVector.get(index).toString() + "\n";
 		}
 
 	}
@@ -154,12 +161,10 @@ public class ClusterAnalyzer
 		DecimalFormat df = new DecimalFormat("#.####");
 		for (int jRanking = 0; jRanking < piVector.size(); jRanking++)
 		{
-			info += "Partial Ranking " + jRanking + ": "
-					+ piVector.get(jRanking).toString() + "\n";
+			info += "Partial Ranking " + jRanking + ": " + piVector.get(jRanking).toString() + "\n";
 			for (int iCluster = 0; iCluster < numberClusters; iCluster++)
 			{
-				info += "\t" + sigmaVector.get(iCluster).toString() + ": "
-						+ df.format(qVector.get(iCluster, jRanking)) + "\n";
+				info += "\t" + sigmaVector.get(iCluster).toString() + ": " + df.format(qVector.get(iCluster, jRanking)) + "\n";
 			}
 		}
 

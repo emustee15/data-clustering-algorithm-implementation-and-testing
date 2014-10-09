@@ -35,6 +35,8 @@ public class MainGUI extends Shell
 	private ArrayList<RankedData> piVector;
 	private Text clusterText, qVectorText, cVectorText, lVectorText, sigmaTimeLineText;
 	private Spinner completeRankings, numClusters;
+	private Button btnRandomizeSigmaVector;
+	private static MainGUI instance;
 
 	/**
 	 * Launch the application.
@@ -66,9 +68,10 @@ public class MainGUI extends Shell
 	 * Create the shell.
 	 * @param display
 	 */
-	public MainGUI(Display display)
+	private MainGUI(Display display)
 	{
 		super(display, SWT.SHELL_TRIM);
+		instance = this;
 		setMinimumSize(new Point(640, 480));
 		setLayout(new GridLayout(2, false));
 		
@@ -185,6 +188,19 @@ public class MainGUI extends Shell
 		startAnalysis.setText("Start");
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
+		
+		ExpandItem analyzeSettings = new ExpandItem(expandBar, 0);
+		analyzeSettings.setText("Settings");
+		analyzeSettings.setExpanded(true);
+		
+		Composite composite_1 = new Composite(expandBar, SWT.NONE);
+		analyzeSettings.setControl(composite_1);
+		composite_1.setLayout(new GridLayout(1, false));
+		
+		btnRandomizeSigmaVector = new Button(composite_1, SWT.CHECK);
+		btnRandomizeSigmaVector.setSelection(true);
+		btnRandomizeSigmaVector.setText("Randomize Sigma Vector");
+		analyzeSettings.setHeight(40);
 		startAnalysis.addSelectionListener(new AnalyzeBehavior(this));
 		
 		
@@ -307,5 +323,15 @@ public class MainGUI extends Shell
 	public int getCompleteRankings()
 	{
 		return completeRankings.getSelection();
+	}
+	
+	public boolean getRandomizeSigma()
+	{
+		return btnRandomizeSigmaVector.getSelection();
+	}
+	
+	public static MainGUI getInstance()
+	{
+		return instance;
 	}
 }
