@@ -1,9 +1,12 @@
+/*
+ * This class is for GUI testing purposes only. 
+ * Will be removed from final version.
+ */
+
 package gui;
-import java.awt.Event;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -12,23 +15,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Tracker;
 
-import selectionListeners.CopyBehavior;
-import selectionListeners.CutBehavior;
 import selectionListeners.ExitBehavior;
 import selectionListeners.OpenFileBehavior;
-import selectionListeners.PasteBehavior;
-import selectionListeners.SelectAllBehavior;
 import selectionListeners.ShowOrHideExpandBar;
-import selectionListeners.ZoomInBehavior;
-import selectionListeners.ZoomOutBehavior;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Menu;
 
 public class DemoWindow
@@ -38,6 +31,7 @@ public class DemoWindow
 	static OpenFileBehavior openWindow;
 	static Display display;
 	static ExpandBar exbar;
+	static ErrorDialog errorDialog;
 	
 	public static void main(String[] args)
 	{
@@ -52,7 +46,7 @@ public class DemoWindow
 		
 		final TabFolder tabFolder = new TabFolder(shell, SWT.BORDER);
 		
-		
+		errorDialog = new ErrorDialog(shell, shell.getStyle());
 		exbar = new ExpandBar(shell, SWT.V_SCROLL);;
 		exbar.setLayoutData(new GridData(SWT.TOP,SWT.LEFT,false,false,1,1));
 		
@@ -86,6 +80,7 @@ public class DemoWindow
 		shell.open();
 		shell.layout();
 	
+		errorDialog.open("This is a test.");
 		
 		while (!shell.isDisposed())
 		{

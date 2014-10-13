@@ -1,4 +1,7 @@
 package main;
+import gui.ErrorDialog;
+import gui.MainGUI;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,6 +11,7 @@ import java.util.ArrayList;
 public class FileLoader
 {
 	ArrayList<RankedData> partialRankings;
+	ErrorDialog errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI.getInstance().getStyle());
 	
 	public void loadFile(String filePath)
 	{
@@ -21,6 +25,10 @@ public class FileLoader
 			{
 				partialRankings.add(parseLineOfFile(line));
 			}
+		}
+		catch (NumberFormatException numEx) 
+		{
+			errorDialog.open("File not formatted correctly. Please read the Help menu for formatting guidelines.");
 		}
 		catch (FileNotFoundException e)
 		{

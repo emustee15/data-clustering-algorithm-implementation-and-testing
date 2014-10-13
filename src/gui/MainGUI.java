@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.graphics.Point;
 
 import selectionListeners.AnalyzeBehavior;
+import selectionListeners.ExitBehavior;
 import selectionListeners.HelpMenuBehavior;
 import selectionListeners.OpenFileBehavior;
 
@@ -95,6 +96,7 @@ public class MainGUI extends Shell
 		
 		MenuItem mntmExit = new MenuItem(menu_1, SWT.NONE);
 		mntmExit.setText("Exit");
+		mntmExit.addSelectionListener(new ExitBehavior());
 		
 		MenuItem mntmEdit = new MenuItem(menu, SWT.CASCADE);
 		mntmEdit.setText("Edit");
@@ -223,12 +225,12 @@ public class MainGUI extends Shell
 		tbtmCvector.setControl(cVectorText);
 		
 		TabItem tbtmLvector = new TabItem(tabFolder, SWT.NONE);
-		tbtmLvector.setText("Lambda Vector");
+		tbtmLvector.setText("λ Vector");
 		lVectorText = new Text(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmLvector.setControl(lVectorText);
 		
 		TabItem tbtmLSigmaOverTime = new TabItem(tabFolder, SWT.NONE);
-		tbtmLSigmaOverTime.setText("Sigma Timeline");
+		tbtmLSigmaOverTime.setText("σ Timeline");
 		sigmaTimeLineText = new Text(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmLSigmaOverTime.setControl(sigmaTimeLineText);
 		createContents();
