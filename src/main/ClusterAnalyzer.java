@@ -92,7 +92,7 @@ public class ClusterAnalyzer
 		qComputer = new QVectorComputer(sigmaVector, piVector, lambdaVector, cVector, numberClusters, qVector);
 		sComputer = new SigmaComputer(piVector, sigmaVector, qVector);
 		cComputer = new CComputer(qVector, piVector, cVector, numberClusters);
-		lComputer.computeLVector();
+		
 	}
 
 	public void doAnalyisis()
@@ -101,7 +101,7 @@ public class ClusterAnalyzer
 		addSigmaInfo(0);
 		int count = 0;
 		boolean continueAnalysis = true;
-
+		lComputer.computeLVector();
 		while (continueAnalysis)
 		{
 			qComputer.computeQVector();
