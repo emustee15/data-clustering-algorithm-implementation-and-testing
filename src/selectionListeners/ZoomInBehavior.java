@@ -1,5 +1,9 @@
 package selectionListeners;
 
+import java.util.ArrayList;
+
+import gui.SuperStyledText;
+
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
@@ -10,12 +14,15 @@ import org.eclipse.swt.widgets.Text;
 
 public class ZoomInBehavior implements SelectionListener
 {
-	private Text textToZoom;
+	private ArrayList<SuperStyledText> textToZoom;
 	private Display display;
 	private MenuItem zoomOut, zoomIn;
+	public static int size = 14;
+
+	private final static int MAX_SIZE = 20;
 	
-	private final static int MAX_SIZE = 44;
-	public ZoomInBehavior(Text text, Display display, MenuItem zoomOut, MenuItem zoomIn)
+
+	public ZoomInBehavior(ArrayList<SuperStyledText> text, Display display, MenuItem zoomOut, MenuItem zoomIn)
 	{
 		textToZoom = text;
 		this.display = display;
@@ -27,29 +34,30 @@ public class ZoomInBehavior implements SelectionListener
 	public void widgetDefaultSelected(SelectionEvent arg0)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void widgetSelected(SelectionEvent arg0)
 	{
-		Font font = textToZoom.getFont();
-		FontData[] data = font.getFontData();
-		for (int i = 0; i < data.length; i++)
-		{
-			
-			data[i].setHeight((data[i].getHeight() + 2 >= MAX_SIZE ? MAX_SIZE : data[i].getHeight() + 2));
+
+		if (size < MAX_SIZE)
+		{			
+			for (SuperStyledText sst : textToZoom)
+			{
+				sst.makeBigger();
+			}
 		}
 		
-		if (data[0].getHeight() == MAX_SIZE)
+		size++;
+		
+		if (size == MAX_SIZE)
 		{
 			zoomIn.setEnabled(false);
 		}
-		
+
 		zoomOut.setEnabled(true);
-		
-		Font biggerFont = new Font(display, data);
-		textToZoom.setFont(biggerFont);
-		
+
+
 	}
 }

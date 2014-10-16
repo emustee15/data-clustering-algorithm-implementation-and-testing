@@ -126,7 +126,7 @@ public class ClusterAnalyzer
 		sigmaInformation += "Step " + step + ":\n";
 		for (int index = 0; index < sigmaVector.size(); index++)
 		{
-			sigmaInformation += "\ts" + index + ": " + sigmaVector.get(index).toString() + "\n";
+			sigmaInformation += "\tσ\\~s" + index + "\\~s: " + sigmaVector.get(index).toString() + "\n";
 		}
 
 	}
@@ -136,7 +136,7 @@ public class ClusterAnalyzer
 		String info = "";
 		for (int index = 0; index < sigmaVector.size(); index++)
 		{
-			info += "Cluster Center " + index + ": ";
+			info += "Cluster Center σ\\~s" + index + "\\~s: ";
 			info += sigmaVector.get(index).toString();
 			info += '\n';
 		}
@@ -161,10 +161,10 @@ public class ClusterAnalyzer
 		DecimalFormat df = new DecimalFormat("#.####");
 		for (int jRanking = 0; jRanking < piVector.size(); jRanking++)
 		{
-			info += "Partial Ranking " + jRanking + ": " + piVector.get(jRanking).toString() + "\n";
+			info += "Partial Ranking π\\~s" + jRanking + "\\~s: " + piVector.get(jRanking).toString() + "\n";
 			for (int iCluster = 0; iCluster < numberClusters; iCluster++)
 			{
-				info += "\t" + sigmaVector.get(iCluster).toString() + ": " + df.format(qVector.get(iCluster, jRanking)) + "\n";
+				info += "\tσ\\~s" + iCluster + "\\~s " + sigmaVector.get(iCluster).toString() + ": " + df.format(qVector.get(iCluster, jRanking)) + "\n";
 			}
 		}
 

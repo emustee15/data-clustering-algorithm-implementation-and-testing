@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.TabItem;
@@ -29,12 +30,14 @@ import selectionListeners.AnalyzeBehavior;
 import selectionListeners.ExitBehavior;
 import selectionListeners.HelpMenuBehavior;
 import selectionListeners.OpenFileBehavior;
+import selectionListeners.ZoomInBehavior;
+import selectionListeners.ZoomOutBehavior;
 
 public class MainGUI extends Shell
 {
 	
 	private ArrayList<RankedData> piVector;
-	private Text clusterText, qVectorText, cVectorText, lVectorText, sigmaTimeLineText;
+	private SuperStyledText clusterText, qVectorText, cVectorText, lVectorText, sigmaTimeLineText;
 	private Spinner completeRankings, numClusters;
 	private Button btnRandomizeSigmaVector;
 	private static MainGUI instance;
@@ -211,28 +214,45 @@ public class MainGUI extends Shell
 		
 		TabItem tbtmClusterCenters = new TabItem(tabFolder, SWT.NONE);
 		tbtmClusterCenters.setText("Cluster Centers");
-		clusterText = new Text(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		StyledText clusterText = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmClusterCenters.setControl(clusterText);
 		
 		TabItem tbtmQvector = new TabItem(tabFolder, SWT.NONE);
 		tbtmQvector.setText("Q Vector");
-		qVectorText = new Text(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		StyledText qVectorText = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmQvector.setControl(qVectorText);
 		
 		TabItem tbtmCvector = new TabItem(tabFolder, SWT.NONE);
 		tbtmCvector.setText("C Vector");
-		cVectorText = new Text(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		StyledText cVectorText = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmCvector.setControl(cVectorText);
 		
 		TabItem tbtmLvector = new TabItem(tabFolder, SWT.NONE);
 		tbtmLvector.setText("λ Vector");
-		lVectorText = new Text(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		StyledText lVectorText = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmLvector.setControl(lVectorText);
 		
 		TabItem tbtmLSigmaOverTime = new TabItem(tabFolder, SWT.NONE);
 		tbtmLSigmaOverTime.setText("σ Timeline");
-		sigmaTimeLineText = new Text(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		StyledText sigmaTimeLineText = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmLSigmaOverTime.setControl(sigmaTimeLineText);
+		
+		this.clusterText = new SuperStyledText(clusterText);
+		this.qVectorText = new SuperStyledText(qVectorText);
+		this.cVectorText = new SuperStyledText(cVectorText); 
+		this.lVectorText = new SuperStyledText(lVectorText); 
+		this.sigmaTimeLineText = new SuperStyledText(sigmaTimeLineText);
+		
+		ArrayList<SuperStyledText> styledTexts = new ArrayList<>();
+		styledTexts.add(this.clusterText);
+		styledTexts.add(this.qVectorText);
+		styledTexts.add(this.cVectorText);
+		styledTexts.add(this.lVectorText);
+		styledTexts.add(this.sigmaTimeLineText);
+		mntmZoomIn.addSelectionListener(new ZoomInBehavior(styledTexts, display, mntmZoomOut, mntmZoomIn));
+		mntmZoomOut.addSelectionListener(new ZoomOutBehavior(styledTexts, display, mntmZoomOut, mntmZoomIn));
+		mntmZoomIn.setAccelerator(SWT.CONTROL + '=');
+		mntmZoomOut.setAccelerator(SWT.CONTROL + '-');
 		createContents();
 	}
 
