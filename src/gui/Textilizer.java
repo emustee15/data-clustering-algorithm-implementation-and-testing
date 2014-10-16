@@ -55,12 +55,12 @@ public class Textilizer
 				case 'S': // Superscript
 					styleRanges[index] = new StyleRange();
 					styleRanges[index].rise = data.getHeight() / 3;
-					styleRanges[index].font = new Font(Display.getCurrent(), data.getName(), (int)(data.getHeight()*(.83333333)), data.getStyle());
+					styleRanges[index].font = new Font(MainGUI.getInstance().getDisplay(), data.getName(), (int)(data.getHeight()*(.83333333)), data.getStyle());
 					break;
 				case 's': // Subscript
 					styleRanges[index] = new StyleRange();
 					styleRanges[index].rise = -data.getHeight() / 3;
-					styleRanges[index].font = new Font(Display.getCurrent(), data.getName(), (int)(data.getHeight()*(.83333333)), data.getStyle());
+					styleRanges[index].font = new Font(MainGUI.getInstance().getDisplay(), data.getName(), (int)(data.getHeight()*(.83333333)), data.getStyle());
 					break;
 				}
 			}

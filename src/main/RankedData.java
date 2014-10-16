@@ -200,4 +200,18 @@ public class RankedData
 		return string;
 	}
 	
+	public int largestValue()
+	{
+		int largest = 0;
+		for (int i: data)
+		{
+			if (Math.abs(i) > largest)
+			{
+				largest = Math.abs(i);
+			}
+		}
+		
+		return largest;
+	}
+	
 }

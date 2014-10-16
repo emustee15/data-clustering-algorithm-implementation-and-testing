@@ -75,7 +75,6 @@ public class ClusterAnalyzer
 				lambdaVector.add(0d);
 				sigmaVector.add(new RankedData(masterRanking.clone()));
 				sigmaVector.get(i).randomize();
-				sigmaVector.get(i).print();
 				cVector.add(1.0d / piVector.size());
 			}
 		}

@@ -8,6 +8,7 @@ import main.FileType;
 import main.RankedData;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -33,6 +34,7 @@ import selectionListeners.HelpMenuBehavior;
 import selectionListeners.OpenFileBehavior;
 import selectionListeners.ZoomInBehavior;
 import selectionListeners.ZoomOutBehavior;
+
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class MainGUI extends Shell
@@ -57,13 +59,12 @@ public class MainGUI extends Shell
 			MainGUI shell = new MainGUI(display);
 			shell.open();
 			shell.layout();
-			while (!shell.isDisposed())
+			if (args.length > 0)
 			{
-				if (!display.readAndDispatch())
-				{
-					display.sleep();
-				}
+				shell.openPiVector(args[0]);
 			}
+			run(shell,display);
+			
 		}
 		catch (Exception e)
 		{
@@ -71,6 +72,22 @@ public class MainGUI extends Shell
 		}
 	}
 
+	public static void run(Shell shell, Display display)
+	{
+		try
+		{
+		while (!shell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+			{
+				display.sleep();
+			}
+		}
+		} catch (SWTError error)
+		{
+			run(shell, display);
+		}
+	}
 	/**
 	 * Create the shell.
 	 * @param display
@@ -301,9 +318,10 @@ public class MainGUI extends Shell
 			for (RankedData pr : fLoader.getPartialRankings())
 			{
 				piVector.add(pr.clone());
-				if (pr.getSize() > maxLength)
+				int largestValue = pr.largestValue();
+				if (largestValue > maxLength)
 				{
-					maxLength = pr.getSize();
+					maxLength = largestValue;
 				}
 				
 				completeRankings.setSelection(maxLength);
