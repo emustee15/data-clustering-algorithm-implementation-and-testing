@@ -12,6 +12,8 @@ import org.eclipse.swt.widgets.Shell;
 
 //This can just be considered another test GUI. We will end up using a standard menu
 //bar and the program will start up on the main screen.
+
+@Deprecated
 public class StartScreen 
 {
 	

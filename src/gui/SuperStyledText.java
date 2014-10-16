@@ -5,6 +5,13 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
 
  
+/*
+ * This class is a wrapping class for styled text. It allows us to use only the 
+ * methods we need to use in a way that is easier to use. This does not use the 
+ * decorator pattern because SWT widgets have not been designed with inheritance
+ * in mind. When text is set, it uses a textilizer to automatically format text.
+ */
+
 public class SuperStyledText
 {
 

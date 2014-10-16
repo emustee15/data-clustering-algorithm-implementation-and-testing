@@ -9,11 +9,19 @@ import org.eclipse.swt.widgets.Display;
 public class Textilizer
 {
 
+	/*
+	 * This class returns formatting for a given string. Strings that can be formatted use
+	 * an escape sequence to indicate they need to be formatted. The escape sequence to format
+	 * text is \\~C, where c designates the formatting to be done. A given substring of text can
+	 * only be formatted once. Ranges of the text to be formatted and the actual formatting they
+	 * use can be accessed once the text has been formatted.
+	 */
 	private int numberOfRanges = 0;
 	private int[] numericRanges;
 	private StyleRange[] styleRanges;
 	private String newText;
 
+	// This method processes the text
 	public void processText(String text, FontData data)
 	{
 		String[] texts = text.split("\\\\");
@@ -48,6 +56,8 @@ public class Textilizer
 
 			characterCount += t.length();
 
+			// Additional formatting can be added by simply adding more cases. Currently, subscript and
+			// superscript have been implemented. 
 			if (needsFormatting)
 			{
 				switch (escapeChar)
@@ -77,16 +87,22 @@ public class Textilizer
 
 	}
 
+	// This method returns the numeric ranges of the text. 
+	// For instance, the word cat in the phrase, "the cat"
+	// has the range 5,3, where 5 is the starting position
+	// and 3 is the length. 
 	public int[] getRanges()
 	{
 		return numericRanges;
 	}
 
+	// This method returns the actual formatting. 
 	public StyleRange[] getStyleRanges()
 	{
 		return styleRanges;
 	}
-
+	
+	// This method returns the processed text without all the escape sequences.
 	public String getNewText()
 	{
 		return newText;

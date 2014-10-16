@@ -1,3 +1,9 @@
+/*
+ * This class is now deprecated since we switched to Windowbuilder pro.
+ * Originally, this allowed us to quickly create menu bars without having
+ * to worry about much of the details. 
+ */
+
 package gui;
 
 import java.util.Hashtable;
@@ -7,7 +13,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-
+@Deprecated
 public class MenuBar
 {
 	private Shell shell;

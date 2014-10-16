@@ -24,6 +24,7 @@ import selectionListeners.OpenFileBehavior;
 import selectionListeners.ShowOrHideExpandBar;
 import org.eclipse.swt.widgets.Menu;
 
+@Deprecated
 public class DemoWindow
 {
 
