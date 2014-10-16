@@ -13,8 +13,7 @@ import java.util.ArrayList;
 public class FileLoader
 {
 	ArrayList<RankedData> partialRankings;
-	ErrorDialog errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI
-			.getInstance().getStyle());
+	ErrorDialog errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI.getInstance().getStyle());
 	String[] appropriateDelimeters = new String[] { ", ", " ", ",", " ," };
 	ArrayList<String> nouns;
 
@@ -65,8 +64,7 @@ public class FileLoader
 		}
 		catch (NumberFormatException nfEx)
 		{
-			errorDialog
-					.open("File not formatted correctly. Please read the Help menu for formatting guidelines.");
+			errorDialog.open("File not formatted correctly. Please read the Help menu for formatting guidelines.");
 		}
 		catch (FileNotFoundException e)
 		{
@@ -105,13 +103,10 @@ public class FileLoader
 		return partialRankings;
 	}
 
-	public RankedData parseLineOfRankedDataFile(String line)
-			throws EmptyPiVectorException
+	public RankedData parseLineOfRankedDataFile(String line) throws EmptyPiVectorException
 	{
 		RankedData rankedData = new RankedData(new int[] {});
-
 		String[] data = seperateByAllowedDelimeters(line);
-
 		for (String s : data)
 		{
 			Integer i = Integer.parseInt(s);
@@ -135,6 +130,7 @@ public class FileLoader
 		String[] data = null;
 
 		int count = 0;
+		boolean triedRemovingSpaces = false;
 		while (data == null)
 		{
 			if (count < appropriateDelimeters.length)
@@ -142,7 +138,10 @@ public class FileLoader
 				data = line.split(appropriateDelimeters[count]);
 				try
 				{
-					Integer.parseInt(data[0]);
+					for (String d : data)
+					{
+						Integer.parseInt(d);
+					}
 				}
 				catch (NumberFormatException nfEx)
 				{
@@ -151,7 +150,14 @@ public class FileLoader
 			}
 			else
 			{
-				throw new NumberFormatException();
+				if (triedRemovingSpaces)
+				{
+					throw new NumberFormatException();
+				}
+
+				triedRemovingSpaces = true;
+				line = line.replace(" ", "");
+				count = 0;
 			}
 			count++;
 		}
@@ -166,12 +172,12 @@ public class FileLoader
 		{
 			return "undefined";
 		}
-		
+
 		if (index > nouns.size())
 		{
 			return "undefined";
 		}
-		
+
 		return nouns.get(index);
 	}
 }
