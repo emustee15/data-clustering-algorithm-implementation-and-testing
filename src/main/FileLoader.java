@@ -12,11 +12,22 @@ import java.util.ArrayList;
 
 public class FileLoader
 {
-	ArrayList<RankedData> partialRankings;
-	ErrorDialog errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI.getInstance().getStyle());
-	String[] appropriateDelimeters = new String[] { ", ", " ", ",", " ," };
-	ArrayList<String> nouns;
 
+	ArrayList<RankedData> partialRankings;
+	ErrorDialog errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI
+			.getInstance().getStyle());
+	String[] appropriateDelimeters = new String[] { ", ", " ", ",", " ," };
+	ArrayList<String> descriptions;
+
+	/*
+	 * This class takes in a file and turns it into a RankedData ArrayList or a
+	 * description ArrayList. Descriptions (not yet implemented) will describe
+	 * the data instead of numerically. The loaded ranked data is currently used
+	 * as the piVector.
+	 */
+
+	// This method loads a file. Valid file types are FileType.RankedData and
+	// FileType.NounList.
 	public void loadFile(String filePath, FileType type)
 	{
 		if (type.equals(FileType.RankedData))
@@ -25,7 +36,7 @@ public class FileLoader
 		}
 		else if (type.equals(FileType.NounList))
 		{
-			nouns = new ArrayList<String>();
+			descriptions = new ArrayList<String>();
 		}
 
 		BufferedReader reader = null;
@@ -39,9 +50,7 @@ public class FileLoader
 			{
 				while ((line = reader.readLine()) != null)
 				{
-
 					partialRankings.add(parseLineOfRankedDataFile(line));
-
 					count++;
 				}
 
@@ -54,17 +63,18 @@ public class FileLoader
 			{
 				while ((line = reader.readLine()) != null)
 				{
-					String[] newNouns = parseNounList(line);
+					String[] newNouns = parseDescriptionList(line);
 					for (String s : newNouns)
 					{
-						nouns.add(s);
+						descriptions.add(s);
 					}
 				}
 			}
 		}
 		catch (NumberFormatException nfEx)
 		{
-			errorDialog.open("File not formatted correctly. Please read the Help menu for formatting guidelines.");
+			errorDialog
+					.open("File not formatted correctly. Please read the Help menu for formatting guidelines.");
 		}
 		catch (FileNotFoundException e)
 		{
@@ -98,15 +108,18 @@ public class FileLoader
 
 	}
 
+	// This method gets the loaded partial rankings.
 	public ArrayList<RankedData> getPartialRankings()
 	{
 		return partialRankings;
 	}
 
-	public RankedData parseLineOfRankedDataFile(String line) throws EmptyPiVectorException
+	// This method parses one line of a ranked data file.
+	public RankedData parseLineOfRankedDataFile(String line)
+			throws EmptyPiVectorException
 	{
 		RankedData rankedData = new RankedData(new int[] {});
-		String[] data = seperateByAllowedDelimeters(line);
+		String[] data = seperateByAllowedDelimeters(line, FileType.RankedData);
 		for (String s : data)
 		{
 			Integer i = Integer.parseInt(s);
@@ -120,12 +133,17 @@ public class FileLoader
 		return rankedData;
 	}
 
-	public String[] parseNounList(String line)
+	// This will return a single list of descriptions.
+	public String[] parseDescriptionList(String line)
 	{
-		return seperateByAllowedDelimeters(line);
+		return seperateByAllowedDelimeters(line, FileType.NounList);
 	}
 
-	private String[] seperateByAllowedDelimeters(String line)
+	// This method separates the values by the allowed delimiters defined in the file.
+	// First, we attempt to separate the objects by assuming the user used consistent
+	// spacing in the file. If that does not work, then we completely remove all spacing
+	// and try again. 
+	private String[] seperateByAllowedDelimeters(String line, FileType type)
 	{
 		String[] data = null;
 
@@ -136,16 +154,20 @@ public class FileLoader
 			if (count < appropriateDelimeters.length)
 			{
 				data = line.split(appropriateDelimeters[count]);
-				try
+				if (type.equals(FileType.RankedData))
 				{
-					for (String d : data)
+					try
 					{
-						Integer.parseInt(d);
+
+						for (String d : data)
+						{
+							Integer.parseInt(d);
+						}
 					}
-				}
-				catch (NumberFormatException nfEx)
-				{
-					data = null;
+					catch (NumberFormatException nfEx)
+					{
+						data = null;
+					}
 				}
 			}
 			else
@@ -164,20 +186,21 @@ public class FileLoader
 		return data;
 	}
 
-	public String getNoun(int index)
+	// This method returns the description for an element of some ranking. 
+	public String getDescription(int index)
 	{
 		index = Math.abs(index);
 
-		if (nouns == null)
+		if (descriptions == null)
 		{
 			return "undefined";
 		}
 
-		if (index > nouns.size())
+		if (index > descriptions.size())
 		{
 			return "undefined";
 		}
 
-		return nouns.get(index);
+		return descriptions.get(index);
 	}
 }

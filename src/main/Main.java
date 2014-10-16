@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import computers.LambdaComputer;
 import computers.SigmaComputer;
 
+// This is an experimental class not to be instantiated. 
+
+@Deprecated
 public class Main
 {
 	public static void main(String args[])
