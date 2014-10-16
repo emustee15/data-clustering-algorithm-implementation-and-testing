@@ -6,10 +6,18 @@ import main.*;
 
 public class SigmaComputer
 {
+	/*
+	 * This class works on the sigma vector. The sigma vector contains all of the cluster centers. 
+	 * The new cluster center is determined enumerating all potential cluster centers with distance
+	 * 1 away from the current cluster center, and finding out which one has the highest potential
+	 * for a match. The analysis is over when none of the cluster centers move to a new simga vector.
+	 */
+	
 	ArrayList<RankedData> piVector;
 	ArrayList<RankedData> sigmaVector;
 	QVector qVector;
-
+	
+	// The sigma computer requires the piVector, and the qVector, and works on the sigma vector.
 	public SigmaComputer(ArrayList<RankedData> piVector,
 			ArrayList<RankedData> sigmaVector, QVector qVector)
 	{
@@ -18,6 +26,10 @@ public class SigmaComputer
 		this.qVector = qVector;
 	}
 
+	// This method returns all sigma values 1 away from a given ranking.
+	// For instance, all rankings 1 away from {1,2,3,4} are
+	// {2,1,3,4}, {1,3,2,4}, {1,2,4,3}, and {1,2,3,-4}. See DistanceRanker
+	// for more details. 
 	public ArrayList<RankedData> getSigmaValues(RankedData sigma)
 	{
 		ArrayList<RankedData> sigmaValues = new ArrayList<RankedData>();
@@ -37,6 +49,7 @@ public class SigmaComputer
 		return sigmaValues;
 	}
 
+	// This method calls the sigma computer to work on the sigma vector.
 	public boolean computeSVector()
 	{
 		DistanceRanker distanceRanker = new DistanceRanker();
@@ -69,11 +82,8 @@ public class SigmaComputer
 					minValue = sum;
 					minValueIndex = i;
 				}
-				
-				
 			}
 			
-
 			sigmaVector.set(s, testValues.get(minValueIndex));
 			sigmaVector.get(s).saveCurrentDataAsDefault();
 			

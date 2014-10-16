@@ -12,7 +12,10 @@ public class CComputer
 	int numberClusters, numRankings;
 	ArrayList<RankedData> piVector;
 	
-	
+	/*
+	 * This class computes the values of the cVector, or the cluster weights. In its computations, it uses
+	 * the qVector, the piVector, the cVector, and it needs to know the number of clsuters. 
+	 */
 	public CComputer(QVector qVector, ArrayList<RankedData> piVector, ArrayList<Double> cVector, int numberClusters)
 	{
 		this.qVector = qVector;
@@ -22,6 +25,7 @@ public class CComputer
 		this.numRankings = piVector.size();
 	}
 	
+	// This method works on computing the cVector.
 	public void computeCVector()
 	{
 		
@@ -34,9 +38,5 @@ public class CComputer
 			}
 			cVector.set(iCluster, (1.0/numRankings)*sum);
 		}
-	}
-	public ArrayList<Double> getCVector()
-	{
-		return cVector;
 	}
 }

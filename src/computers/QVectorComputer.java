@@ -5,6 +5,7 @@ import main.*;
 import java.util.ArrayList;
 
 
+
 public class QVectorComputer
 {
 	
@@ -14,6 +15,12 @@ public class QVectorComputer
 	private ArrayList<RankedData> sigmaVector, piVector;
 	private ArrayList<Double> lambdaVector, cVector;
 	private int numberClusters;
+	
+	/*
+	 * This class works on the qVector. The qVector is a probability vector that stores how likely it is for a single element in the 
+	 * piVector is to be assigned with a single element in the sigma vector. The qVector computer requires all the vectors, and makes
+	 * use of the GFunctionComputer. 
+	 */
 	public QVectorComputer(ArrayList<RankedData> sigmaVector, ArrayList<RankedData> piVector, ArrayList<Double> lambdaVector, ArrayList<Double> cVector, int numberClusters, QVector qVector)
 	{
 		gFunction = new GFunctionComputer();
@@ -25,6 +32,7 @@ public class QVectorComputer
 		this.qVector = qVector;
 	}
 	
+	// This method actually calls the qComputer to work on the qVector. 
 	public void computeQVector()
 	{
 		DistanceRanker dRanker = new DistanceRanker();
@@ -53,10 +61,6 @@ public class QVectorComputer
 		}
 	}
 	
-	public QVector getQvector()
-	{
-		return qVector;
-	}
 	
 	
 	
