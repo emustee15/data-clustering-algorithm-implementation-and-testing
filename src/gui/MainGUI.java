@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import main.FileLoader;
+import main.FileType;
 import main.RankedData;
 
 import org.eclipse.swt.SWT;
@@ -277,7 +278,7 @@ public class MainGUI extends Shell
 		
 		FileLoader fLoader = new FileLoader();
 		
-		fLoader.loadFile(filename);
+		fLoader.loadFile(filename,FileType.RankedData);
 		
 		
 		

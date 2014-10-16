@@ -164,7 +164,7 @@ public class ClusterAnalyzer
 			info += "Partial Ranking π\\~s" + jRanking + "\\~s: " + piVector.get(jRanking).toString() + "\n";
 			for (int iCluster = 0; iCluster < numberClusters; iCluster++)
 			{
-				info += "\tσ\\~s" + iCluster + "\\~s " + sigmaVector.get(iCluster).toString() + ": " + df.format(qVector.get(iCluster, jRanking)) + "\n";
+				info += "\tq(" + iCluster +", " + jRanking + ") = " + df.format(qVector.get(iCluster, jRanking)) + " for " + sigmaVector.get(iCluster).toString() + "\n";
 			}
 		}
 
@@ -174,5 +174,33 @@ public class ClusterAnalyzer
 	public String getSigmaOverTime()
 	{
 		return sigmaInformation;
+	}
+	
+	public String getCVectorInfo()
+	{
+		String info = "";
+		DecimalFormat df = new DecimalFormat("#.####");
+		for (int cRanking = 0; cRanking < cVector.size(); cRanking++)
+		{
+			info += "c\\~s" + cRanking + "\\~s = " + df.format(cVector.get(cRanking)) +" for " + sigmaVector.get(cRanking).toString() + "\n";
+			
+		}
+
+		
+		return info;
+	}
+	
+	public String getLVectorInfo()
+	{
+		String info = "";
+		DecimalFormat df = new DecimalFormat("#.####");
+		for (int lRanking = 0; lRanking < cVector.size(); lRanking++)
+		{
+			info += "λ\\~s" + lRanking + "\\~s = " + df.format(lambdaVector.get(lRanking)) +" for " + sigmaVector.get(lRanking).toString() + "\n";
+			
+		}
+
+		
+		return info;
 	}
 }

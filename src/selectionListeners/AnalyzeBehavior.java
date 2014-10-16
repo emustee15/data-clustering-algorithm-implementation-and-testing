@@ -33,7 +33,8 @@ public class AnalyzeBehavior implements SelectionListener
 			ca.doAnalyisis();
 			shell.setClusterText(ca.getClusterCenterInformation());
 			shell.setQVectorText(ca.getQVectorInfo());
-			
+			shell.setCVectorText(ca.getCVectorInfo());
+			shell.setLVectorText(ca.getLVectorInfo());
 			shell.setSigmaTimelineText(ca.getSigmaOverTime());
 		}
 
