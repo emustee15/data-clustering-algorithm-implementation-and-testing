@@ -33,6 +33,7 @@ import selectionListeners.HelpMenuBehavior;
 import selectionListeners.OpenFileBehavior;
 import selectionListeners.ZoomInBehavior;
 import selectionListeners.ZoomOutBehavior;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class MainGUI extends Shell
 {
@@ -41,6 +42,7 @@ public class MainGUI extends Shell
 	private SuperStyledText clusterText, qVectorText, cVectorText, lVectorText, sigmaTimeLineText;
 	private Spinner completeRankings, numClusters;
 	private Button btnRandomizeSigmaVector;
+	private Label lblFileName;
 	private static MainGUI instance;
 
 	/**
@@ -154,6 +156,51 @@ public class MainGUI extends Shell
 		MenuItem mntmAbout = new MenuItem(menu_4, SWT.NONE);
 		mntmAbout.setText("About");
 		
+		Composite composite_2 = new Composite(this, SWT.NONE);
+		GridData gd_composite_2 = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+		gd_composite_2.widthHint = 195;
+		composite_2.setLayoutData(gd_composite_2);
+		composite_2.setLayout(new GridLayout(1, false));
+		
+		lblFileName = new Label(composite_2, SWT.WRAP);
+		lblFileName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		lblFileName.setText("No File Loaded");
+		
+		
+		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3));
+		
+		TabItem tbtmClusterCenters = new TabItem(tabFolder, SWT.NONE);
+		tbtmClusterCenters.setText("Cluster Centers");
+		StyledText clusterText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmClusterCenters.setControl(clusterText_1);
+		
+		TabItem tbtmQvector = new TabItem(tabFolder, SWT.NONE);
+		tbtmQvector.setText("Q Vector");
+		StyledText qVectorText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmQvector.setControl(qVectorText_1);
+		
+		TabItem tbtmCvector = new TabItem(tabFolder, SWT.NONE);
+		tbtmCvector.setText("C Vector");
+		StyledText cVectorText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmCvector.setControl(cVectorText_1);
+		
+		TabItem tbtmLvector = new TabItem(tabFolder, SWT.NONE);
+		tbtmLvector.setText("λ Vector");
+		StyledText lVectorText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmLvector.setControl(lVectorText_1);
+		
+		TabItem tbtmLSigmaOverTime = new TabItem(tabFolder, SWT.NONE);
+		tbtmLSigmaOverTime.setText("σ Timeline");
+		StyledText sigmaTimeLineText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmLSigmaOverTime.setControl(sigmaTimeLineText_1);
+		
+		this.clusterText = new SuperStyledText(clusterText_1);
+		this.qVectorText = new SuperStyledText(qVectorText_1);
+		this.cVectorText = new SuperStyledText(cVectorText_1); 
+		this.lVectorText = new SuperStyledText(lVectorText_1); 
+		this.sigmaTimeLineText = new SuperStyledText(sigmaTimeLineText_1);
+		
 		ExpandBar expandBar = new ExpandBar(this, SWT.NONE);
 		expandBar.setBackground(new Color(Display.getCurrent(),245,246,247));
 		GridData gd_expandBar = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 2);
@@ -192,8 +239,6 @@ public class MainGUI extends Shell
 		
 		Button startAnalysis = new Button(composite, SWT.NONE);
 		startAnalysis.setText("Start");
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
 		
 		ExpandItem analyzeSettings = new ExpandItem(expandBar, 0);
 		analyzeSettings.setText("Settings");
@@ -208,41 +253,6 @@ public class MainGUI extends Shell
 		btnRandomizeSigmaVector.setText("Randomize Sigma Vector");
 		analyzeSettings.setHeight(40);
 		startAnalysis.addSelectionListener(new AnalyzeBehavior(this));
-		
-		
-		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
-		
-		TabItem tbtmClusterCenters = new TabItem(tabFolder, SWT.NONE);
-		tbtmClusterCenters.setText("Cluster Centers");
-		StyledText clusterText = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmClusterCenters.setControl(clusterText);
-		
-		TabItem tbtmQvector = new TabItem(tabFolder, SWT.NONE);
-		tbtmQvector.setText("Q Vector");
-		StyledText qVectorText = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmQvector.setControl(qVectorText);
-		
-		TabItem tbtmCvector = new TabItem(tabFolder, SWT.NONE);
-		tbtmCvector.setText("C Vector");
-		StyledText cVectorText = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmCvector.setControl(cVectorText);
-		
-		TabItem tbtmLvector = new TabItem(tabFolder, SWT.NONE);
-		tbtmLvector.setText("λ Vector");
-		StyledText lVectorText = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmLvector.setControl(lVectorText);
-		
-		TabItem tbtmLSigmaOverTime = new TabItem(tabFolder, SWT.NONE);
-		tbtmLSigmaOverTime.setText("σ Timeline");
-		StyledText sigmaTimeLineText = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmLSigmaOverTime.setControl(sigmaTimeLineText);
-		
-		this.clusterText = new SuperStyledText(clusterText);
-		this.qVectorText = new SuperStyledText(qVectorText);
-		this.cVectorText = new SuperStyledText(cVectorText); 
-		this.lVectorText = new SuperStyledText(lVectorText); 
-		this.sigmaTimeLineText = new SuperStyledText(sigmaTimeLineText);
 		
 		ArrayList<SuperStyledText> styledTexts = new ArrayList<>();
 		styledTexts.add(this.clusterText);
@@ -267,9 +277,9 @@ public class MainGUI extends Shell
 
 	}
 	
-	public void openPiVector(String filename)
+	public void openPiVector(String fileName)
 	{
-		File file = new File(filename);
+		File file = new File(fileName);
 		
 		if (!file.exists())
 		{
@@ -278,7 +288,9 @@ public class MainGUI extends Shell
 		
 		FileLoader fLoader = new FileLoader();
 		
-		fLoader.loadFile(filename,FileType.RankedData);
+		fLoader.loadFile(fileName,FileType.RankedData);
+		
+		lblFileName.setText("Current File: " + file.getName());
 		
 		
 		
