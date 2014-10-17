@@ -8,6 +8,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
+// This class is used when the user opens a file using open from the file menu. 
+
 public class OpenFileBehavior implements SelectionListener
 {
 	private Shell shell;

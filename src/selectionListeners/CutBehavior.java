@@ -3,9 +3,11 @@ package selectionListeners;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Text;
+
+@Deprecated
 public class CutBehavior implements SelectionListener
 {
-
+	// You cannot cut text from a read-only field, which all our fields are. 
 	private Text text;
 	public CutBehavior(Text text)
 	{

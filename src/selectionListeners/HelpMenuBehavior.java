@@ -8,7 +8,8 @@ import org.eclipse.swt.events.SelectionListener;
 
 public class HelpMenuBehavior implements SelectionListener{
 
-	
+	// This behavior causes the help menu to be displayed when the user selects
+	// the help option.
 	public HelpMenuBehavior()
 	{
 	

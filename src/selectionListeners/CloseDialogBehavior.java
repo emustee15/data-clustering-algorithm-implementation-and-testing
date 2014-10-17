@@ -4,6 +4,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Shell;
 
+/*
+ * This class is used when closing a dialog.
+ */
 public class CloseDialogBehavior implements SelectionListener 
 {	
 	private Shell shell;

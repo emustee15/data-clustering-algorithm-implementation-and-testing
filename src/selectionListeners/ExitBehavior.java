@@ -3,6 +3,8 @@ package selectionListeners;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 
+// This class is used when the program quits.
+
 public class ExitBehavior implements SelectionListener
 {
 

@@ -7,10 +7,10 @@ import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
+// This class hides the expand bar on the left side of the screen.
 public class ShowOrHideExpandBar implements SelectionListener
 {
 	private ExpandBar bar;
-	private boolean hidden;
 	private Shell shell;
 	private MenuItem checkbox;
 	

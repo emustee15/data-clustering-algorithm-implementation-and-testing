@@ -7,6 +7,10 @@ import org.eclipse.swt.events.SelectionListener;
 
 import gui.MainGUI;
 
+/*
+ * This class is used when the analyze button is pressed. It will cause
+ * the currently loaded piVector to be analyzed by a ClusterAnalyzer.
+ */
 public class AnalyzeBehavior implements SelectionListener
 {
 	private MainGUI shell;

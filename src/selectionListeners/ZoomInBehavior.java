@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 
+// This behavior zooms in on the styledtext boxes.
 public class ZoomInBehavior implements SelectionListener
 {
 	private ArrayList<SuperStyledText> textToZoom;
