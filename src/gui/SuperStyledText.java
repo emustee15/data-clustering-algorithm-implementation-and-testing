@@ -1,5 +1,7 @@
 package gui;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
@@ -18,11 +20,14 @@ public class SuperStyledText
 	private StyledText styledText;
 	private Textilizer textilizer;
 	private String text;
+	private Font oldFont;
 	
 	public SuperStyledText(StyledText styledText)
 	{
-		textilizer = new Textilizer();
+		
 		this.styledText = styledText;
+		textilizer = new Textilizer(styledText.getFont().getFontData());
+		textilizer.processText("", styledText.getFont().getFontData()[0], true);
 		text = "";
 		makeBigger();
 		makeBigger();
@@ -33,7 +38,7 @@ public class SuperStyledText
 	public void setText(String text)
 	{
 		this.text = text;
-		textilizer.processText(text, styledText.getFont().getFontData()[0]);
+		textilizer.processText(text, styledText.getFont().getFontData()[0], true);
 		styledText.setText(textilizer.getNewText());
 		styledText.setStyleRanges(textilizer.getRanges(), textilizer.getStyleRanges());
 	}
@@ -51,6 +56,8 @@ public class SuperStyledText
 	
 	private void adjustTextSize(int delta)
 	{
+
+		
 		Font font = styledText.getFont();
 		FontData[] data = font.getFontData();
 		for (int i = 0; i < data.length; i++)
@@ -59,11 +66,19 @@ public class SuperStyledText
 			data[i].setHeight(data[i].getHeight() + delta);
 		}
 
+		Textilizer.recomputeFonts(data);
 		Font biggerFont = new Font(Display.getCurrent(), data);
 		styledText.setFont(biggerFont);
 		
-		textilizer.processText(text, styledText.getFont().getFontData()[0]);
-		styledText.setText(textilizer.getNewText());
+		if (oldFont !=null)
+		{
+			oldFont.dispose();
+		}
+		
+		oldFont = biggerFont;
+		
+		
+		
 		styledText.setStyleRanges(textilizer.getRanges(), textilizer.getStyleRanges());
 	}
 	
