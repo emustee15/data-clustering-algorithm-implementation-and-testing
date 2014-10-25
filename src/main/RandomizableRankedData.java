@@ -9,6 +9,34 @@ public class RandomizableRankedData extends RankedData
 	private boolean randomziedLenghts = false;
 	private int probabilityOfSwap = 100;
 	private int numberOfChildren = 20;
+	public int getMinPartialRankings()
+	{
+		return minPartialRankings;
+	}
+
+	public void setMinPartialRankings(int minPartialRankings)
+	{
+		this.minPartialRankings = minPartialRankings;
+	}
+
+	public int getMaxPartialRankings()
+	{
+		return maxPartialRankings;
+	}
+
+	public void setMaxPartialRankings(int maxPartialRankings)
+	{
+		this.maxPartialRankings = maxPartialRankings;
+	}
+
+	private int minPartialRankings = 1;
+	private int maxPartialRankings = 0;
+
+	public RandomizableRankedData(int[] data)
+	{
+		super(data);
+		maxPartialRankings = data.length;
+	}
 
 	public int getNumberOfChildren()
 	{
@@ -33,11 +61,6 @@ public class RandomizableRankedData extends RankedData
 	public void setProbabilityOfSwap(int probabilityOfSwap)
 	{
 		this.probabilityOfSwap = probabilityOfSwap;
-	}
-
-	public RandomizableRankedData(int[] data)
-	{
-		super(data);
 	}
 
 	public RankedData nextRankedData()
@@ -65,7 +88,7 @@ public class RandomizableRankedData extends RankedData
 
 		if (randomziedLenghts)
 		{
-			size = 1 + (int) (Math.random() * data.size());
+			size = minPartialRankings + (int) (Math.random() * (maxPartialRankings-minPartialRankings+1));
 		}
 
 		int[] rankings = new int[size];
@@ -105,6 +128,18 @@ public class RandomizableRankedData extends RankedData
 			this.data.add(newData.get(i));
 		}
 		saveCurrentDataAsDefault();
+		if (maxPartialRankings > data.size())
+		{
+			maxPartialRankings = data.size();
+		}
+		System.out.println(data.size());
+		minPartialRankings = (minPartialRankings > newData.getSize() ? newData.getSize():minPartialRankings);
+	}
+	
+	@Override
+	public void saveCurrentDataAsDefault()
+	{
+		super.saveCurrentDataAsDefault();
 	}
 
 }

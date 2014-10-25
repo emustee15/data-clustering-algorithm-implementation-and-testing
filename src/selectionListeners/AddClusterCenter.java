@@ -71,6 +71,10 @@ public class AddClusterCenter implements SelectionListener
 		}
 
 		rankedData.saveCurrentDataAsDefault();
+		if (type == RANDOMIZED_RANKED_DATA)
+		{
+			((RandomizableRankedData)(rankedData)).setMaxPartialRankings(rankedData.getSize());
+		}
 		return rankedData;
 	}
 	

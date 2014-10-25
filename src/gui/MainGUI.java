@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -296,6 +298,20 @@ public class MainGUI extends Shell
 		mntmRandomDataGeneration.setText("Random Data Generation");
 		mntmRandomDataGeneration.addSelectionListener(new RandomDataGeneratorStartBehavior());
 		createContents();
+		
+		addListener(SWT.Close, new Listener()
+		{
+			
+			@Override
+			public void handleEvent(Event arg0)
+			{
+				if (RandomDataGenerator.getInstance()!=null && !RandomDataGenerator.getInstance().isDisposed())
+				{
+					RandomDataGenerator.getInstance().dispose();
+				}
+				
+			}
+		});
 	}
 
 	/**
@@ -348,8 +364,8 @@ public class MainGUI extends Shell
 	public void openPiVector(ArrayList<RankedData> piVector)
 	{
 		this.piVector = piVector;
-		lblFileName.setText("Randomly generated π vector loaded");
 		
+		lblFileName.setText("Loaded π vector");
 		int maxLength = 0;
 		for (RankedData pr : piVector)
 		{
