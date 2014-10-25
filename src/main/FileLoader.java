@@ -16,7 +16,7 @@ public class FileLoader
 	ArrayList<RankedData> partialRankings;
 	ErrorDialog errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI
 			.getInstance().getStyle());
-	String[] appropriateDelimeters = new String[] { ", ", " ", ",", " ," };
+	static String[] appropriateDelimeters = new String[] { ", ", " ", ",", " ," };
 	ArrayList<String> descriptions;
 
 	/*
@@ -115,7 +115,7 @@ public class FileLoader
 	}
 
 	// This method parses one line of a ranked data file.
-	public RankedData parseLineOfRankedDataFile(String line)
+	public static RankedData parseLineOfRankedDataFile(String line)
 			throws EmptyPiVectorException
 	{
 		RankedData rankedData = new RankedData(new int[] {});
@@ -143,7 +143,7 @@ public class FileLoader
 	// First, we attempt to separate the objects by assuming the user used consistent
 	// spacing in the file. If that does not work, then we completely remove all spacing
 	// and try again. 
-	private String[] seperateByAllowedDelimeters(String line, FileType type)
+	private static String[] seperateByAllowedDelimeters(String line, FileType type)
 	{
 		String[] data = null;
 

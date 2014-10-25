@@ -32,6 +32,7 @@ import selectionListeners.AnalyzeBehavior;
 import selectionListeners.ExitBehavior;
 import selectionListeners.HelpMenuBehavior;
 import selectionListeners.OpenFileBehavior;
+import selectionListeners.RandomDataGeneratorStartBehavior;
 import selectionListeners.ZoomInBehavior;
 import selectionListeners.ZoomOutBehavior;
 
@@ -52,8 +53,7 @@ public class MainGUI extends Shell
 
 	// these styled texts need to be saved as instance variables so they can be
 	// updated.
-	private SuperStyledText clusterText, qVectorText, cVectorText, lVectorText,
-			sigmaTimeLineText;
+	private SuperStyledText clusterText, qVectorText, cVectorText, lVectorText, sigmaTimeLineText;
 
 	// these UI elements are used in the analysis so they are saved as rankings
 	private Spinner completeRankings, numClusters;
@@ -99,9 +99,8 @@ public class MainGUI extends Shell
 		}
 	}
 
-
-	// Creates the GUI. This class may be loaded with WindowBuilderPro, and 
-	// elements can be moved around in that way. 
+	// Creates the GUI. This class may be loaded with WindowBuilderPro, and
+	// elements can be moved around in that way.
 	private MainGUI(Display display)
 	{
 		super(display, SWT.SHELL_TRIM);
@@ -183,53 +182,45 @@ public class MainGUI extends Shell
 		mntmAbout.setText("About");
 
 		Composite composite_2 = new Composite(this, SWT.NONE);
-		GridData gd_composite_2 = new GridData(SWT.LEFT, SWT.FILL, false,
-				false, 1, 1);
+		GridData gd_composite_2 = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
 		gd_composite_2.widthHint = 195;
 		composite_2.setLayoutData(gd_composite_2);
 		composite_2.setLayout(new GridLayout(1, false));
 
 		lblFileName = new Label(composite_2, SWT.WRAP);
-		lblFileName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
-				1, 1));
+		lblFileName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		lblFileName.setText("No File Loaded");
 
 		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
-				3));
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3));
 
 		TabItem tbtmClusterCenters = new TabItem(tabFolder, SWT.NONE);
 		tbtmClusterCenters.setText("Cluster Centers");
-		StyledText clusterText_1 = new StyledText(tabFolder, SWT.BORDER
-				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		StyledText clusterText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmClusterCenters.setControl(clusterText_1);
 
 		TabItem tbtmQvector = new TabItem(tabFolder, SWT.NONE);
 		tbtmQvector.setText("Q Vector");
-		StyledText qVectorText_1 = new StyledText(tabFolder, SWT.BORDER
-				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		StyledText qVectorText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmQvector.setControl(qVectorText_1);
 
 		TabItem tbtmCvector = new TabItem(tabFolder, SWT.NONE);
 		tbtmCvector.setText("C Vector");
-		StyledText cVectorText_1 = new StyledText(tabFolder, SWT.BORDER
-				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		StyledText cVectorText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmCvector.setControl(cVectorText_1);
 
 		TabItem tbtmLvector = new TabItem(tabFolder, SWT.NONE);
 		tbtmLvector.setText("λ Vector");
-		StyledText lVectorText_1 = new StyledText(tabFolder, SWT.BORDER
-				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		StyledText lVectorText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmLvector.setControl(lVectorText_1);
 
 		TabItem tbtmLSigmaOverTime = new TabItem(tabFolder, SWT.NONE);
 		tbtmLSigmaOverTime.setText("σ Timeline");
-		StyledText sigmaTimeLineText_1 = new StyledText(tabFolder, SWT.BORDER
-				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		StyledText sigmaTimeLineText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmLSigmaOverTime.setControl(sigmaTimeLineText_1);
 
-		
-		// These super styled texts are used for formatting and for a wrapper for
+		// These super styled texts are used for formatting and for a wrapper
+		// for
 		// the styled text class. This makes them easier to interface with.
 		this.clusterText = new SuperStyledText(clusterText_1);
 		this.qVectorText = new SuperStyledText(qVectorText_1);
@@ -239,8 +230,7 @@ public class MainGUI extends Shell
 
 		ExpandBar expandBar = new ExpandBar(this, SWT.NONE);
 		expandBar.setBackground(new Color(Display.getCurrent(), 245, 246, 247));
-		GridData gd_expandBar = new GridData(SWT.LEFT, SWT.FILL, false, true,
-				1, 2);
+		GridData gd_expandBar = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 2);
 		gd_expandBar.widthHint = 195;
 		expandBar.setLayoutData(gd_expandBar);
 
@@ -257,19 +247,16 @@ public class MainGUI extends Shell
 		composite.setLayout(gl_composite);
 
 		Label lblNumberClusters = new Label(composite, SWT.NONE);
-		lblNumberClusters.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER,
-				false, false, 1, 1));
+		lblNumberClusters.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNumberClusters.setText("Number Clusters");
 
 		numClusters = new Spinner(composite, SWT.BORDER);
-		numClusters.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
-				false, 1, 1));
+		numClusters.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		numClusters.setMaximum(9);
 		numClusters.setMinimum(1);
 
 		Label lblCompleteRankings = new Label(composite, SWT.NONE);
-		lblCompleteRankings.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER,
-				false, false, 1, 1));
+		lblCompleteRankings.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCompleteRankings.setText("Complete Rankings");
 
 		completeRankings = new Spinner(composite, SWT.BORDER);
@@ -300,12 +287,14 @@ public class MainGUI extends Shell
 		styledTexts.add(this.cVectorText);
 		styledTexts.add(this.lVectorText);
 		styledTexts.add(this.sigmaTimeLineText);
-		mntmZoomIn.addSelectionListener(new ZoomInBehavior(styledTexts,
-				display, mntmZoomOut, mntmZoomIn));
-		mntmZoomOut.addSelectionListener(new ZoomOutBehavior(styledTexts,
-				display, mntmZoomOut, mntmZoomIn));
+		mntmZoomIn.addSelectionListener(new ZoomInBehavior(styledTexts, display, mntmZoomOut, mntmZoomIn));
+		mntmZoomOut.addSelectionListener(new ZoomOutBehavior(styledTexts, display, mntmZoomOut, mntmZoomIn));
 		mntmZoomIn.setAccelerator(SWT.CONTROL + '=');
 		mntmZoomOut.setAccelerator(SWT.CONTROL + '-');
+
+		MenuItem mntmRandomDataGeneration = new MenuItem(menu_3, SWT.NONE);
+		mntmRandomDataGeneration.setText("Random Data Generation");
+		mntmRandomDataGeneration.addSelectionListener(new RandomDataGeneratorStartBehavior());
 		createContents();
 	}
 
@@ -319,7 +308,8 @@ public class MainGUI extends Shell
 
 	}
 
-	// This method opens a file from a given filename and stores its contents as a pi vector.
+	// This method opens a file from a given filename and stores its contents as
+	// a pi vector.
 	public void openPiVector(String fileName)
 	{
 		File file = new File(fileName);
@@ -332,8 +322,6 @@ public class MainGUI extends Shell
 		FileLoader fLoader = new FileLoader();
 
 		fLoader.loadFile(fileName, FileType.RankedData);
-
-		lblFileName.setText("Current File: " + file.getName());
 
 		if (fLoader.getPartialRankings() != null)
 		{
@@ -353,6 +341,28 @@ public class MainGUI extends Shell
 			}
 
 		}
+
+		lblFileName.setText("Current File: " + file.getName());
+	}
+
+	public void openPiVector(ArrayList<RankedData> piVector)
+	{
+		this.piVector = piVector;
+		lblFileName.setText("Randomly generated π vector loaded");
+		
+		int maxLength = 0;
+		for (RankedData pr : piVector)
+		{
+			int largestValue = pr.largestValue();
+			if (largestValue > maxLength)
+			{
+				maxLength = largestValue;
+			}
+
+			completeRankings.setSelection(maxLength);
+			completeRankings.setMinimum(maxLength);
+		}
+
 	}
 
 	// This method sets the text of the qVector super styled text box
@@ -409,13 +419,14 @@ public class MainGUI extends Shell
 		return completeRankings.getSelection();
 	}
 
-	// This method gets whether the initial sigma vector should be randomized or not. 
+	// This method gets whether the initial sigma vector should be randomized or
+	// not.
 	public boolean getRandomizeSigma()
 	{
 		return btnRandomizeSigmaVector.getSelection();
 	}
 
-	// This method gets the instance of this class, where there is only one. 
+	// This method gets the instance of this class, where there is only one.
 	public static MainGUI getInstance()
 	{
 		return instance;

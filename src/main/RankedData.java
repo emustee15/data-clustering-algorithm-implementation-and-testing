@@ -6,7 +6,7 @@ public class RankedData
 	// This class represents a single ranking. A ranking is a set of relationships between objects such that
 	// one object is higher than another (e.g. {1,2,3,4,5} where order matters.) 
 	
-	private ArrayList<Integer> data;
+	protected ArrayList<Integer> data;
 	private int[] originalData;
 
 	// All we need is an integer array. 
