@@ -57,7 +57,7 @@ public class LambdaComputer
 				innerSum += innerNumerator / innerDenominator;
 			}
 
-			outerSum += ti / denominatorOuter + innerSum;
+			outerSum += ti / denominatorOuter - innerSum;
 		}
 
 		double distanceSum = 0;

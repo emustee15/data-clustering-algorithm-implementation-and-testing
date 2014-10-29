@@ -63,7 +63,7 @@ public class ClusterAnalyzer
 				for (int i = 0; i < numberClusters; i++)
 				{
 					lambdaVector.add(0d);
-					cVector.add(1.0d / piVector.size());
+					cVector.add(1.0d / numberClusters);
 				}
 				sigmaVector.add(new RankedData(oppositeRanking.clone()));
 				sigmaVector.add(new RankedData(masterRanking.clone()));
@@ -71,7 +71,7 @@ public class ClusterAnalyzer
 			else if (numberClusters == 1)
 			{
 				lambdaVector.add(0d);
-				cVector.add(1.0d / piVector.size());
+				cVector.add(1.0d / numberClusters);
 				sigmaVector.add(new RankedData(masterRanking.clone()));
 			}
 		}
@@ -82,7 +82,7 @@ public class ClusterAnalyzer
 				lambdaVector.add(0d);
 				sigmaVector.add(new RankedData(masterRanking.clone()));
 				sigmaVector.get(i).randomize();
-				cVector.add(1.0d / piVector.size());
+				cVector.add(1.0d / numberClusters);
 			}
 		}
 
