@@ -43,6 +43,7 @@ public class RandomDataGenerator extends Shell
 	private RandomizableRankedData currentSelection;
 	private ArrayList<RankedData> piVector;
 	private Text piVectorText;
+	private Button distanceSwap, randomSwap;
 
 	/**
 	 * Launch the application.
@@ -124,7 +125,6 @@ public class RandomDataGenerator extends Shell
 
 		List clusterCenters = new List(composite_2, SWT.BORDER);
 		clusterCenters.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		
 
 		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
 		GridData gd_tabFolder = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2);
@@ -143,11 +143,81 @@ public class RandomDataGenerator extends Shell
 		grpSwappingSettings.setText("Swapping Settings");
 		grpSwappingSettings.setLayout(new GridLayout(2, false));
 
+		distanceSwap = new Button(grpSwappingSettings, SWT.RADIO);
+		distanceSwap.setSelection(true);
+		distanceSwap.setText("Distance Swap");
+		distanceSwap.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (currentSelection != null && distanceSwap.getSelection())
+				{
+					currentSelection.setTechnique(RandomizableRankedData.DISTANCE_SWAP);
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+		new Label(grpSwappingSettings, SWT.NONE);
+
+		randomSwap = new Button(grpSwappingSettings, SWT.RADIO);
+		randomSwap.setText("Standard Swap");
+		randomSwap.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (currentSelection != null && randomSwap.getSelection())
+				{
+					currentSelection.setTechnique(RandomizableRankedData.RANDOM_SWAP);
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		new Label(grpSwappingSettings, SWT.NONE);
+
 		Label lblNewLabel = new Label(grpSwappingSettings, SWT.NONE);
 		lblNewLabel.setText("Max number of swaps");
 
 		numberOfSwaps = new Spinner(grpSwappingSettings, SWT.BORDER);
 		numberOfSwaps.setSelection(2);
+		numberOfSwaps.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (currentSelection != null)
+				{
+					currentSelection.setNumberOfSwaps(numberOfSwaps.getSelection());
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
 
 		Label lblProbabilityOfSwap = new Label(grpSwappingSettings, SWT.NONE);
 		lblProbabilityOfSwap.setText("Probability of swap");
@@ -163,26 +233,6 @@ public class RandomDataGenerator extends Shell
 				if (currentSelection != null)
 				{
 					currentSelection.setProbabilityOfSwap(probabilityOfSwaps.getSelection());
-				}
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
-		numberOfSwaps.addSelectionListener(new SelectionListener()
-		{
-
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if (currentSelection != null)
-				{
-					currentSelection.setNumberOfSwaps(numberOfSwaps.getSelection());
 				}
 
 			}
@@ -478,6 +528,8 @@ public class RandomDataGenerator extends Shell
 		numberOfSwaps.setEnabled(true);
 		probabilityOfSwaps.setEnabled(true);
 		numberOfChildren.setEnabled(true);
+		distanceSwap.setEnabled(true);
+		randomSwap.setEnabled(true);
 
 		randomizedLengths.setSelection(currentSelection.isRandomziedLenghts());
 		numberOfSwaps.setSelection(currentSelection.getNumberOfSwaps());
@@ -493,6 +545,20 @@ public class RandomDataGenerator extends Shell
 
 		minRankings.setEnabled(randomizedLengths.getSelection());
 		maxRankings.setEnabled(randomizedLengths.getSelection());
+
+		int technique = currentSelection.getTechnique();
+
+		switch (technique)
+		{
+		case RandomizableRankedData.DISTANCE_SWAP:
+			distanceSwap.setSelection(true);
+			randomSwap.setSelection(false);
+			break;
+		case RandomizableRankedData.RANDOM_SWAP:
+			distanceSwap.setSelection(false);
+			randomSwap.setSelection(true);
+			break;
+		}
 	}
 
 	public void noSelection()
@@ -503,6 +569,9 @@ public class RandomDataGenerator extends Shell
 		numberOfChildren.setEnabled(false);
 		minRankings.setEnabled(false);
 		maxRankings.setEnabled(false);
+		distanceSwap.setEnabled(false);
+		randomSwap.setEnabled(false);
+
 	}
 
 	public void doRandomization()

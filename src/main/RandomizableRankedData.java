@@ -9,6 +9,12 @@ public class RandomizableRankedData extends RankedData
 	private boolean randomziedLenghts = false;
 	private int probabilityOfSwap = 100;
 	private int numberOfChildren = 20;
+
+	private int swapTechnique = 0;
+
+	public final static int DISTANCE_SWAP = 0;
+	public final static int RANDOM_SWAP = 1;
+
 	public int getMinPartialRankings()
 	{
 		return minPartialRankings;
@@ -72,15 +78,24 @@ public class RandomizableRankedData extends RankedData
 
 			if (swapProb <= probabilityOfSwap)
 			{
-				int aPosition = 0, bPosition = 0;
-
-				while (aPosition == bPosition && data.size()!=1)
+				if (swapTechnique == RANDOM_SWAP)
 				{
-					aPosition = (int) (Math.random() * data.size());
-					bPosition = (int) (Math.random() * data.size());
-				}
 
-				swapPositions(aPosition, bPosition);
+					int aPosition = 0, bPosition = 0;
+
+					while (aPosition == bPosition && data.size() != 1)
+					{
+						aPosition = (int) (Math.random() * data.size());
+						bPosition = (int) (Math.random() * data.size());
+					}
+
+					swapPositions(aPosition, bPosition);
+				}
+				else if (swapTechnique == DISTANCE_SWAP)
+				{
+					int position = (int)(Math.random()*data.size());
+					randomDistanceSwap(position);
+				}
 			}
 
 		}
@@ -88,7 +103,7 @@ public class RandomizableRankedData extends RankedData
 
 		if (randomziedLenghts)
 		{
-			size = minPartialRankings + (int) (Math.random() * (maxPartialRankings-minPartialRankings+1));
+			size = minPartialRankings + (int) (Math.random() * (maxPartialRankings - minPartialRankings + 1));
 		}
 
 		int[] rankings = new int[size];
@@ -118,11 +133,11 @@ public class RandomizableRankedData extends RankedData
 	{
 		return probabilityOfSwap;
 	}
-	
+
 	public void setData(RankedData newData)
 	{
 		this.data = new ArrayList<>();
-		
+
 		for (int i = 0; i < newData.getSize(); i++)
 		{
 			this.data.add(newData.get(i));
@@ -133,13 +148,23 @@ public class RandomizableRankedData extends RankedData
 			maxPartialRankings = data.size();
 		}
 		System.out.println(data.size());
-		minPartialRankings = (minPartialRankings > newData.getSize() ? newData.getSize():minPartialRankings);
+		minPartialRankings = (minPartialRankings > newData.getSize() ? newData.getSize() : minPartialRankings);
 	}
-	
+
 	@Override
 	public void saveCurrentDataAsDefault()
 	{
 		super.saveCurrentDataAsDefault();
+	}
+
+	public void setTechnique(int technique)
+	{
+		this.swapTechnique = technique;
+	}
+
+	public int getTechnique()
+	{
+		return swapTechnique;
 	}
 
 }

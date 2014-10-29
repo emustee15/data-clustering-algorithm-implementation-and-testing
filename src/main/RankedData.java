@@ -255,4 +255,16 @@ public class RankedData
 		return largest;
 	}
 	
+	public void randomDistanceSwap(int index)
+	{
+		if (index == data.size() - 1)
+		{
+			negate(index);
+		}
+		else
+		{
+			swapPositions(index, index+1);
+		}
+	}
+	
 }
