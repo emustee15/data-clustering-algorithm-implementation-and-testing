@@ -6,7 +6,7 @@ This page will contain our list of things that must be done or are to be done or
 
 = To do =
 
--Fix invalid input bug
--Allow descriptions to be inputted
--Add csv file extension in open dialog
--Write help menu
+-Fix invalid input bug<br/>
+-Allow descriptions to be inputted<br/>
+-Add csv file extension in open dialog<br/>
+-Write help menu<br/>
