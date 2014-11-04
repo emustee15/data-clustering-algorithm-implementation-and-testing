@@ -9,6 +9,6 @@ This page will contain our list of things that must be done or are to be done or
 -Fix invalid input bug - DONE<br/>
 -Write unit tests<br/>
 -Allow descriptions to be inputted<br/>
--Add csv file extension in open dialog<br/>
+-Add csv file extension in open dialog - DONE<br/>
 -Allow settings in random data generation to be saved.<br/>
 -Write help menu<br/>
