@@ -35,8 +35,9 @@ public class OpenFileBehavior implements SelectionListener
 		FileDialog dialog = new FileDialog(shell, SWT.OPEN);
 		dialog.setText("Open");
 		dialog.setFilterPath("C:/");
-		String[] filterExt = {"*.txt"};
+		String[] filterExt = {"*.txt", "*.csv"};
 		dialog.setFilterExtensions(filterExt);
+		dialog.setFilterNames(new String[] {"*.txt (Text Files)", "*.csv (Comma Separated Value Files)"});
 		selectedFile = dialog.open();
 		
 		if (selectedFile != null && shell instanceof MainGUI)
