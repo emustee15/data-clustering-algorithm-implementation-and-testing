@@ -1,6 +1,6 @@
 /*
- * You can use this class generate a pop-up dialog that displays an error
- * that can be passed into the constructor.
+ * You can use this class to generate a pop-up dialog that displays an error
+ * that can be passed into the open method.
  */
 
 package gui;
@@ -37,6 +37,9 @@ public class ErrorDialog extends Dialog {
 	 * Open the dialog.
 	 * @return the result
 	 */
+	
+	//Call this method to make the error dialog pop-up with the 
+	//message passed in as a parameter
 	public Object open(String errorMessage) {
 		this.errorMessage = errorMessage;
 		createContents();

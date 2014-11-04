@@ -1,6 +1,8 @@
 package main;
 
+import exception.DuplicateIntegerException;
 import exception.EmptyPiVectorException;
+import exception.ZeroInFileException;
 import gui.ErrorDialog;
 import gui.MainGUI;
 
@@ -76,6 +78,16 @@ public class FileLoader
 			errorDialog
 					.open("File not formatted correctly. Please read the Help menu for formatting guidelines.");
 		}
+		catch (ZeroInFileException zifEx)
+		{
+			errorDialog
+					.open("File contains ranked data with a 0 in it. Please use only nonzero integers.");
+		}
+		catch (DuplicateIntegerException diEx)
+		{
+			errorDialog
+					.open("File contains a ranked data set with duplicate values. Please read the Help menu for formatting guidelines.");
+		}
 		catch (FileNotFoundException e)
 		{
 			// TODO Auto-generated catch block
@@ -116,7 +128,7 @@ public class FileLoader
 
 	// This method parses one line of a ranked data file.
 	public static RankedData parseLineOfRankedDataFile(String line)
-			throws EmptyPiVectorException
+			throws EmptyPiVectorException, ZeroInFileException, DuplicateIntegerException
 	{
 		RankedData rankedData = new RankedData(new int[] {});
 		String[] data = seperateByAllowedDelimeters(line, FileType.RankedData);
@@ -125,7 +137,29 @@ public class FileLoader
 			Integer i = Integer.parseInt(s);
 			if (i != null)
 			{
-				rankedData.addToList(i);
+				if (i == 0)
+				{
+					throw new ZeroInFileException();
+				}
+				else 
+				{
+					rankedData.addToList(i);
+				}
+				
+			}
+		}
+		/* If we get to this point, this means that rankedData contains only
+		* nonzero integers. Now just search through the rankedData to see if
+		* there are any duplicate numbers.
+		*/
+		for (int i=0; i<rankedData.getListElements().size()-1; i++)
+		{
+			for (int j=i+1; j<rankedData.getListElements().size(); j++)
+			{
+				if (Math.abs(rankedData.getListElements().get(i)) == Math.abs(rankedData.getListElements().get(j)))
+				{
+					throw new DuplicateIntegerException();
+				}
 			}
 		}
 
