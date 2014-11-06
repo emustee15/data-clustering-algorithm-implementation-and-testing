@@ -210,12 +210,20 @@ public class RankedData
 	public void randomize()
 	{
 		
-		for (int i = 0; i < 100;i++)
-		{
-			int positionA = (int) (Math.random()*data.size());
-			int positionB = (int) (Math.random()*data.size());
+		boolean used[] = new boolean[data.size()];
+		int count = 0;
 		
-			swapPositions(positionA,positionB);	
+		while (count < data.size())
+		{
+			int newValue = (int)(Math.random()*data.size());
+			if (!used[newValue])
+			{
+				used[newValue] = true;
+				newValue++;
+				newValue = (Math.random() < .5 ? newValue*-1:newValue);
+				data.set(count, newValue);
+				count++;
+			}
 		}
 		
 		saveCurrentDataAsDefault();
