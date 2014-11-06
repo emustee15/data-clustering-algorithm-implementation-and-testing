@@ -6,7 +6,7 @@ import main.RankedData;
 import org.junit.Test;
 
 
-public class ClusterTesting {
+public class DistanceTesting {
 
 	
 	//TEST CASES FOR THE DISTANCE RANKER CLASS METHODS
