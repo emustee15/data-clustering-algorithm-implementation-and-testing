@@ -146,7 +146,7 @@ public class ClusterAnalyzer
 		for (int index = 0; index < sigmaVector.size(); index++)
 		{
 			info += "Cluster Center σ\\~s" + index + "\\~s: ";
-			info += sigmaVector.get(index).toString();
+			info += sigmaVector.get(index).toString(true);
 			info += '\n';
 		}
 

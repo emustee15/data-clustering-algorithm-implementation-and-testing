@@ -30,15 +30,20 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.graphics.Point;
 
+import selectionListeners.AddClusterCenter;
+import selectionListeners.AddDescriptions;
 import selectionListeners.AnalyzeBehavior;
 import selectionListeners.ExitBehavior;
 import selectionListeners.HelpMenuBehavior;
 import selectionListeners.OpenFileBehavior;
 import selectionListeners.RandomDataGeneratorStartBehavior;
+import selectionListeners.RemoveClusterCenter;
+import selectionListeners.RemoveDescription;
 import selectionListeners.ZoomInBehavior;
 import selectionListeners.ZoomOutBehavior;
 
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.List;
 
 public class MainGUI extends Shell
 {
@@ -71,6 +76,8 @@ public class MainGUI extends Shell
 	// that
 	// it can be retireved from anywhere in the program.
 	private static MainGUI instance;
+	private Text descriptText;
+	public static List descriptList;
 
 	/**
 	 * Launch the application.
@@ -233,6 +240,7 @@ public class MainGUI extends Shell
 		ExpandBar expandBar = new ExpandBar(this, SWT.NONE);
 		expandBar.setBackground(new Color(Display.getCurrent(), 245, 246, 247));
 		GridData gd_expandBar = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 2);
+		gd_expandBar.heightHint = 254;
 		gd_expandBar.widthHint = 195;
 		expandBar.setLayoutData(gd_expandBar);
 
@@ -281,8 +289,39 @@ public class MainGUI extends Shell
 		btnRandomizeSigmaVector.setSelection(true);
 		btnRandomizeSigmaVector.setText("Randomize Sigma Vector");
 		analyzeSettings.setHeight(40);
-		startAnalysis.addSelectionListener(new AnalyzeBehavior(this));
 
+		ExpandItem xpndtmDataDescription = new ExpandItem(expandBar, SWT.NONE);
+		xpndtmDataDescription.setExpanded(true);
+		xpndtmDataDescription.setText("Data Description");
+//---------------
+		Composite descriptionComposite = new Composite(expandBar, SWT.NONE);
+		xpndtmDataDescription.setControl(descriptionComposite);
+		xpndtmDataDescription.setHeight(110);
+		descriptionComposite.setLayout(new GridLayout(4, false));
+
+		descriptList = new List(descriptionComposite, SWT.BORDER);
+		GridData gd_list = new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1);
+		gd_list.widthHint = 177;
+		descriptList.setLayoutData(gd_list);
+
+		descriptText = new Text(descriptionComposite, SWT.BORDER);
+		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_text_1.widthHint = 120;
+		descriptText.setLayoutData(gd_text_1);
+
+		Button btnAddDescription = new Button(descriptionComposite, SWT.NONE);
+		btnAddDescription.setText("+");
+
+		Button btnRemoveDescription = new Button(descriptionComposite, SWT.NONE);
+		btnRemoveDescription.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
+		btnRemoveDescription.setText(" - ");
+		new Label(descriptionComposite, SWT.NONE);
+		
+		btnAddDescription.addSelectionListener(new AddDescriptions(descriptList, descriptText));
+		btnRemoveDescription.addSelectionListener(new RemoveDescription(descriptList));
+//-------------------
+
+		startAnalysis.addSelectionListener(new AnalyzeBehavior(this));
 		ArrayList<SuperStyledText> styledTexts = new ArrayList<>();
 		styledTexts.add(this.clusterText);
 		styledTexts.add(this.qVectorText);
@@ -298,10 +337,10 @@ public class MainGUI extends Shell
 		mntmRandomDataGeneration.setText("Random Data Generation");
 		mntmRandomDataGeneration.addSelectionListener(new RandomDataGeneratorStartBehavior());
 		createContents();
-		
+
 		addListener(SWT.Close, new Listener()
 		{
-			
+
 			@Override
 			public void handleEvent(Event arg0)
 			{
@@ -309,7 +348,7 @@ public class MainGUI extends Shell
 				{
 					RandomDataGenerator.getInstance().dispose();
 				}
-				
+
 			}
 		});
 	}
@@ -364,7 +403,7 @@ public class MainGUI extends Shell
 	public void openPiVector(ArrayList<RankedData> piVector)
 	{
 		this.piVector = piVector;
-		
+
 		lblFileName.setText("Loaded π vector");
 		int maxLength = 0;
 		for (RankedData pr : piVector)
@@ -447,4 +486,18 @@ public class MainGUI extends Shell
 	{
 		return instance;
 	}
+	
+	public static String getDesciptList(int index)
+	{
+		if (index > descriptList.getItemCount())
+		{
+			return Integer.valueOf(index).toString();
+		}
+		else
+		{
+			System.out.println(index);
+			return descriptList.getItem(index-1);
+		}
+	}
+	
 }
