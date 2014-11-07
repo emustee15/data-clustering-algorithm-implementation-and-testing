@@ -6,9 +6,9 @@ This page will contain our list of things that must be done or are to be done or
 
 = To do =
 
--Fix invalid input bug - DONE<br/>
 -Write unit tests<br/>
--Allow descriptions to be inputted<br/>
--Add csv file extension in open dialog - DONE<br/>
+-Descriptions allow negative values<br/>
 -Allow settings in random data generation to be saved.<br/>
+-Save Settings and Export Data
+-Open Settings
 -Write help menu<br/>
