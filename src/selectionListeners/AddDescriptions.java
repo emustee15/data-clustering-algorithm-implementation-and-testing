@@ -33,6 +33,7 @@ public class AddDescriptions implements SelectionListener {
 			String data = (descriptions.getText());
 			list.add(data);
 			list.setSelection(list.getItemCount()-1);
+			descriptions.setText("");
 		}
 		catch (NumberFormatException nfEx)
 		{

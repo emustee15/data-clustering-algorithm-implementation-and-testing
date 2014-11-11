@@ -27,7 +27,7 @@ public class HelpMenuBehavior implements SelectionListener{
 		File file = new File("Data Clustering Algorithm help.chm");
 		try
 		{
-		 Runtime.getRuntime().exec("HH.EXE ms-its:" + file.getAbsolutePath() + "::/TOPIC_ID.html");
+		 Runtime.getRuntime().exec("HH.EXE ms-its:" + file.getAbsolutePath()); //+ "::/TOPIC_ID.html"
 		} catch (IOException e1)
 		{
 		 e1.printStackTrace();

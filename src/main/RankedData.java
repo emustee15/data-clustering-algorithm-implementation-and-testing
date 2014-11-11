@@ -256,12 +256,12 @@ public class RankedData
 				string+=MainGUI.getDesciptList(data.get(i));
 				string += (i != data.size()-1 ? ", " : "");
 			}
-
 			else
 			{
 				string +=data.get(i);
 				string += (i != data.size()-1 ? ", " : "");
 			}
+
 		}
 		string += "}";
 		return string;

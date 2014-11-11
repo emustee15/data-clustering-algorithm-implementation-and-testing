@@ -489,13 +489,23 @@ public class MainGUI extends Shell
 	
 	public static String getDesciptList(int index)
 	{
+		boolean isNegative = index < 0;
+		index = Math.abs(index);
 		if (index > descriptList.getItemCount())
 		{
+			if (isNegative)
+			{
+				return Integer.valueOf(-index).toString();
+			}
 			return Integer.valueOf(index).toString();
 		}
 		else
 		{
 			System.out.println(index);
+			if (isNegative)
+			{
+				return "Not " + descriptList.getItem(index-1);
+			}
 			return descriptList.getItem(index-1);
 		}
 	}
