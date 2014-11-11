@@ -15,11 +15,29 @@ import java.util.ArrayList;
 public class FileLoader
 {
 
+	boolean testingMode = false; //Used for tesing purposes only, so we don't need errorDialog and MainGui
 	ArrayList<RankedData> partialRankings;
-	ErrorDialog errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI
-			.getInstance().getStyle());
 	static String[] appropriateDelimeters = new String[] { ", ", " ", ",", " ," };
 	ArrayList<String> descriptions;
+	ErrorDialog errorDialog;
+	
+	public FileLoader()
+	{
+			errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI
+					.getInstance().getStyle());	
+	}
+	
+	//This constructor is only used in JUnit testing
+	public FileLoader(boolean testingMode)
+	{
+		this.testingMode = testingMode;
+		
+		if (!testingMode) 
+		{
+			errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI
+					.getInstance().getStyle());
+		}
+	}
 
 	/*
 	 * This class takes in a file and turns it into a RankedData ArrayList or a
@@ -75,18 +93,30 @@ public class FileLoader
 		}
 		catch (NumberFormatException nfEx)
 		{
-			errorDialog
+			if (!testingMode)
+			{
+				errorDialog
 					.open("File not formatted correctly. Please read the Help menu for formatting guidelines.");
+			}
+			
 		}
 		catch (ZeroInFileException zifEx)
 		{
-			errorDialog
+			if (!testingMode)
+			{
+				errorDialog
 					.open("File contains ranked data with a 0 in it. Please use only nonzero integers.");
+			}
+			
 		}
 		catch (DuplicateIntegerException diEx)
 		{
-			errorDialog
+			if (!testingMode)
+			{
+				errorDialog
 					.open("File contains a ranked data set with duplicate values. Please read the Help menu for formatting guidelines.");
+			}
+			
 		}
 		catch (FileNotFoundException e)
 		{
@@ -99,8 +129,12 @@ public class FileLoader
 		}
 		catch (EmptyPiVectorException epvEx)
 		{
-			errorDialog
+			if (!testingMode)
+			{
+				errorDialog
 					.open("The file must contain one π vector. Please read the Help menu for formatting guidelines.");
+			}
+			
 		}
 		finally
 		{
@@ -237,4 +271,5 @@ public class FileLoader
 
 		return descriptions.get(index);
 	}
+	
 }
