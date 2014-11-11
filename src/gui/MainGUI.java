@@ -1,11 +1,16 @@
 package gui;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import main.FileLoader;
 import main.FileType;
 import main.RankedData;
+import main.Settings;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
@@ -39,6 +44,7 @@ import selectionListeners.OpenFileBehavior;
 import selectionListeners.RandomDataGeneratorStartBehavior;
 import selectionListeners.RemoveClusterCenter;
 import selectionListeners.RemoveDescription;
+import selectionListeners.SaveFileBehavior;
 import selectionListeners.ZoomInBehavior;
 import selectionListeners.ZoomOutBehavior;
 
@@ -116,7 +122,6 @@ public class MainGUI extends Shell
 		instance = this;
 		setMinimumSize(new Point(640, 480));
 		setLayout(new GridLayout(2, false));
-
 		Menu menu = new Menu(this, SWT.BAR);
 		setMenuBar(menu);
 
@@ -126,12 +131,20 @@ public class MainGUI extends Shell
 		Menu menu_1 = new Menu(mntmFile);
 		mntmFile.setMenu(menu_1);
 
-		MenuItem mntmOpen = new MenuItem(menu_1, SWT.NONE);
-		mntmOpen.setText("Open");
-		mntmOpen.addSelectionListener(new OpenFileBehavior(this));
+		MenuItem mntmOpenSettings = new MenuItem(menu_1, SWT.NONE);
+		mntmOpenSettings.setText("Open Session");
+		mntmOpenSettings.addSelectionListener(new OpenFileBehavior(this, FileType.Settings));
 
 		MenuItem mntmSave = new MenuItem(menu_1, SWT.NONE);
-		mntmSave.setText("Save");
+		mntmSave.setText("Save Session");
+		mntmSave.addSelectionListener(new SaveFileBehavior(FileType.Settings));
+
+		MenuItem mntmOpen = new MenuItem(menu_1, SWT.NONE);
+		mntmOpen.setText("Import Rankings");
+		mntmOpen.addSelectionListener(new OpenFileBehavior(this, FileType.RankedData));
+
+		MenuItem mntmExport = new MenuItem(menu_1, SWT.NONE);
+		mntmExport.setText("Export Results");
 
 		new MenuItem(menu_1, SWT.SEPARATOR);
 
@@ -145,14 +158,8 @@ public class MainGUI extends Shell
 		Menu menu_2 = new Menu(mntmEdit);
 		mntmEdit.setMenu(menu_2);
 
-		MenuItem mntmCut = new MenuItem(menu_2, SWT.NONE);
-		mntmCut.setText("Cut");
-
 		MenuItem mntmCopy = new MenuItem(menu_2, SWT.NONE);
 		mntmCopy.setText("Copy");
-
-		MenuItem mntmPaste = new MenuItem(menu_2, SWT.NONE);
-		mntmPaste.setText("Paste");
 
 		MenuItem menuItem = new MenuItem(menu_2, SWT.SEPARATOR);
 		menuItem.setText("Select All");
@@ -293,7 +300,7 @@ public class MainGUI extends Shell
 		ExpandItem xpndtmDataDescription = new ExpandItem(expandBar, SWT.NONE);
 		xpndtmDataDescription.setExpanded(true);
 		xpndtmDataDescription.setText("Data Description");
-//---------------
+		// ---------------
 		Composite descriptionComposite = new Composite(expandBar, SWT.NONE);
 		xpndtmDataDescription.setControl(descriptionComposite);
 		xpndtmDataDescription.setHeight(110);
@@ -316,10 +323,10 @@ public class MainGUI extends Shell
 		btnRemoveDescription.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
 		btnRemoveDescription.setText(" - ");
 		new Label(descriptionComposite, SWT.NONE);
-		
+
 		btnAddDescription.addSelectionListener(new AddDescriptions(descriptList, descriptText));
 		btnRemoveDescription.addSelectionListener(new RemoveDescription(descriptList));
-//-------------------
+		// -------------------
 
 		startAnalysis.addSelectionListener(new AnalyzeBehavior(this));
 		ArrayList<SuperStyledText> styledTexts = new ArrayList<>();
@@ -344,7 +351,7 @@ public class MainGUI extends Shell
 			@Override
 			public void handleEvent(Event arg0)
 			{
-				if (RandomDataGenerator.getInstance()!=null && !RandomDataGenerator.getInstance().isDisposed())
+				if (RandomDataGenerator.getInstance() != null && !RandomDataGenerator.getInstance().isDisposed())
 				{
 					RandomDataGenerator.getInstance().dispose();
 				}
@@ -509,5 +516,86 @@ public class MainGUI extends Shell
 			return descriptList.getItem(index-1);
 		}
 	}
+	
+	public void openSettings(Settings settings)
+	{
+		numClusters.setSelection(settings.getNumberClusters());
+		completeRankings.setSelection(settings.getCompleteRankings());
+
+		if (settings.getRandomizableRankings() != null)
+		{
+			RandomDataGenerator.openSettings(settings);
+		}
+
+		piVector = settings.getPiVector();
+		numClusters.setMinimum(settings.getMinClusters());
+		completeRankings.setMinimum(settings.getMinRankings());
+
+		clusterText.setText(settings.getClusterCenterInfo());
+		qVectorText.setText(settings.getqVectorInfo());
+		lVectorText.setText(settings.getlVectorInfo());
+		cVectorText.setText(settings.getcVectorInfo());
+		sigmaTimeLineText.setText(settings.getSigmaTimelineInfo());
+
+		descriptList.removeAll();
+
+		for (String s : settings.getDescriptions())
+		{
+			descriptList.add(s);
+		}
+
+	}
+
+	public void saveSettings(String filepath)
+	{
+		Settings settings;
+		ObjectOutputStream objectOutputStream = null;
+
+		settings = new Settings(numClusters.getSelection(), completeRankings.getSelection(), RandomDataGenerator.getPiVector(), RandomDataGenerator.getRandomizeableRankedData());
+
+		settings.setClusterCenterInfo(clusterText.getText());
+		settings.setqVectorInfo(qVectorText.getText());
+		settings.setlVectorInfo(lVectorText.getText());
+		settings.setcVectorInfo(cVectorText.getText());
+		settings.setSigmaTimelineInfo(sigmaTimeLineText.getText());
+		settings.setMinClusters(numClusters.getMinimum());
+		settings.setMinRankings(completeRankings.getMinimum());
+		settings.setPiVector(piVector);
+		settings.setDescriptions(descriptList.getItems());
+		try
+		{
+			FileOutputStream outputStream = new FileOutputStream(filepath);
+			objectOutputStream = new ObjectOutputStream(outputStream);
+			objectOutputStream.writeObject(settings);
+
+		}
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			if (objectOutputStream != null)
+			{
+				try
+				{
+					objectOutputStream.close();
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+
 	
 }

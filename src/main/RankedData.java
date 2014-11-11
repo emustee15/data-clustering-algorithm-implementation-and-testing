@@ -1,15 +1,18 @@
 package main;
 import gui.MainGUI;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import org.eclipse.swt.widgets.List;
-
-public class RankedData
+public class RankedData implements Serializable
 {
 	// This class represents a single ranking. A ranking is a set of relationships between objects such that
 	// one object is higher than another (e.g. {1,2,3,4,5} where order matters.) 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected ArrayList<Integer> data;
 	private int[] originalData;
 

@@ -7,9 +7,11 @@ import gui.ErrorDialog;
 import gui.MainGUI;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class FileLoader
@@ -20,6 +22,7 @@ public class FileLoader
 	static String[] appropriateDelimeters = new String[] { ", ", " ", ",", " ," };
 	ArrayList<String> descriptions;
 	ErrorDialog errorDialog;
+	private Settings settings;
 	
 	public FileLoader()
 	{
@@ -60,14 +63,16 @@ public class FileLoader
 		}
 
 		BufferedReader reader = null;
+		ObjectInputStream objectInputStream = null;
 
 		int count = 0;
 		try
 		{
-			reader = new BufferedReader(new FileReader(filePath));
-			String line;
+
 			if (type.equals(FileType.RankedData))
 			{
+				reader = new BufferedReader(new FileReader(filePath));
+				String line;
 				while ((line = reader.readLine()) != null)
 				{
 					partialRankings.add(parseLineOfRankedDataFile(line));
@@ -81,6 +86,8 @@ public class FileLoader
 			}
 			else if (type.equals(FileType.NounList))
 			{
+				reader = new BufferedReader(new FileReader(filePath));
+				String line;
 				while ((line = reader.readLine()) != null)
 				{
 					String[] newNouns = parseDescriptionList(line);
@@ -89,6 +96,12 @@ public class FileLoader
 						descriptions.add(s);
 					}
 				}
+			}
+			else if (type.equals(FileType.Settings))
+			{
+				FileInputStream input = new FileInputStream(filePath);
+				objectInputStream = new ObjectInputStream(input);
+				settings = (Settings) objectInputStream.readObject();
 			}
 		}
 		catch (NumberFormatException nfEx)
@@ -136,15 +149,23 @@ public class FileLoader
 			}
 			
 		}
+		catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		finally
 		{
 			try
 			{
-				reader.close();
-			}
-			catch (NullPointerException npEx)
-			{
-
+				if (reader != null)
+				{
+					reader.close();
+				}
+				if (objectInputStream != null)
+				{
+					objectInputStream.close();
+				}
 			}
 			catch (IOException ioEx)
 			{
@@ -254,6 +275,11 @@ public class FileLoader
 		return data;
 	}
 
+	public Settings getSettings()
+	{
+		return settings;
+	}
+	
 	// This method returns the description for an element of some ranking. 
 	public String getDescription(int index)
 	{

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import main.RandomizableRankedData;
 import main.RankedData;
+import main.Settings;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -34,16 +35,18 @@ import org.eclipse.swt.widgets.Group;
 public class RandomDataGenerator extends Shell
 {
 	private static RandomDataGenerator instance;
-	private ArrayList<RandomizableRankedData> randomizableRankedData;
+	private static ArrayList<RandomizableRankedData> randomizableRankedData;
 	private Button randomizedLengths;
 	private Spinner numberOfSwaps;
 	private Spinner probabilityOfSwaps;
 	private Spinner numberOfChildren;
 	private Spinner minRankings, maxRankings;
 	private RandomizableRankedData currentSelection;
-	private ArrayList<RankedData> piVector;
+	private static ArrayList<RankedData> piVector;
 	private Text piVectorText;
 	private Button distanceSwap, randomSwap;
+	private List clusterCenters;
+	private static Settings settings;
 
 	/**
 	 * Launch the application.
@@ -111,7 +114,10 @@ public class RandomDataGenerator extends Shell
 	private RandomDataGenerator(Display display)
 	{
 		super(display, SWT.SHELL_TRIM);
-		randomizableRankedData = new ArrayList<>();
+		if (randomizableRankedData == null)
+		{
+			randomizableRankedData = new ArrayList<>();
+		}
 
 		instance = this;
 		setMinimumSize(new Point(640, 480));
@@ -123,7 +129,7 @@ public class RandomDataGenerator extends Shell
 		composite_2.setLayoutData(gd_composite_2);
 		composite_2.setLayout(new GridLayout(1, false));
 
-		List clusterCenters = new List(composite_2, SWT.BORDER);
+		clusterCenters = new List(composite_2, SWT.BORDER);
 		clusterCenters.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
@@ -473,6 +479,11 @@ public class RandomDataGenerator extends Shell
 		clusterCenters.addSelectionListener(new ListChangedBehavior(clusterCenters, clusterCenterText));
 
 		noSelection();
+
+		if (settings != null)
+		{
+			openSettingsInternal(settings);
+		}
 	}
 
 	/**
@@ -608,8 +619,56 @@ public class RandomDataGenerator extends Shell
 
 	}
 
-	public ArrayList<RankedData> getPiVector()
+	public static ArrayList<RankedData> getPiVector()
 	{
 		return piVector;
+	}
+
+	public static void openSettings(Settings settings)
+	{
+		randomizableRankedData = settings.getRandomizableRankings();
+		piVector = settings.getRandomizedRankings();
+		if (instance == null)
+		{
+			RandomDataGenerator.settings = settings;
+			return;
+		}
+		else
+		{
+			instance.openSettingsInternal(settings);
+		}
+	}
+
+	private void openSettingsInternal(Settings settings)
+	{
+
+		if (!piVector.isEmpty())
+		{
+			String piVectorString = "";
+			for (RankedData d : piVector)
+			{
+				piVectorString += d.toString() + "\n";
+			}
+
+			piVectorText.setText(piVectorString);
+		}
+		
+		clusterCenters.removeAll();
+		for (RandomizableRankedData d : randomizableRankedData)
+		{
+			clusterCenters.add(d.toString());
+		}
+
+		if (randomizableRankedData.size() > 0)
+		{
+			clusterCenters.setSelection(0);
+			setCurrentSelection(0);
+		}
+
+	}
+
+	public static ArrayList<RandomizableRankedData> getRandomizeableRankedData()
+	{
+		return randomizableRankedData;
 	}
 }

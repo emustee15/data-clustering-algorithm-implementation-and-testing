@@ -86,5 +86,10 @@ public class SuperStyledText
 	{
 		return styledText;
 	}
+	
+	public String getText()
+	{
+		return text;
+	}
 
 }
