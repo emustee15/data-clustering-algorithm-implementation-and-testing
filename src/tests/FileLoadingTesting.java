@@ -66,5 +66,23 @@ public class FileLoadingTesting {
 		FileLoader fileLoader = new FileLoader(true);
 		fileLoader.loadFile("testFiles/emptyFile.txt", FileType.RankedData);
 	}
+	
+	//Test loading a .rnkr save file
+	//If there is an exception that has not been caught, this will fail
+	@Test
+	public void loadSaveFileTest() 
+	{
+		FileLoader fileLoader = new FileLoader(true);
+		fileLoader.loadFile("testFiles/saveFile.rnkr", FileType.Settings);
+	}
+	
+	//Test loading a .txt file with descriptive words for the ranked data
+	@Test
+	public void loadWordFileTest() 
+	{
+		FileLoader fileLoader = new FileLoader(true);
+		fileLoader.loadFile("testFiles/wordFile.txt", FileType.WordList);
+	}
+
 
 }

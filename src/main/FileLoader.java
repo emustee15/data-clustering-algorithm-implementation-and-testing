@@ -57,7 +57,7 @@ public class FileLoader
 		{
 			partialRankings = new ArrayList<RankedData>();
 		}
-		else if (type.equals(FileType.NounList))
+		else if (type.equals(FileType.WordList))
 		{
 			descriptions = new ArrayList<String>();
 		}
@@ -84,7 +84,7 @@ public class FileLoader
 					throw new EmptyPiVectorException();
 				}
 			}
-			else if (type.equals(FileType.NounList))
+			else if (type.equals(FileType.WordList))
 			{
 				reader = new BufferedReader(new FileReader(filePath));
 				String line;
@@ -225,7 +225,7 @@ public class FileLoader
 	// This will return a single list of descriptions.
 	public String[] parseDescriptionList(String line)
 	{
-		return seperateByAllowedDelimeters(line, FileType.NounList);
+		return seperateByAllowedDelimeters(line, FileType.WordList);
 	}
 
 	// This method separates the values by the allowed delimiters defined in the file.

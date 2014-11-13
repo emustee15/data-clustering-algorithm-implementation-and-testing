@@ -132,7 +132,7 @@ public class RandomDataGenerator extends Shell
 		clusterCenters = new List(composite_2, SWT.BORDER);
 		clusterCenters.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
+		final TabFolder tabFolder = new TabFolder(this, SWT.NONE);
 		GridData gd_tabFolder = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2);
 		gd_tabFolder.heightHint = 368;
 		tabFolder.setLayoutData(gd_tabFolder);
@@ -381,7 +381,7 @@ public class RandomDataGenerator extends Shell
 			}
 		});
 
-		TabItem tbtmGeneratedPiVector = new TabItem(tabFolder, SWT.NONE);
+		final TabItem tbtmGeneratedPiVector = new TabItem(tabFolder, SWT.NONE);
 		tbtmGeneratedPiVector.setText("Generated Pi Vector");
 
 		piVectorText = new Text(tabFolder, SWT.BORDER | SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
@@ -416,6 +416,7 @@ public class RandomDataGenerator extends Shell
 			public void widgetSelected(SelectionEvent arg0)
 			{
 				doRandomization();
+				tabFolder.setSelection(tbtmGeneratedPiVector);
 
 			}
 
