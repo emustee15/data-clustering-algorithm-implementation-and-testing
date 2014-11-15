@@ -307,25 +307,24 @@ public class MainGUI extends Shell
 		descriptionComposite.setLayout(new GridLayout(4, false));
 
 		descriptList = new List(descriptionComposite, SWT.BORDER);
-		GridData gd_list = new GridData(SWT.LEFT, SWT.CENTER, false, false, 4, 1);
+		GridData gd_list = new GridData(SWT.LEFT, SWT.CENTER, true, false, 4, 1);
 		gd_list.widthHint = 177;
 		descriptList.setLayoutData(gd_list);
 
 		descriptText = new Text(descriptionComposite, SWT.BORDER);
-		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_text_1.widthHint = 120;
 		descriptText.setLayoutData(gd_text_1);
-
-		Button btnAddDescription = new Button(descriptionComposite, SWT.NONE);
-		btnAddDescription.setText("+");
-
-		Button btnRemoveDescription = new Button(descriptionComposite, SWT.NONE);
-		btnRemoveDescription.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-		btnRemoveDescription.setText(" - ");
-		new Label(descriptionComposite, SWT.NONE);
-
-		btnAddDescription.addSelectionListener(new AddDescriptions(descriptList, descriptText));
-		btnRemoveDescription.addSelectionListener(new RemoveDescription(descriptList));
+				
+						Button btnAddDescription = new Button(descriptionComposite, SWT.NONE);
+						btnAddDescription.setText("+");
+						
+								btnAddDescription.addSelectionListener(new AddDescriptions(descriptList, descriptText));
+		
+				Button btnRemoveDescription = new Button(descriptionComposite, SWT.NONE);
+				btnRemoveDescription.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
+				btnRemoveDescription.setText(" - ");
+				btnRemoveDescription.addSelectionListener(new RemoveDescription(descriptList));
 		// -------------------
 
 		startAnalysis.addSelectionListener(new AnalyzeBehavior(this));
