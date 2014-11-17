@@ -9,11 +9,13 @@ public class RandomizableRankedData extends RankedData
 	private boolean randomziedLenghts = false;
 	private int probabilityOfSwap = 100;
 	private int numberOfChildren = 20;
-
+	private int numberOfRepeats = 1;
+	private int currentIndex;
 	private int swapTechnique = 0;
 
 	public final static int DISTANCE_SWAP = 0;
 	public final static int RANDOM_SWAP = 1;
+	public final static int SYMMETRIC_SWAP = 2;
 
 	public int getMinPartialRankings()
 	{
@@ -69,35 +71,51 @@ public class RandomizableRankedData extends RankedData
 		this.probabilityOfSwap = probabilityOfSwap;
 	}
 
+	public void setNumberOfRepeats(int repeats)
+	{
+		this.numberOfRepeats = repeats;
+	}
+
+	public int getNumberOfRepeats()
+	{
+		return numberOfRepeats;
+	}
+
 	public RankedData nextRankedData()
 	{
 
-		for (int i = 0; i < numberOfSwaps; i++)
+		if (swapTechnique != SYMMETRIC_SWAP)
 		{
-			int swapProb = (int) (Math.random() * 101);
-
-			if (swapProb <= probabilityOfSwap)
+			for (int i = 0; i < numberOfSwaps; i++)
 			{
-				if (swapTechnique == RANDOM_SWAP)
+				int swapProb = (int) (Math.random() * 101);
+
+				if (swapProb <= probabilityOfSwap)
 				{
-
-					int aPosition = 0, bPosition = 0;
-
-					while (aPosition == bPosition && data.size() != 1)
+					if (swapTechnique == RANDOM_SWAP)
 					{
-						aPosition = (int) (Math.random() * data.size());
-						bPosition = (int) (Math.random() * data.size());
-					}
 
-					swapPositions(aPosition, bPosition);
-				}
-				else if (swapTechnique == DISTANCE_SWAP)
-				{
-					int position = (int)(Math.random()*data.size());
-					randomDistanceSwap(position);
+						int aPosition = 0, bPosition = 0;
+
+						while (aPosition == bPosition && data.size() != 1)
+						{
+							aPosition = (int) (Math.random() * data.size());
+							bPosition = (int) (Math.random() * data.size());
+						}
+
+						swapPositions(aPosition, bPosition);
+					}
+					else if (swapTechnique == DISTANCE_SWAP)
+					{
+						int position = (int) (Math.random() * data.size());
+						randomDistanceSwap(position);
+					}
 				}
 			}
-
+		}
+		else
+		{
+			symmetricSwapper(currentIndex/numberOfRepeats);
 		}
 		int size = data.size();
 
@@ -114,7 +132,7 @@ public class RandomizableRankedData extends RankedData
 		}
 
 		RankedData next = new RankedData(rankings);
-
+		currentIndex++;
 		reset();
 		return next;
 	}
@@ -165,6 +183,52 @@ public class RandomizableRankedData extends RankedData
 	public int getTechnique()
 	{
 		return swapTechnique;
+	}
+
+	public void symmetricSwapper(int index)
+	{
+		System.out.println("Sym: " + index);
+		if (index == 0)
+		{
+			randomDistanceSwap(0);
+			randomDistanceSwap(2);
+		}
+		else if (index == 1)
+		{
+			randomDistanceSwap(0);
+		}
+		else if (index == 2)
+		{
+			randomDistanceSwap(0);
+			randomDistanceSwap(6);
+		}
+		else if (index == 3)
+		{
+			randomDistanceSwap(2);
+		}
+		else if (index == 5)
+		{
+			randomDistanceSwap(6);
+		}
+		else if (index == 6)
+		{
+			randomDistanceSwap(2);
+			randomDistanceSwap(4);
+		}
+		else if (index == 7)
+		{
+			randomDistanceSwap(4);
+		}
+		else if (index == 8)
+		{
+			randomDistanceSwap(4);
+			randomDistanceSwap(6);
+		}
+	}
+
+	public void doneWithData()
+	{
+		currentIndex = 0;
 	}
 
 }

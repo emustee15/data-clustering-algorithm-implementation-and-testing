@@ -36,7 +36,7 @@ public class RandomDataGenerator extends Shell
 {
 	private static RandomDataGenerator instance;
 	private static ArrayList<RandomizableRankedData> randomizableRankedData;
-	private Button randomizedLengths;
+	private Button randomizedLengths, btnAnalyzeButton, btnGenerateData;
 	private Spinner numberOfSwaps;
 	private Spinner probabilityOfSwaps;
 	private Spinner numberOfChildren;
@@ -44,10 +44,13 @@ public class RandomDataGenerator extends Shell
 	private RandomizableRankedData currentSelection;
 	private static ArrayList<RankedData> piVector;
 	private Text piVectorText;
-	private Button distanceSwap, randomSwap;
+	private Button distanceSwap, randomSwap, symmetricSwap;
 	private List clusterCenters;
 	private static Settings settings;
-
+	private TabFolder tabFolder;
+	private TabItem tbtmGeneratedPiVector;
+	private Label lblNumberOfChildren;
+	private boolean fixedSwapMode = false;
 	/**
 	 * Launch the application.
 	 * 
@@ -132,7 +135,7 @@ public class RandomDataGenerator extends Shell
 		clusterCenters = new List(composite_2, SWT.BORDER);
 		clusterCenters.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		final TabFolder tabFolder = new TabFolder(this, SWT.NONE);
+		tabFolder = new TabFolder(this, SWT.NONE);
 		GridData gd_tabFolder = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2);
 		gd_tabFolder.heightHint = 368;
 		tabFolder.setLayoutData(gd_tabFolder);
@@ -152,50 +155,17 @@ public class RandomDataGenerator extends Shell
 		distanceSwap = new Button(grpSwappingSettings, SWT.RADIO);
 		distanceSwap.setSelection(true);
 		distanceSwap.setText("Distance Swap");
-		distanceSwap.addSelectionListener(new SelectionListener()
-		{
 
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if (currentSelection != null && distanceSwap.getSelection())
-				{
-					currentSelection.setTechnique(RandomizableRankedData.DISTANCE_SWAP);
-				}
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
 		new Label(grpSwappingSettings, SWT.NONE);
 
 		randomSwap = new Button(grpSwappingSettings, SWT.RADIO);
 		randomSwap.setText("Standard Swap");
-		randomSwap.addSelectionListener(new SelectionListener()
-		{
 
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if (currentSelection != null && randomSwap.getSelection())
-				{
-					currentSelection.setTechnique(RandomizableRankedData.RANDOM_SWAP);
-				}
+		new Label(grpSwappingSettings, SWT.NONE);
 
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
+		symmetricSwap = new Button(grpSwappingSettings, SWT.RADIO);
+		symmetricSwap.setEnabled(false);
+		symmetricSwap.setText("3x3 Symmetric Swap");
 
 		new Label(grpSwappingSettings, SWT.NONE);
 
@@ -204,52 +174,12 @@ public class RandomDataGenerator extends Shell
 
 		numberOfSwaps = new Spinner(grpSwappingSettings, SWT.BORDER);
 		numberOfSwaps.setSelection(2);
-		numberOfSwaps.addSelectionListener(new SelectionListener()
-		{
-
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if (currentSelection != null)
-				{
-					currentSelection.setNumberOfSwaps(numberOfSwaps.getSelection());
-				}
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
 
 		Label lblProbabilityOfSwap = new Label(grpSwappingSettings, SWT.NONE);
 		lblProbabilityOfSwap.setText("Probability of swap");
 
 		probabilityOfSwaps = new Spinner(grpSwappingSettings, SWT.BORDER);
 		probabilityOfSwaps.setSelection(100);
-		probabilityOfSwaps.addSelectionListener(new SelectionListener()
-		{
-
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if (currentSelection != null)
-				{
-					currentSelection.setProbabilityOfSwap(probabilityOfSwaps.getSelection());
-				}
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
 
 		Group grpNumberOfPartial = new Group(composite, SWT.NONE);
 		grpNumberOfPartial.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
@@ -265,123 +195,24 @@ public class RandomDataGenerator extends Shell
 
 		minRankings = new Spinner(grpNumberOfPartial, SWT.BORDER);
 		minRankings.setMinimum(1);
-		minRankings.addSelectionListener(new SelectionListener()
-		{
 
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				maxRankings.setMinimum(minRankings.getSelection());
-				currentSelection.setMinPartialRankings(minRankings.getSelection());
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-
-			}
-		});
 		Label lblMaxNumberOf = new Label(grpNumberOfPartial, SWT.NONE);
 		lblMaxNumberOf.setText("Max number of partial rankings");
 
 		maxRankings = new Spinner(grpNumberOfPartial, SWT.BORDER);
 		maxRankings.setMinimum(1);
-		maxRankings.addSelectionListener(new SelectionListener()
-		{
 
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				minRankings.setMaximum(maxRankings.getSelection());
-				currentSelection.setMaxPartialRankings(maxRankings.getSelection());
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
-		randomizedLengths.addSelectionListener(new SelectionListener()
-		{
-
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if (currentSelection != null)
-				{
-					currentSelection.setRandomziedLenghts(randomizedLengths.getSelection());
-				}
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
-		randomizedLengths.addSelectionListener(new SelectionListener()
-		{
-
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if (randomizedLengths.getSelection())
-				{
-					minRankings.setEnabled(true);
-					maxRankings.setEnabled(true);
-				}
-				else
-				{
-					minRankings.setEnabled(false);
-					maxRankings.setEnabled(false);
-				}
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 
-		Label lblNumberOfChildren = new Label(composite, SWT.NONE);
+		lblNumberOfChildren = new Label(composite, SWT.NONE);
 		lblNumberOfChildren.setText("Number of children");
 
 		numberOfChildren = new Spinner(composite, SWT.BORDER);
 		numberOfChildren.setMaximum(20000);
 		numberOfChildren.setMinimum(1);
-		numberOfChildren.addSelectionListener(new SelectionListener()
-		{
 
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if (currentSelection != null)
-				{
-					currentSelection.setNumberOfChildren(numberOfChildren.getSelection());
-				}
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		final TabItem tbtmGeneratedPiVector = new TabItem(tabFolder, SWT.NONE);
+		tbtmGeneratedPiVector = new TabItem(tabFolder, SWT.NONE);
 		tbtmGeneratedPiVector.setText("Generated Pi Vector");
 
 		piVectorText = new Text(tabFolder, SWT.BORDER | SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
@@ -407,51 +238,13 @@ public class RandomDataGenerator extends Shell
 
 		Button btnChange = new Button(composite_1, SWT.NONE);
 		btnChange.setText("Modify");
-		Button btnGenerateData = new Button(composite_1, SWT.NONE);
+		btnGenerateData = new Button(composite_1, SWT.NONE);
 		btnGenerateData.setText("Generate Data");
-		btnGenerateData.addSelectionListener(new SelectionListener()
-		{
 
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				doRandomization();
-				tabFolder.setSelection(tbtmGeneratedPiVector);
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		Button btnAnalyzeButton = new Button(composite_1, SWT.NONE);
+		btnAnalyzeButton = new Button(composite_1, SWT.NONE);
 		btnAnalyzeButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnAnalyzeButton.setText("Analyze Data");
-		btnAnalyzeButton.addSelectionListener(new SelectionListener()
-		{
 
-			@Override
-			public void widgetSelected(SelectionEvent arg0)
-			{
-				if (piVector != null)
-				{
-					MainGUI.getInstance().openPiVector(piVector);
-					MainGUI.getInstance().setFocus();
-				}
-
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
 		new Label(composite_1, SWT.NONE);
 		createContents();
 
@@ -478,7 +271,7 @@ public class RandomDataGenerator extends Shell
 		btnChange.addSelectionListener(new ChangeClusterCenterBehavior(clusterCenters, clusterCenterText));
 
 		clusterCenters.addSelectionListener(new ListChangedBehavior(clusterCenters, clusterCenterText));
-
+		createSelectionListeners();
 		noSelection();
 
 		if (settings != null)
@@ -536,17 +329,21 @@ public class RandomDataGenerator extends Shell
 	public void setCurrentSelection(int index)
 	{
 		currentSelection = randomizableRankedData.get(index);
+		
+		
 		randomizedLengths.setEnabled(true);
 		numberOfSwaps.setEnabled(true);
 		probabilityOfSwaps.setEnabled(true);
 		numberOfChildren.setEnabled(true);
 		distanceSwap.setEnabled(true);
 		randomSwap.setEnabled(true);
+		symmetricSwap.setEnabled(true);
+		setFixedSwapMode(currentSelection.getTechnique()==RandomizableRankedData.SYMMETRIC_SWAP);
 
 		randomizedLengths.setSelection(currentSelection.isRandomziedLenghts());
 		numberOfSwaps.setSelection(currentSelection.getNumberOfSwaps());
 		probabilityOfSwaps.setSelection(currentSelection.getProbabilityOfSwap());
-		numberOfChildren.setSelection(currentSelection.getNumberOfChildren());
+		
 		maxRankings.setMinimum(1);
 		maxRankings.setMaximum(currentSelection.getSize());
 		maxRankings.setSelection(currentSelection.getMaxPartialRankings());
@@ -560,15 +357,27 @@ public class RandomDataGenerator extends Shell
 
 		int technique = currentSelection.getTechnique();
 
+		setTechnique(technique);
+		
+	}
+
+	private void setTechnique(int technique)
+	{
 		switch (technique)
 		{
 		case RandomizableRankedData.DISTANCE_SWAP:
 			distanceSwap.setSelection(true);
 			randomSwap.setSelection(false);
+			symmetricSwap.setSelection(false);
 			break;
 		case RandomizableRankedData.RANDOM_SWAP:
 			distanceSwap.setSelection(false);
 			randomSwap.setSelection(true);
+			symmetricSwap.setSelection(false);
+		case RandomizableRankedData.SYMMETRIC_SWAP:
+			distanceSwap.setSelection(false);
+			randomSwap.setSelection(false);
+			symmetricSwap.setSelection(true);
 			break;
 		}
 	}
@@ -583,6 +392,7 @@ public class RandomDataGenerator extends Shell
 		maxRankings.setEnabled(false);
 		distanceSwap.setEnabled(false);
 		randomSwap.setEnabled(false);
+		symmetricSwap.setEnabled(false);
 
 	}
 
@@ -599,12 +409,14 @@ public class RandomDataGenerator extends Shell
 
 		for (RandomizableRankedData data : randomizableRankedData)
 		{
-			for (int index = 0; index < data.getNumberOfChildren(); index++)
+			for (int index = 0; index < (fixedSwapMode ? data.getNumberOfRepeats()*9:data.getNumberOfChildren()); index++)
 			{
 				RankedData newData = data.nextRankedData();
 				piVector.add(newData);
 				piVectorString += newData.toString() + '\n';
 			}
+			
+			data.doneWithData();
 		}
 
 		piVectorText.setText(piVectorString);
@@ -617,6 +429,18 @@ public class RandomDataGenerator extends Shell
 		maxRankings.setMaximum(currentSelection.getSize());
 		minRankings.setMaximum(maxRankings.getSelection());
 		maxRankings.setMinimum(minRankings.getSelection());
+		if (currentSelection != null && symmetricSwap.getSelection())
+		{
+			if (currentSelection.getSize() != 9)
+			{
+				ErrorDialog dialog = new ErrorDialog(getShell(), getStyle());
+				symmetricSwap.setSelection(false);
+				distanceSwap.setSelection(true);
+				currentSelection.setTechnique(RandomizableRankedData.DISTANCE_SWAP);
+				dialog.open("A 3x3 symmetric swap requires a ranking with 9 elements. Reverting to distance swap.");
+				setFixedSwapMode(false);
+			}
+		}
 
 	}
 
@@ -653,7 +477,7 @@ public class RandomDataGenerator extends Shell
 
 			piVectorText.setText(piVectorString);
 		}
-		
+
 		clusterCenters.removeAll();
 		for (RandomizableRankedData d : randomizableRankedData)
 		{
@@ -671,5 +495,282 @@ public class RandomDataGenerator extends Shell
 	public static ArrayList<RandomizableRankedData> getRandomizeableRankedData()
 	{
 		return randomizableRankedData;
+	}
+
+	public void createSelectionListeners()
+	{
+		btnGenerateData.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				doRandomization();
+				tabFolder.setSelection(tbtmGeneratedPiVector);
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		btnAnalyzeButton.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (piVector != null)
+				{
+					MainGUI.getInstance().openPiVector(piVector);
+					MainGUI.getInstance().setFocus();
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+		distanceSwap.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (currentSelection != null && distanceSwap.getSelection())
+				{
+					currentSelection.setTechnique(RandomizableRankedData.DISTANCE_SWAP);
+					setFixedSwapMode(false);
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		probabilityOfSwaps.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (currentSelection != null)
+				{
+					currentSelection.setProbabilityOfSwap(probabilityOfSwaps.getSelection());
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		randomSwap.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (currentSelection != null && randomSwap.getSelection())
+				{
+					currentSelection.setTechnique(RandomizableRankedData.RANDOM_SWAP);
+					setFixedSwapMode(false);
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		symmetricSwap.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (currentSelection != null && symmetricSwap.getSelection())
+				{
+					if (currentSelection.getSize() == 9)
+					{
+						currentSelection.setTechnique(RandomizableRankedData.SYMMETRIC_SWAP);
+						setFixedSwapMode(true);
+					}
+					else
+					{
+						ErrorDialog dialog = new ErrorDialog(getShell(), getStyle());
+						setTechnique(currentSelection.getTechnique());
+						dialog.open("A 3x3 symmetric swap requires a ranking with 9 elements.");
+					}
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		numberOfChildren.addSelectionListener(new SelectionListener()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (currentSelection != null)
+				{
+					if (fixedSwapMode)
+					{
+						currentSelection.setNumberOfRepeats(numberOfChildren.getSelection());
+					}
+					else
+					{
+						currentSelection.setNumberOfChildren(numberOfChildren.getSelection());
+					}
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		randomizedLengths.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (currentSelection != null)
+				{
+					currentSelection.setRandomziedLenghts(randomizedLengths.getSelection());
+				}
+
+				if (randomizedLengths.getSelection())
+				{
+					minRankings.setEnabled(true);
+					maxRankings.setEnabled(true);
+				}
+				else
+				{
+					minRankings.setEnabled(false);
+					maxRankings.setEnabled(false);
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		maxRankings.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				minRankings.setMaximum(maxRankings.getSelection());
+				currentSelection.setMaxPartialRankings(maxRankings.getSelection());
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		minRankings.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				maxRankings.setMinimum(minRankings.getSelection());
+				currentSelection.setMinPartialRankings(minRankings.getSelection());
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+
+			}
+		});
+
+		numberOfSwaps.addSelectionListener(new SelectionListener()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				if (currentSelection != null)
+				{
+					currentSelection.setNumberOfSwaps(numberOfSwaps.getSelection());
+				}
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+	}
+
+	private void setFixedSwapMode(boolean mode)
+	{
+		// static swap mode is on, we make a fixed number of swaps so there is
+		// no probability of swaps
+		// or number of swaps.
+		numberOfSwaps.setEnabled(!mode);
+		probabilityOfSwaps.setEnabled(!mode);
+		lblNumberOfChildren.setText((mode) ? "Number of repeats" : "Number of children");
+		fixedSwapMode = mode;
+		
+		if (fixedSwapMode)
+		{
+			numberOfChildren.setSelection(currentSelection.getNumberOfRepeats());
+		}
+		else
+		{
+			numberOfChildren.setSelection(currentSelection.getNumberOfChildren());
+		}
 	}
 }

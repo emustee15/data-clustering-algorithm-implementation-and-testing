@@ -12,47 +12,51 @@ public class Main
 {
 	public static void main(String args[])
 	{
-		// DistanceRanker ranker = new DistanceRanker();
-		// RankedData dataA = new RankedData(new int[] {-5,2,3,4,1});
-		// RankedData dataB = new RankedData(new int[] {1,2,3,4,5});
-		// System.out.println(ranker.getDistance(dataA, dataB));
-
-		// FileLoader loader = new FileLoader();
-		//
-		// loader.loadFile("/Users/ericmustee/Desktop/file.txt");
-		// RankedData masterRanking = new RankedData(new int[] {1,2,3,4,5});
-		ArrayList<RankedData> piVector = new ArrayList<>();
-		piVector.add(new RankedData(new int[] { 1, 2, 3, 4, 5 }));
-		piVector.add(new RankedData(new int[] { 2, 1, 3, 4, 5 }));
-		piVector.add(new RankedData(new int[] { 3, 2, 1, 4, -5 }));
-		piVector.add(new RankedData(new int[] { -1, -2, -3, -4, -5 }));
-
-		ArrayList<RankedData> sigmaVector = new ArrayList<>();
-		sigmaVector.add(new RankedData(new int[] { 2, 1, 3, 4, 5 }));
-		sigmaVector.add(new RankedData(new int[] { 1, 2, 3, 5, 4 }));
-		ArrayList<Double> lambdaVector = new ArrayList<>();
-		lambdaVector.add(0d);
-		lambdaVector.add(0d);
+		DistanceRanker ranker = new DistanceRanker();
 		
+		RankedData d1 = new RankedData(new int[] {1,2,3,4,5});
+		RankedData d2 = new RankedData(new int[] {5,2,3,4,1});
+		RankedData d3 = new RankedData(new int[] {3,4,5,1,2});
+		int distance = ranker.getDistance(d1, d2);
+		
+		System.out.println(distance);
+		
+		RankedData newData = new RankedData(new int[] {});
+		
+		
+		System.out.println(ranker.getDistance(d2, d3));
+		System.out.println(ranker.getDistance(d3, d1));
+		
+		
+		for (int i = 0; i < 100000; i++)
+		{
+			d1.randomize();
+			d2.randomize();
+			d3.randomize();
+			
+			if (ranker.getDistance(d2, d3) == ranker.getDistance(d2, d1))
+			{
+				if (ranker.getDistance(d2, d3) == ranker.getDistance(d1, d3))
+				{
+					if (ranker.getDistance(d1, d3) != 0)
+					{
+						System.out.println(ranker.getDistance(d2, d3));
+						System.out.println(ranker.getDistance(d3, d1));
+						System.out.println(ranker.getDistance(d1, d2));
+						d1.print();
+						d2.print();
+						d3.print();
+						System.out.println("----------------------------------------------");
 
-//		LambdaComputer lcompute = new LambdaComputer(sigmaVector, piVector,
-//				lambdaVector);
-//		
-//		lcompute.computeLambdaVector();
-//		
-//		for (Double d : lambdaVector)
-//		{
-//			System.out.println(d);
-//		}
-//		
-//		SigmaComputer sCompute = new SigmaComputer(piVector, sigmaVector);
-//		
-//		ArrayList<RankedData> sigmaValues = sCompute.getSigmaValues(new RankedData(new int[]{1,2,3,4,5}));
-//		
-//		for (RankedData d : sigmaValues)
-//		{
-//			d.print();
-//		}
+						
+						
+					}
+				}
+				
+			}
+				
+			
+		}
 		
 	}
 }
