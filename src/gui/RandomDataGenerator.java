@@ -409,7 +409,13 @@ public class RandomDataGenerator extends Shell
 
 		for (RandomizableRankedData data : randomizableRankedData)
 		{
-			for (int index = 0; index < (fixedSwapMode ? data.getNumberOfRepeats()*9:data.getNumberOfChildren()); index++)
+			int sizeMultiplier = 1;
+			if (data.getTechnique() == RandomizableRankedData.SYMMETRIC_SWAP)
+			{
+				sizeMultiplier = RandomizableRankedData.getSumOfSymmetricWeightings();
+				
+			}
+			for (int index = 0; index < (fixedSwapMode ? data.getNumberOfRepeats()*sizeMultiplier:data.getNumberOfChildren()); index++)
 			{
 				RankedData newData = data.nextRankedData();
 				piVector.add(newData);

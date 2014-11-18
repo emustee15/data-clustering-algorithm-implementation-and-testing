@@ -296,5 +296,30 @@ public class RankedData implements Serializable
 			swapPositions(index, index+1);
 		}
 	}
+	
+	@Override
+	public boolean equals(Object e)
+	{
+		if (!(e instanceof RankedData))
+		{
+			return false;
+		}
+		
+		RankedData rd = (RankedData)e;
+		
+		if (rd.getSize() != getSize())
+		{
+			return false;
+		}
+		
+		for (int i = 0; i < rd.getSize(); i++)
+		{
+			if (rd.get(i) != get(i))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

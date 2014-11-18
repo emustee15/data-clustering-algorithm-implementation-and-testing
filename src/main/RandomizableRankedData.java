@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class RandomizableRankedData extends RankedData
 {
-
 	private int numberOfSwaps = 2;
 	private boolean randomziedLenghts = false;
 	private int probabilityOfSwap = 100;
@@ -12,6 +11,7 @@ public class RandomizableRankedData extends RankedData
 	private int numberOfRepeats = 1;
 	private int currentIndex;
 	private int swapTechnique = 0;
+	private static int[] symmetricWeightings = {1,2,1,2,8,2,1,2,1};
 
 	public final static int DISTANCE_SWAP = 0;
 	public final static int RANDOM_SWAP = 1;
@@ -73,12 +73,24 @@ public class RandomizableRankedData extends RankedData
 
 	public void setNumberOfRepeats(int repeats)
 	{
+		
 		this.numberOfRepeats = repeats;
 	}
 
 	public int getNumberOfRepeats()
 	{
 		return numberOfRepeats;
+	}
+	
+	public static int getSumOfSymmetricWeightings()
+	{
+		int sum = 0;
+		for (int i : symmetricWeightings)
+		{
+			sum += i;
+		}
+		
+		return sum;
 	}
 
 	public RankedData nextRankedData()
@@ -115,7 +127,7 @@ public class RandomizableRankedData extends RankedData
 		}
 		else
 		{
-			symmetricSwapper(currentIndex/numberOfRepeats);
+			symmetricSwapper(currentIndex);
 		}
 		int size = data.size();
 
@@ -187,39 +199,46 @@ public class RandomizableRankedData extends RankedData
 
 	public void symmetricSwapper(int index)
 	{
-		System.out.println("Sym: " + index);
-		if (index == 0)
+		
+		int sum = 0;
+		int count = -1;
+		while (sum <= index)
+		{
+			count++;
+			sum+=symmetricWeightings[count]*numberOfRepeats;
+		}
+		if (count == 0)
 		{
 			randomDistanceSwap(0);
 			randomDistanceSwap(2);
 		}
-		else if (index == 1)
+		else if (count == 1)
 		{
 			randomDistanceSwap(0);
 		}
-		else if (index == 2)
+		else if (count == 2)
 		{
 			randomDistanceSwap(0);
 			randomDistanceSwap(6);
 		}
-		else if (index == 3)
+		else if (count == 3)
 		{
 			randomDistanceSwap(2);
 		}
-		else if (index == 5)
+		else if (count == 5)
 		{
 			randomDistanceSwap(6);
 		}
-		else if (index == 6)
+		else if (count == 6)
 		{
 			randomDistanceSwap(2);
 			randomDistanceSwap(4);
 		}
-		else if (index == 7)
+		else if (count == 7)
 		{
 			randomDistanceSwap(4);
 		}
-		else if (index == 8)
+		else if (count == 8)
 		{
 			randomDistanceSwap(4);
 			randomDistanceSwap(6);
