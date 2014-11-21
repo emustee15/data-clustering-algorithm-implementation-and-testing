@@ -66,10 +66,10 @@ public class MainGUI extends Shell
 
 	// these styled texts need to be saved as instance variables so they can be
 	// updated.
-	private SuperStyledText clusterText, qVectorText, cVectorText, lVectorText, sigmaTimeLineText;
+	private SuperStyledText clusterText, qVectorText, cVectorText, lVectorText, sigmaTimeLineText, cumulitiveRunsText;
 
 	// these UI elements are used in the analysis so they are saved as rankings
-	private Spinner completeRankings, numClusters;
+	private Spinner completeRankings, numClusters, numberOfRuns;
 
 	// this checkbox tells the analyzer whether the sigma vector should be
 	// randomized
@@ -234,6 +234,11 @@ public class MainGUI extends Shell
 		tbtmLSigmaOverTime.setText("σ Timeline");
 		StyledText sigmaTimeLineText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
 		tbtmLSigmaOverTime.setControl(sigmaTimeLineText_1);
+		
+		TabItem tbtmMultipleRunSummary = new TabItem(tabFolder, SWT.NONE);
+		tbtmMultipleRunSummary.setText("Multiple Run Summary");
+		StyledText cumulitiveResults = new StyledText(tabFolder,  SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmMultipleRunSummary.setControl(cumulitiveResults);
 
 		// These super styled texts are used for formatting and for a wrapper
 		// for
@@ -243,6 +248,8 @@ public class MainGUI extends Shell
 		this.cVectorText = new SuperStyledText(cVectorText_1);
 		this.lVectorText = new SuperStyledText(lVectorText_1);
 		this.sigmaTimeLineText = new SuperStyledText(sigmaTimeLineText_1);
+		this.cumulitiveRunsText = new SuperStyledText(cumulitiveResults);
+
 
 		ExpandBar expandBar = new ExpandBar(this, SWT.NONE);
 		expandBar.setBackground(new Color(Display.getCurrent(), 245, 246, 247));
@@ -295,7 +302,16 @@ public class MainGUI extends Shell
 		btnRandomizeSigmaVector = new Button(composite_1, SWT.CHECK);
 		btnRandomizeSigmaVector.setSelection(true);
 		btnRandomizeSigmaVector.setText("Randomize Sigma Vector");
-		analyzeSettings.setHeight(40);
+		
+		Composite composite_3 = new Composite(composite_1, SWT.NONE);
+		composite_3.setLayout(new GridLayout(2, false));
+		
+		Label lblNumberRuns = new Label(composite_3, SWT.NONE);
+		lblNumberRuns.setText("Number Runs");
+		
+		numberOfRuns = new Spinner(composite_3, SWT.BORDER);
+		numberOfRuns.setMinimum(1);
+		analyzeSettings.setHeight(80);
 
 		ExpandItem xpndtmDataDescription = new ExpandItem(expandBar, SWT.NONE);
 		xpndtmDataDescription.setExpanded(true);
@@ -334,6 +350,7 @@ public class MainGUI extends Shell
 		styledTexts.add(this.cVectorText);
 		styledTexts.add(this.lVectorText);
 		styledTexts.add(this.sigmaTimeLineText);
+		styledTexts.add(this.cumulitiveRunsText);
 		mntmZoomIn.addSelectionListener(new ZoomInBehavior(styledTexts, display, mntmZoomOut, mntmZoomIn));
 		mntmZoomOut.addSelectionListener(new ZoomOutBehavior(styledTexts, display, mntmZoomOut, mntmZoomIn));
 		mntmZoomIn.setAccelerator(SWT.CONTROL + '=');
@@ -529,12 +546,14 @@ public class MainGUI extends Shell
 		piVector = settings.getPiVector();
 		numClusters.setMinimum(settings.getMinClusters());
 		completeRankings.setMinimum(settings.getMinRankings());
+		numberOfRuns.setSelection(settings.getNumberRuns());
 
 		clusterText.setText(settings.getClusterCenterInfo());
 		qVectorText.setText(settings.getqVectorInfo());
 		lVectorText.setText(settings.getlVectorInfo());
 		cVectorText.setText(settings.getcVectorInfo());
 		sigmaTimeLineText.setText(settings.getSigmaTimelineInfo());
+		cumulitiveRunsText.setText(settings.getCumululitiveText());
 
 		descriptList.removeAll();
 
@@ -561,6 +580,8 @@ public class MainGUI extends Shell
 		settings.setMinRankings(completeRankings.getMinimum());
 		settings.setPiVector(piVector);
 		settings.setDescriptions(descriptList.getItems());
+		settings.setNumberRuns(numberOfRuns.getSelection());
+		settings.setCumululitiveText(cumulitiveRunsText.getText());
 		try
 		{
 			FileOutputStream outputStream = new FileOutputStream(filepath);
@@ -593,6 +614,16 @@ public class MainGUI extends Shell
 				}
 			}
 		}
+	}
+	
+	public int getNumberOfRuns()
+	{
+		return numberOfRuns.getSelection();
+	}
+	
+	public void setCumulitiveRunsText(String text)
+	{
+		cumulitiveRunsText.setText(text);
 	}
 	
 

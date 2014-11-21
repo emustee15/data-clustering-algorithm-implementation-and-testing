@@ -13,10 +13,27 @@ public class Settings implements Serializable
 	private int completeRankings;
 	private ArrayList<RankedData> randomizedRankings;
 	private ArrayList<RandomizableRankedData> randomizableRankings;
-	private String clusterCenterInfo, qVectorInfo, lVectorInfo, cVectorInfo,sigmaTimelineInfo;
+	private String clusterCenterInfo, qVectorInfo, lVectorInfo, cVectorInfo,sigmaTimelineInfo, cumululitiveText;
+	public String getCumululitiveText()
+	{
+		return cumululitiveText;
+	}
+	public void setCumululitiveText(String cumululitiveText)
+	{
+		this.cumululitiveText = cumululitiveText;
+	}
+	public int getNumberRuns()
+	{
+		return numberRuns;
+	}
+	public void setNumberRuns(int numberRuns)
+	{
+		this.numberRuns = numberRuns;
+	}
 	private int minClusters, minRankings;
 	private ArrayList<RankedData> piVector;
 	private String[] descriptions;
+	private int numberRuns;
 	
 	public String[] getDescriptions()
 	{

@@ -14,9 +14,9 @@ public class Main
 	{
 		DistanceRanker ranker = new DistanceRanker();
 		
-		RankedData d1 = new RankedData(new int[] {1,2,3,4,5});
-		RankedData d2 = new RankedData(new int[] {5,2,3,4,1});
-		RankedData d3 = new RankedData(new int[] {3,4,5,1,2});
+		RankedData d1 = new RankedData(new int[] {1,2,3,4,5,6,7,8,9});
+		RankedData d2 = new RankedData(new int[] {1,2,3,4,5,6,7,8,9});
+		RankedData d3 = new RankedData(new int[] {1,2,3,4,5,6,7,8,9});
 		int distance = ranker.getDistance(d1, d2);
 		
 		System.out.println(distance);
@@ -28,6 +28,8 @@ public class Main
 		System.out.println(ranker.getDistance(d3, d1));
 		
 		
+		int maxDistance = 0;
+		RankedData d1m,d2m,d3m;
 		for (int i = 0; i < 100000; i++)
 		{
 			d1.randomize();
@@ -40,13 +42,19 @@ public class Main
 				{
 					if (ranker.getDistance(d1, d3) != 0)
 					{
-						System.out.println(ranker.getDistance(d2, d3));
-						System.out.println(ranker.getDistance(d3, d1));
-						System.out.println(ranker.getDistance(d1, d2));
-						d1.print();
-						d2.print();
-						d3.print();
-						System.out.println("----------------------------------------------");
+
+
+						if (ranker.getDistance(d1, d3) > maxDistance)
+						{
+							maxDistance = ranker.getDistance(d1, d3);
+							System.out.println(ranker.getDistance(d2, d3));
+							d1.print();
+							d2.print();
+							d3.print();
+
+							System.out.println("----------------------------------------------");
+		
+						}
 
 						
 						

@@ -26,6 +26,7 @@ public class ClusterAnalyzer
 	ArrayList<RankedData> sigmaVector;
 	ArrayList<RankedData> piVector;
 
+	ArrayList<RankedData> sigma0;
 	QVector qVector;
 
 	String sigmaInformation;
@@ -37,6 +38,7 @@ public class ClusterAnalyzer
 		lambdaVector = new ArrayList<Double>();
 		cVector = new ArrayList<Double>();
 		sigmaVector = new ArrayList<RankedData>();
+		sigma0 = new ArrayList<>();
 
 		this.piVector = piVector;
 		this.numberClusters = numberClusters;
@@ -92,6 +94,11 @@ public class ClusterAnalyzer
 			{
 				qVector.set(i, j, 1.0d / numberClusters);
 			}
+		}
+		
+		for (RankedData rd : sigmaVector)
+		{
+			sigma0.add(rd.clone());
 		}
 
 		lComputer = new LambdaComputer(sigmaVector, piVector, lambdaVector);
@@ -208,5 +215,15 @@ public class ClusterAnalyzer
 
 		
 		return info;
+	}
+	
+	public ArrayList<RankedData> getSigmaInitial()
+	{
+		return sigma0;
+	}
+	
+	public ArrayList<RankedData> getSigmaFinal()
+	{
+		return sigmaVector;
 	}
 }

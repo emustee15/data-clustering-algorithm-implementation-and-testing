@@ -473,7 +473,7 @@ public class RandomDataGenerator extends Shell
 	private void openSettingsInternal(Settings settings)
 	{
 
-		if (!piVector.isEmpty())
+		if (piVector != null && !piVector.isEmpty())
 		{
 			String piVectorString = "";
 			for (RankedData d : piVector)
@@ -778,5 +778,18 @@ public class RandomDataGenerator extends Shell
 		{
 			numberOfChildren.setSelection(currentSelection.getNumberOfChildren());
 		}
+	}
+	
+	public static ArrayList<RankedData> getSupposedClusters()
+	{
+		
+		ArrayList<RankedData> supposedClusters = new ArrayList<>();
+		
+		for (RandomizableRankedData rd : randomizableRankedData)
+		{
+			supposedClusters.add(rd.clone());
+		}
+		
+		return supposedClusters;
 	}
 }
