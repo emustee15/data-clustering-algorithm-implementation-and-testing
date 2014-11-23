@@ -95,5 +95,10 @@ public class SigmaComputer
 
 		return hasMoved;
 	}
+	
+	public ArrayList<RankedData> getSigmaVector()
+	{
+		return sigmaVector;
+	}
 
 }
