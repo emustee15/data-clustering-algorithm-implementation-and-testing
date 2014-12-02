@@ -1,8 +1,11 @@
 package gui;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -35,9 +38,11 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.graphics.Point;
 
+import selectionListeners.AboutDialogBehavior;
 import selectionListeners.AddClusterCenter;
 import selectionListeners.AddDescriptions;
 import selectionListeners.AnalyzeBehavior;
+import selectionListeners.CopyBehavior;
 import selectionListeners.ExitBehavior;
 import selectionListeners.HelpMenuBehavior;
 import selectionListeners.OpenFileBehavior;
@@ -45,11 +50,14 @@ import selectionListeners.RandomDataGeneratorStartBehavior;
 import selectionListeners.RemoveClusterCenter;
 import selectionListeners.RemoveDescription;
 import selectionListeners.SaveFileBehavior;
+import selectionListeners.SelectAllBehavior;
+import selectionListeners.ShowOrHideExpandBar;
 import selectionListeners.ZoomInBehavior;
 import selectionListeners.ZoomOutBehavior;
 
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.custom.SashForm;
 
 public class MainGUI extends Shell
 {
@@ -84,6 +92,9 @@ public class MainGUI extends Shell
 	private static MainGUI instance;
 	private Text descriptText;
 	public static List descriptList;
+	private TabFolder displayTabs;
+
+	private ArrayList<SuperStyledText> styledTexts;
 
 	/**
 	 * Launch the application.
@@ -134,17 +145,22 @@ public class MainGUI extends Shell
 		MenuItem mntmOpenSettings = new MenuItem(menu_1, SWT.NONE);
 		mntmOpenSettings.setText("Open Session");
 		mntmOpenSettings.addSelectionListener(new OpenFileBehavior(this, FileType.Settings));
+		mntmOpenSettings.setAccelerator(SWT.CONTROL + 'O');
 
 		MenuItem mntmSave = new MenuItem(menu_1, SWT.NONE);
 		mntmSave.setText("Save Session");
 		mntmSave.addSelectionListener(new SaveFileBehavior(FileType.Settings));
+		mntmSave.setAccelerator(SWT.CONTROL + 'S');
 
 		MenuItem mntmOpen = new MenuItem(menu_1, SWT.NONE);
 		mntmOpen.setText("Import Rankings");
 		mntmOpen.addSelectionListener(new OpenFileBehavior(this, FileType.RankedData));
+		mntmOpen.setAccelerator(SWT.CONTROL + 'I');
 
 		MenuItem mntmExport = new MenuItem(menu_1, SWT.NONE);
 		mntmExport.setText("Export Results");
+		mntmExport.addSelectionListener(new SaveFileBehavior(FileType.ExportedResults));
+		mntmExport.setAccelerator(SWT.CONTROL + 'E');
 
 		new MenuItem(menu_1, SWT.SEPARATOR);
 
@@ -160,12 +176,15 @@ public class MainGUI extends Shell
 
 		MenuItem mntmCopy = new MenuItem(menu_2, SWT.NONE);
 		mntmCopy.setText("Copy");
+		mntmCopy.addSelectionListener(new CopyBehavior());
+		mntmCopy.setAccelerator(SWT.CONTROL + 'C');
 
-		MenuItem menuItem = new MenuItem(menu_2, SWT.SEPARATOR);
-		menuItem.setText("Select All");
+		new MenuItem(menu_2, SWT.SEPARATOR);
 
 		MenuItem mntmSelectAll = new MenuItem(menu_2, SWT.NONE);
 		mntmSelectAll.setText("Select All");
+		mntmSelectAll.addSelectionListener(new SelectAllBehavior());
+		mntmSelectAll.setAccelerator(SWT.CONTROL + 'A');
 
 		MenuItem mntmView = new MenuItem(menu, SWT.CASCADE);
 		mntmView.setText("View");
@@ -181,91 +200,50 @@ public class MainGUI extends Shell
 
 		new MenuItem(menu_3, SWT.SEPARATOR);
 
-		MenuItem mntmToggleSidebar = new MenuItem(menu_3, SWT.NONE);
-		mntmToggleSidebar.setText("Toggle Sidebar");
+		MenuItem mntmToggleSidebar = new MenuItem(menu_3, SWT.CHECK);
+		mntmToggleSidebar.setSelection(true);
+		mntmToggleSidebar.setText("View Sidebar");
 
 		MenuItem mntmHelp = new MenuItem(menu, SWT.CASCADE);
 		mntmHelp.setText("Help");
-
 		Menu menu_4 = new Menu(mntmHelp);
 		mntmHelp.setMenu(menu_4);
 
 		MenuItem mntmViewHelp = new MenuItem(menu_4, SWT.NONE);
 		mntmViewHelp.setText("View Help");
 		mntmViewHelp.addSelectionListener(new HelpMenuBehavior());
-
+		mntmViewHelp.setAccelerator(SWT.F1);
+		
 		MenuItem mntmAbout = new MenuItem(menu_4, SWT.NONE);
 		mntmAbout.setText("About");
+		
+		mntmAbout.addSelectionListener(new AboutDialogBehavior());
 
-		Composite composite_2 = new Composite(this, SWT.NONE);
-		GridData gd_composite_2 = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
-		gd_composite_2.widthHint = 195;
-		composite_2.setLayoutData(gd_composite_2);
-		composite_2.setLayout(new GridLayout(1, false));
+		Composite settingsComposite = new Composite(this, SWT.NONE);
+		settingsComposite.setLayout(new GridLayout(1, false));
+		GridData gd_settingsComposite = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
+		gd_settingsComposite.widthHint = 195;
+		settingsComposite.setLayoutData(gd_settingsComposite);
 
-		lblFileName = new Label(composite_2, SWT.WRAP);
-		lblFileName.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		lblFileName = new Label(settingsComposite, SWT.WRAP);
 		lblFileName.setText("No File Loaded");
 
-		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3));
-
-		TabItem tbtmClusterCenters = new TabItem(tabFolder, SWT.NONE);
-		tbtmClusterCenters.setText("Cluster Centers");
-		StyledText clusterText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmClusterCenters.setControl(clusterText_1);
-
-		TabItem tbtmQvector = new TabItem(tabFolder, SWT.NONE);
-		tbtmQvector.setText("Q Vector");
-		StyledText qVectorText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmQvector.setControl(qVectorText_1);
-
-		TabItem tbtmCvector = new TabItem(tabFolder, SWT.NONE);
-		tbtmCvector.setText("C Vector");
-		StyledText cVectorText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmCvector.setControl(cVectorText_1);
-
-		TabItem tbtmLvector = new TabItem(tabFolder, SWT.NONE);
-		tbtmLvector.setText("λ Vector");
-		StyledText lVectorText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmLvector.setControl(lVectorText_1);
-
-		TabItem tbtmLSigmaOverTime = new TabItem(tabFolder, SWT.NONE);
-		tbtmLSigmaOverTime.setText("σ Timeline");
-		StyledText sigmaTimeLineText_1 = new StyledText(tabFolder, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmLSigmaOverTime.setControl(sigmaTimeLineText_1);
-		
-		TabItem tbtmMultipleRunSummary = new TabItem(tabFolder, SWT.NONE);
-		tbtmMultipleRunSummary.setText("Multiple Run Summary");
-		StyledText cumulitiveResults = new StyledText(tabFolder,  SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
-		tbtmMultipleRunSummary.setControl(cumulitiveResults);
-
-		// These super styled texts are used for formatting and for a wrapper
-		// for
-		// the styled text class. This makes them easier to interface with.
-		this.clusterText = new SuperStyledText(clusterText_1);
-		this.qVectorText = new SuperStyledText(qVectorText_1);
-		this.cVectorText = new SuperStyledText(cVectorText_1);
-		this.lVectorText = new SuperStyledText(lVectorText_1);
-		this.sigmaTimeLineText = new SuperStyledText(sigmaTimeLineText_1);
-		this.cumulitiveRunsText = new SuperStyledText(cumulitiveResults);
-
-
-		ExpandBar expandBar = new ExpandBar(this, SWT.NONE);
-		expandBar.setBackground(new Color(Display.getCurrent(), 245, 246, 247));
-		GridData gd_expandBar = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 2);
-		gd_expandBar.heightHint = 254;
-		gd_expandBar.widthHint = 195;
+		ExpandBar expandBar = new ExpandBar(settingsComposite, SWT.NONE);
+		GridData gd_expandBar = new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1);
+		gd_expandBar.widthHint = 187;
 		expandBar.setLayoutData(gd_expandBar);
+		expandBar.setSize(195, 429);
+
+		mntmToggleSidebar.addSelectionListener(new ShowOrHideExpandBar(settingsComposite, this, mntmToggleSidebar));
+		expandBar.setBackground(new Color(Display.getCurrent(), 245, 246, 247));
 
 		ExpandItem xpndtmClusterAnalyzer = new ExpandItem(expandBar, SWT.NONE);
 		xpndtmClusterAnalyzer.setExpanded(true);
 		xpndtmClusterAnalyzer.setText("Cluster Analyzer");
 
 		Composite composite = new Composite(expandBar, SWT.NONE);
-		composite.setBackground(new Color(Display.getCurrent(), 240, 240, 240));
 		xpndtmClusterAnalyzer.setControl(composite);
-		xpndtmClusterAnalyzer.setHeight(96);
+		composite.setBackground(new Color(Display.getCurrent(), 240, 240, 240));
 		GridLayout gl_composite = new GridLayout(2, false);
 		gl_composite.marginLeft = 5;
 		composite.setLayout(gl_composite);
@@ -290,6 +268,10 @@ public class MainGUI extends Shell
 
 		Button startAnalysis = new Button(composite, SWT.NONE);
 		startAnalysis.setText("Start");
+		// -------------------
+
+		startAnalysis.addSelectionListener(new AnalyzeBehavior(this));
+		xpndtmClusterAnalyzer.setHeight(96);
 
 		ExpandItem analyzeSettings = new ExpandItem(expandBar, 0);
 		analyzeSettings.setText("Settings");
@@ -302,13 +284,13 @@ public class MainGUI extends Shell
 		btnRandomizeSigmaVector = new Button(composite_1, SWT.CHECK);
 		btnRandomizeSigmaVector.setSelection(true);
 		btnRandomizeSigmaVector.setText("Randomize Sigma Vector");
-		
+
 		Composite composite_3 = new Composite(composite_1, SWT.NONE);
 		composite_3.setLayout(new GridLayout(2, false));
-		
+
 		Label lblNumberRuns = new Label(composite_3, SWT.NONE);
 		lblNumberRuns.setText("Number Runs");
-		
+
 		numberOfRuns = new Spinner(composite_3, SWT.BORDER);
 		numberOfRuns.setMinimum(1);
 		analyzeSettings.setHeight(80);
@@ -331,20 +313,60 @@ public class MainGUI extends Shell
 		GridData gd_text_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 		gd_text_1.widthHint = 120;
 		descriptText.setLayoutData(gd_text_1);
-				
-						Button btnAddDescription = new Button(descriptionComposite, SWT.NONE);
-						btnAddDescription.setText("+");
-						
-								btnAddDescription.addSelectionListener(new AddDescriptions(descriptList, descriptText));
-		
-				Button btnRemoveDescription = new Button(descriptionComposite, SWT.NONE);
-				btnRemoveDescription.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
-				btnRemoveDescription.setText(" - ");
-				btnRemoveDescription.addSelectionListener(new RemoveDescription(descriptList));
-		// -------------------
 
-		startAnalysis.addSelectionListener(new AnalyzeBehavior(this));
-		ArrayList<SuperStyledText> styledTexts = new ArrayList<>();
+		Button btnAddDescription = new Button(descriptionComposite, SWT.NONE);
+		btnAddDescription.setText("+");
+
+		btnAddDescription.addSelectionListener(new AddDescriptions(descriptList, descriptText));
+
+		Button btnRemoveDescription = new Button(descriptionComposite, SWT.NONE);
+		btnRemoveDescription.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
+		btnRemoveDescription.setText(" - ");
+		btnRemoveDescription.addSelectionListener(new RemoveDescription(descriptList));
+
+		displayTabs = new TabFolder(this, SWT.NONE);
+		displayTabs.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3));
+
+		TabItem tbtmClusterCenters = new TabItem(displayTabs, SWT.NONE);
+		tbtmClusterCenters.setText("Cluster Centers");
+		StyledText clusterText_1 = new StyledText(displayTabs, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmClusterCenters.setControl(clusterText_1);
+
+		TabItem tbtmQvector = new TabItem(displayTabs, SWT.NONE);
+		tbtmQvector.setText("Q Vector");
+		StyledText qVectorText_1 = new StyledText(displayTabs, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmQvector.setControl(qVectorText_1);
+
+		TabItem tbtmCvector = new TabItem(displayTabs, SWT.NONE);
+		tbtmCvector.setText("C Vector");
+		StyledText cVectorText_1 = new StyledText(displayTabs, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmCvector.setControl(cVectorText_1);
+
+		TabItem tbtmLvector = new TabItem(displayTabs, SWT.NONE);
+		tbtmLvector.setText("λ Vector");
+		StyledText lVectorText_1 = new StyledText(displayTabs, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmLvector.setControl(lVectorText_1);
+
+		TabItem tbtmLSigmaOverTime = new TabItem(displayTabs, SWT.NONE);
+		tbtmLSigmaOverTime.setText("σ Timeline");
+		StyledText sigmaTimeLineText_1 = new StyledText(displayTabs, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmLSigmaOverTime.setControl(sigmaTimeLineText_1);
+
+		TabItem tbtmMultipleRunSummary = new TabItem(displayTabs, SWT.NONE);
+		tbtmMultipleRunSummary.setText("Multiple Run Summary");
+		StyledText cumulitiveResults = new StyledText(displayTabs, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		tbtmMultipleRunSummary.setControl(cumulitiveResults);
+
+		// These super styled texts are used for formatting and for a wrapper
+		// for
+		// the styled text class. This makes them easier to interface with.
+		this.clusterText = new SuperStyledText(clusterText_1);
+		this.qVectorText = new SuperStyledText(qVectorText_1);
+		this.cVectorText = new SuperStyledText(cVectorText_1);
+		this.lVectorText = new SuperStyledText(lVectorText_1);
+		this.sigmaTimeLineText = new SuperStyledText(sigmaTimeLineText_1);
+		this.cumulitiveRunsText = new SuperStyledText(cumulitiveResults);
+		styledTexts = new ArrayList<>();
 		styledTexts.add(this.clusterText);
 		styledTexts.add(this.qVectorText);
 		styledTexts.add(this.cVectorText);
@@ -358,6 +380,8 @@ public class MainGUI extends Shell
 
 		MenuItem mntmRandomDataGeneration = new MenuItem(menu_3, SWT.NONE);
 		mntmRandomDataGeneration.setText("Random Data Generation");
+		new Label(this, SWT.NONE);
+		new Label(this, SWT.NONE);
 		mntmRandomDataGeneration.addSelectionListener(new RandomDataGeneratorStartBehavior());
 		createContents();
 
@@ -509,7 +533,7 @@ public class MainGUI extends Shell
 	{
 		return instance;
 	}
-	
+
 	public static String getDesciptList(int index)
 	{
 		boolean isNegative = index < 0;
@@ -527,12 +551,12 @@ public class MainGUI extends Shell
 			System.out.println(index);
 			if (isNegative)
 			{
-				return "Not " + descriptList.getItem(index-1);
+				return "Not " + descriptList.getItem(index - 1);
 			}
-			return descriptList.getItem(index-1);
+			return descriptList.getItem(index - 1);
 		}
 	}
-	
+
 	public void openSettings(Settings settings)
 	{
 		numClusters.setSelection(settings.getNumberClusters());
@@ -615,17 +639,72 @@ public class MainGUI extends Shell
 			}
 		}
 	}
-	
+
 	public int getNumberOfRuns()
 	{
 		return numberOfRuns.getSelection();
 	}
-	
+
 	public void setCumulitiveRunsText(String text)
 	{
 		cumulitiveRunsText.setText(text);
 	}
-	
 
-	
+	public void exportResults(String file)
+	{
+		BufferedWriter out = null;
+		try
+		{
+
+			out = new BufferedWriter(new FileWriter(new File(file)));
+
+			writeOneSection(out, "Cluster Center Information", clusterText.getUnformattedText());
+			writeOneSection(out, "Sigma Timeline", sigmaTimeLineText.getUnformattedText());
+			writeOneSection(out, "Q Vector Info", qVectorText.getUnformattedText());
+			writeOneSection(out, "Lambda Vector Info", lVectorText.getUnformattedText());
+			writeOneSection(out, "C Vector Info", cVectorText.getUnformattedText());
+			writeOneSection(out, "Other runs", cumulitiveRunsText.getUnformattedText());
+
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			if (out != null)
+			{
+				try
+				{
+					out.flush();
+					out.close();
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}
+	}
+
+	private void writeOneSection(BufferedWriter out, String heading, String body) throws IOException
+	{
+		out.write(heading + "\n");
+		out.write("__________________________________________________\n");
+		out.write(body);
+		out.write("\n");
+
+	}
+
+	public SuperStyledText getActiveTab()
+	{
+		SuperStyledText text = null;
+		int index = displayTabs.getSelectionIndex();
+
+		return styledTexts.get(index);
+	}
+
 }

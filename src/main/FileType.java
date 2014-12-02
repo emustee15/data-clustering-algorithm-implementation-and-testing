@@ -8,5 +8,5 @@ public enum FileType
 	 * WordList - a list of words that provide meaning to the numbers in ranked data
 	 * Settings - represents a previous state that can be loaded in to start the program with the saved settings 
 	 */
-	RankedData, WordList, Settings
+	RankedData, WordList, Settings, ExportedResults
 }

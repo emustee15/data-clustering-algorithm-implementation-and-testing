@@ -439,7 +439,7 @@ public class RandomDataGenerator extends Shell
 		{
 			if (currentSelection.getSize() != 9)
 			{
-				ErrorDialog dialog = new ErrorDialog(getShell(), getStyle());
+				ErrorDialog dialog = new ErrorDialog(getShell());
 				symmetricSwap.setSelection(false);
 				distanceSwap.setSelection(true);
 				currentSelection.setTechnique(RandomizableRankedData.DISTANCE_SWAP);
@@ -625,7 +625,7 @@ public class RandomDataGenerator extends Shell
 					}
 					else
 					{
-						ErrorDialog dialog = new ErrorDialog(getShell(), getStyle());
+						ErrorDialog dialog = new ErrorDialog(getShell());
 						setTechnique(currentSelection.getTechnique());
 						dialog.open("A 3x3 symmetric swap requires a ranking with 9 elements.");
 					}

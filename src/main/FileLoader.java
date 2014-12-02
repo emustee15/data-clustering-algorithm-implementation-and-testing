@@ -26,8 +26,7 @@ public class FileLoader
 	
 	public FileLoader()
 	{
-			errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI
-					.getInstance().getStyle());	
+			errorDialog = new ErrorDialog(MainGUI.getInstance());	
 	}
 	
 	//This constructor is only used in JUnit testing
@@ -37,8 +36,7 @@ public class FileLoader
 		
 		if (!testingMode) 
 		{
-			errorDialog = new ErrorDialog(MainGUI.getInstance(), MainGUI
-					.getInstance().getStyle());
+			errorDialog = new ErrorDialog(MainGUI.getInstance());
 		}
 	}
 

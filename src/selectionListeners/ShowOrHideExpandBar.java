@@ -3,6 +3,7 @@ package selectionListeners;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -10,13 +11,13 @@ import org.eclipse.swt.widgets.Shell;
 // This class hides the expand bar on the left side of the screen.
 public class ShowOrHideExpandBar implements SelectionListener
 {
-	private ExpandBar bar;
+	private Composite bar;
 	private Shell shell;
 	private MenuItem checkbox;
 	
 	private int oldWidth;
 	
-	public ShowOrHideExpandBar(ExpandBar bar, Shell shell, MenuItem checkbox)
+	public ShowOrHideExpandBar(Composite bar, Shell shell, MenuItem checkbox)
 	{
 		this.bar = bar;
 		this.shell = shell;
@@ -36,6 +37,7 @@ public class ShowOrHideExpandBar implements SelectionListener
 		if (checkbox.getSelection())
 		{
 			barGridData.widthHint = oldWidth;
+			
 		}
 		else
 		{
@@ -43,7 +45,7 @@ public class ShowOrHideExpandBar implements SelectionListener
 			oldWidth = barGridData.widthHint;
 			barGridData.widthHint = -20;
 		}
-		
+
 		shell.layout();
 	}
 

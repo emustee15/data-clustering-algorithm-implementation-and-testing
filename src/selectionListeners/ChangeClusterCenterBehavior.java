@@ -31,7 +31,7 @@ public class ChangeClusterCenterBehavior extends AddClusterCenter
 		}
 		catch (NumberFormatException nfEx)
 		{
-			ErrorDialog dialog = new ErrorDialog(RandomDataGenerator.getInstance(), RandomDataGenerator.getInstance().getStyle());
+			ErrorDialog dialog = new ErrorDialog(RandomDataGenerator.getInstance());
 			dialog.open("Bad Formatting.");
 		}
 	}

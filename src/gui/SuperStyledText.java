@@ -91,5 +91,20 @@ public class SuperStyledText
 	{
 		return text;
 	}
+	
+	public String getUnformattedText()
+	{
+		return styledText.getText();
+	}
+	
+	public void selectAll()
+	{
+		styledText.selectAll();
+	}
+	
+	public void copy()
+	{
+		styledText.copy();
+	}
 
 }

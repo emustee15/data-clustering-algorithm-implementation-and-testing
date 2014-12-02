@@ -27,12 +27,13 @@ public class SaveFileBehavior implements SelectionListener
 	@Override
 	public void widgetSelected(SelectionEvent arg0)
 	{
+		String selectedFile = null;
+		FileDialog dialog = new FileDialog(MainGUI.getInstance(), SWT.SAVE);
+		dialog.setText("Save");
+		dialog.setFilterPath("C:/");
 		if (type.equals(FileType.Settings))
 		{
-			String selectedFile;
-			FileDialog dialog = new FileDialog(MainGUI.getInstance(), SWT.SAVE);
-			dialog.setText("Save");
-			dialog.setFilterPath("C:/");
+
 			String[] filterExt = { "*.rnkr" };
 			dialog.setFilterExtensions(filterExt);
 			dialog.setFilterNames(new String[] { "*.rnkr (Ranked Data Settings File" });
@@ -41,6 +42,18 @@ public class SaveFileBehavior implements SelectionListener
 			if (selectedFile != null)
 			{
 				MainGUI.getInstance().saveSettings(selectedFile);
+			}
+		}
+		else if (type.equals(FileType.ExportedResults))
+		{
+			String[] filterExt = { "*.txt" };
+			dialog.setFilterExtensions(filterExt);
+			dialog.setFilterNames(new String[] { "*.txt (Text File)" });
+			selectedFile = dialog.open();
+
+			if (selectedFile != null)
+			{
+				MainGUI.getInstance().exportResults(selectedFile);
 			}
 		}
 

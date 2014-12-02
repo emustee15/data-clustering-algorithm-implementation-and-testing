@@ -28,8 +28,8 @@ public class ErrorDialog extends Dialog {
 	 * @param parent
 	 * @param style
 	 */
-	public ErrorDialog(Shell parent, int style) {
-		super(parent, style);
+	public ErrorDialog(Shell parent) {
+		super(parent, SWT.DIALOG_TRIM | SWT.PRIMARY_MODAL);
 		setText("Error");
 	}
 

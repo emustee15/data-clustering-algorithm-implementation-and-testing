@@ -33,7 +33,7 @@ public class OpenFileBehavior implements SelectionListener
 	@Override
 	public void widgetSelected(SelectionEvent arg0)
 	{
-		if (type.equals(type.equals(FileType.RankedData)))
+		if (type.equals(FileType.RankedData))
 		{
 			FileDialog dialog = new FileDialog(shell, SWT.OPEN);
 			dialog.setText("Open");

@@ -47,7 +47,7 @@ public class DemoWindow
 		
 		final TabFolder tabFolder = new TabFolder(shell, SWT.BORDER);
 		
-		errorDialog = new ErrorDialog(shell, shell.getStyle());
+		errorDialog = new ErrorDialog(shell);
 		exbar = new ExpandBar(shell, SWT.V_SCROLL);;
 		exbar.setLayoutData(new GridData(SWT.TOP,SWT.LEFT,false,false,1,1));
 		
