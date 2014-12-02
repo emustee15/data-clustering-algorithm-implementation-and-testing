@@ -2,7 +2,6 @@ package selectionListeners;
 
 
 import gui.RandomDataGenerator;
-
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.List;

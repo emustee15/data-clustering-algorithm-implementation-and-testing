@@ -29,7 +29,7 @@ public class SaveFileBehavior implements SelectionListener
 	{
 		String selectedFile = null;
 		FileDialog dialog = new FileDialog(MainGUI.getInstance(), SWT.SAVE);
-		dialog.setText("Save");
+		
 		dialog.setFilterPath("C:/");
 		if (type.equals(FileType.Settings))
 		{
@@ -37,6 +37,7 @@ public class SaveFileBehavior implements SelectionListener
 			String[] filterExt = { "*.rnkr" };
 			dialog.setFilterExtensions(filterExt);
 			dialog.setFilterNames(new String[] { "*.rnkr (Ranked Data Settings File" });
+			dialog.setText("Save Session");
 			selectedFile = dialog.open();
 
 			if (selectedFile != null)
@@ -48,6 +49,7 @@ public class SaveFileBehavior implements SelectionListener
 		{
 			String[] filterExt = { "*.txt" };
 			dialog.setFilterExtensions(filterExt);
+			dialog.setText("Export Results");
 			dialog.setFilterNames(new String[] { "*.txt (Text File)" });
 			selectedFile = dialog.open();
 

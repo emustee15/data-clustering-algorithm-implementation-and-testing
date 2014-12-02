@@ -1,6 +1,5 @@
 package tests;
 
-import static org.junit.Assert.*;
 import main.FileLoader;
 import main.FileType;
 import org.junit.Test;

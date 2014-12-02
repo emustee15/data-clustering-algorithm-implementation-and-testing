@@ -3,7 +3,6 @@ package selectionListeners;
 import gui.MainGUI;
 import main.FileLoader;
 import main.FileType;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -36,7 +35,7 @@ public class OpenFileBehavior implements SelectionListener
 		if (type.equals(FileType.RankedData))
 		{
 			FileDialog dialog = new FileDialog(shell, SWT.OPEN);
-			dialog.setText("Open");
+			dialog.setText("Import Pi Vector");
 			dialog.setFilterPath("C:/");
 			String[] filterExt = { "*.txt", "*.csv" };
 			dialog.setFilterExtensions(filterExt);
@@ -51,7 +50,7 @@ public class OpenFileBehavior implements SelectionListener
 		else if (type.equals(FileType.Settings))
 		{
 			FileDialog dialog = new FileDialog(shell, SWT.OPEN);
-			dialog.setText("Open");
+			dialog.setText("Open Session");
 			dialog.setFilterPath("C:/");
 			String[] filterExt = { "*.rnkr" };
 			dialog.setFilterExtensions(filterExt);

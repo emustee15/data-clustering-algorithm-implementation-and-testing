@@ -14,7 +14,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Button;
 
 import selectionListeners.CloseDialogBehavior;
-import selectionListeners.ExitBehavior;
 import org.eclipse.swt.custom.CLabel;
 
 public class ErrorDialog extends Dialog {

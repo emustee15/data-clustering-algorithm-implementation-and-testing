@@ -1,10 +1,8 @@
 package selectionListeners;
 
 import java.util.ArrayList;
-
 import main.ClusterAnalyzer;
 import main.DistanceRanker;
-import main.RandomizableRankedData;
 import main.RankedData;
 
 import org.eclipse.swt.events.SelectionEvent;

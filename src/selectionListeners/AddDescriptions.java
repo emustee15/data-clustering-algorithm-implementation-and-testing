@@ -2,8 +2,6 @@ package selectionListeners;
 
 import gui.ErrorDialog;
 import gui.RandomDataGenerator;
-import main.RandomizableRankedData;
-
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.List;

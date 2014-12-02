@@ -2,7 +2,6 @@ package selectionListeners;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 

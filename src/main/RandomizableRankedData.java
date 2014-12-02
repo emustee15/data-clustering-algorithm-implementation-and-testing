@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class RandomizableRankedData extends RankedData
 {
+	private static final long serialVersionUID = 1L;
 	private int numberOfSwaps = 2;
 	private boolean randomziedLenghts = false;
 	private int probabilityOfSwap = 100;

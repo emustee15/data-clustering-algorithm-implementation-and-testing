@@ -1,6 +1,5 @@
 package gui;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,14 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import main.FileLoader;
 import main.FileType;
 import main.RankedData;
 import main.Settings;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -37,9 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.graphics.Point;
-
 import selectionListeners.AboutDialogBehavior;
-import selectionListeners.AddClusterCenter;
 import selectionListeners.AddDescriptions;
 import selectionListeners.AnalyzeBehavior;
 import selectionListeners.CopyBehavior;
@@ -47,17 +41,13 @@ import selectionListeners.ExitBehavior;
 import selectionListeners.HelpMenuBehavior;
 import selectionListeners.OpenFileBehavior;
 import selectionListeners.RandomDataGeneratorStartBehavior;
-import selectionListeners.RemoveClusterCenter;
 import selectionListeners.RemoveDescription;
 import selectionListeners.SaveFileBehavior;
 import selectionListeners.SelectAllBehavior;
 import selectionListeners.ShowOrHideExpandBar;
 import selectionListeners.ZoomInBehavior;
 import selectionListeners.ZoomOutBehavior;
-
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.custom.SashForm;
 
 public class MainGUI extends Shell
 {
@@ -373,8 +363,8 @@ public class MainGUI extends Shell
 		styledTexts.add(this.lVectorText);
 		styledTexts.add(this.sigmaTimeLineText);
 		styledTexts.add(this.cumulitiveRunsText);
-		mntmZoomIn.addSelectionListener(new ZoomInBehavior(styledTexts, display, mntmZoomOut, mntmZoomIn));
-		mntmZoomOut.addSelectionListener(new ZoomOutBehavior(styledTexts, display, mntmZoomOut, mntmZoomIn));
+		mntmZoomIn.addSelectionListener(new ZoomInBehavior(styledTexts, mntmZoomOut, mntmZoomIn));
+		mntmZoomOut.addSelectionListener(new ZoomOutBehavior(styledTexts, mntmZoomOut, mntmZoomIn));
 		mntmZoomIn.setAccelerator(SWT.CONTROL + '=');
 		mntmZoomOut.setAccelerator(SWT.CONTROL + '-');
 
@@ -692,16 +682,15 @@ public class MainGUI extends Shell
 
 	private void writeOneSection(BufferedWriter out, String heading, String body) throws IOException
 	{
-		out.write(heading + "\n");
-		out.write("__________________________________________________\n");
-		out.write(body);
-		out.write("\n");
+		out.write(heading + "\r\n");
+		out.write("__________________________________________________\r\n");
+		out.write(body.replace("\n", "\r\n"));
+		out.write("\n\r");
 
 	}
 
 	public SuperStyledText getActiveTab()
 	{
-		SuperStyledText text = null;
 		int index = displayTabs.getSelectionIndex();
 
 		return styledTexts.get(index);
