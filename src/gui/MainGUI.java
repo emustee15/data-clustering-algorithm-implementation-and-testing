@@ -393,14 +393,15 @@ public class MainGUI extends Shell
 			@Override
 			public void handleEvent(Event arg0)
 			{
-				if (RandomDataGenerator.getInstance() != null && !RandomDataGenerator.getInstance().isDisposed())
+				ExitBehavior exit = new ExitBehavior();
+				exit.setEventToCancel(arg0);
+				exit.widgetSelected(null);
+				if (RandomDataGenerator.getInstance() != null && !RandomDataGenerator.getInstance().isDisposed() && arg0.doit)
 				{
 					RandomDataGenerator.getInstance().dispose();
 				}
 				
-				ExitBehavior exit = new ExitBehavior();
-				exit.setEventToCancel(arg0);
-				exit.widgetSelected(null);
+
 
 			}
 		});
