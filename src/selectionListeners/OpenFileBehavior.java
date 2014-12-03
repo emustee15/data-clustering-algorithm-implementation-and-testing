@@ -41,10 +41,11 @@ public class OpenFileBehavior implements SelectionListener
 			dialog.setFilterExtensions(filterExt);
 			dialog.setFilterNames(new String[] { "*.txt (Text Files)", "*.csv (Comma Separated Value Files)" });
 			selectedFile = dialog.open();
-
+			
 			if (selectedFile != null && shell instanceof MainGUI)
 			{
 				((MainGUI) (shell)).openPiVector(selectedFile);
+				MainGUI.modifyStateFlag();
 			}
 		}
 		else if (type.equals(FileType.Settings))
@@ -56,12 +57,14 @@ public class OpenFileBehavior implements SelectionListener
 			dialog.setFilterExtensions(filterExt);
 			dialog.setFilterNames(new String[] { "*.rnkr (Ranked Data Settings File)"});
 			selectedFile = dialog.open();
+
 			
 			if (selectedFile != null && shell instanceof MainGUI)
 			{
 				FileLoader loader = new FileLoader();
 				loader.loadFile(selectedFile, FileType.Settings);
 				MainGUI.getInstance().openSettings(loader.getSettings());
+				MainGUI.resetModifiedState();
 			}
 		}
 

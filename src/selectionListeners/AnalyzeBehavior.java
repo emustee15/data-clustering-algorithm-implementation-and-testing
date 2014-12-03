@@ -53,6 +53,7 @@ public class AnalyzeBehavior implements SelectionListener
 			shell.setLVectorText(ca.getLVectorInfo());
 			shell.setSigmaTimelineText(ca.getSigmaOverTime());
 			shell.setCumulitiveRunsText(cumulitiveText);
+			MainGUI.modifyStateFlag();
 			
 
 		}

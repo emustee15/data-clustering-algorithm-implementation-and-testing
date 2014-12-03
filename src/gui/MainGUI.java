@@ -8,15 +8,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
 import main.FileLoader;
 import main.FileType;
 import main.RankedData;
 import main.Settings;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Event;
@@ -33,6 +37,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.graphics.Point;
+
 import selectionListeners.AboutDialogBehavior;
 import selectionListeners.AddDescriptions;
 import selectionListeners.AnalyzeBehavior;
@@ -47,6 +52,7 @@ import selectionListeners.SelectAllBehavior;
 import selectionListeners.ShowOrHideExpandBar;
 import selectionListeners.ZoomInBehavior;
 import selectionListeners.ZoomOutBehavior;
+
 import org.eclipse.swt.widgets.List;
 
 public class MainGUI extends Shell
@@ -83,6 +89,7 @@ public class MainGUI extends Shell
 	private Text descriptText;
 	public static List descriptList;
 	private TabFolder displayTabs;
+	private static boolean modified = false;
 
 	private ArrayList<SuperStyledText> styledTexts;
 
@@ -246,7 +253,8 @@ public class MainGUI extends Shell
 		numClusters.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		numClusters.setMaximum(9);
 		numClusters.setMinimum(1);
-
+		numClusters.addSelectionListener(modifiedState);
+	
 		Label lblCompleteRankings = new Label(composite, SWT.NONE);
 		lblCompleteRankings.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCompleteRankings.setText("Complete Rankings");
@@ -254,6 +262,8 @@ public class MainGUI extends Shell
 		completeRankings = new Spinner(composite, SWT.BORDER);
 		completeRankings.setMinimum(2);
 		completeRankings.setMaximum(100);
+		completeRankings.addSelectionListener(modifiedState);
+		
 		new Label(composite, SWT.NONE);
 
 		Button startAnalysis = new Button(composite, SWT.NONE);
@@ -274,6 +284,7 @@ public class MainGUI extends Shell
 		btnRandomizeSigmaVector = new Button(composite_1, SWT.CHECK);
 		btnRandomizeSigmaVector.setSelection(true);
 		btnRandomizeSigmaVector.setText("Randomize Sigma Vector");
+		btnRandomizeSigmaVector.addSelectionListener(modifiedState);
 
 		Composite composite_3 = new Composite(composite_1, SWT.NONE);
 		composite_3.setLayout(new GridLayout(2, false));
@@ -283,6 +294,7 @@ public class MainGUI extends Shell
 
 		numberOfRuns = new Spinner(composite_3, SWT.BORDER);
 		numberOfRuns.setMinimum(1);
+		numberOfRuns.addSelectionListener(modifiedState);
 		analyzeSettings.setHeight(80);
 
 		ExpandItem xpndtmDataDescription = new ExpandItem(expandBar, SWT.NONE);
@@ -385,6 +397,10 @@ public class MainGUI extends Shell
 				{
 					RandomDataGenerator.getInstance().dispose();
 				}
+				
+				ExitBehavior exit = new ExitBehavior();
+				exit.setEventToCancel(arg0);
+				exit.widgetSelected(null);
 
 			}
 		});
@@ -695,5 +711,31 @@ public class MainGUI extends Shell
 
 		return styledTexts.get(index);
 	}
+	
+	public static boolean getModifiedState()
+	{
+		return modified;
+	}
+	
+	public static void modifyStateFlag()
+	{
+		modified = true;
+	}
+	
+	public static void resetModifiedState()
+	{
+		modified = false;
+	}
+	
+	public static SelectionAdapter modifiedState = new SelectionAdapter()
+	{
+		@Override
+	 	public void widgetSelected(SelectionEvent e)
+		{
+			MainGUI.modifyStateFlag();
+		}
+	};
+	
+	
 
 }

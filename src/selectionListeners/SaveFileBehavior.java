@@ -12,6 +12,7 @@ public class SaveFileBehavior implements SelectionListener
 {
 	private FileType type;
 
+	private boolean saveSuccessful;
 	public SaveFileBehavior(FileType type)
 	{
 		this.type = type;
@@ -31,6 +32,7 @@ public class SaveFileBehavior implements SelectionListener
 		FileDialog dialog = new FileDialog(MainGUI.getInstance(), SWT.SAVE);
 		
 		dialog.setFilterPath("C:/");
+		dialog.setOverwrite(true);
 		if (type.equals(FileType.Settings))
 		{
 
@@ -43,6 +45,8 @@ public class SaveFileBehavior implements SelectionListener
 			if (selectedFile != null)
 			{
 				MainGUI.getInstance().saveSettings(selectedFile);
+				saveSuccessful = true;
+				MainGUI.resetModifiedState();
 			}
 		}
 		else if (type.equals(FileType.ExportedResults))
@@ -56,9 +60,15 @@ public class SaveFileBehavior implements SelectionListener
 			if (selectedFile != null)
 			{
 				MainGUI.getInstance().exportResults(selectedFile);
+				saveSuccessful = true;
 			}
 		}
 
+	}
+	
+	public boolean getSuccsess()
+	{
+		return saveSuccessful;
 	}
 
 }

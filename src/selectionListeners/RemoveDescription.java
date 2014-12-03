@@ -1,5 +1,7 @@
 package selectionListeners;
 
+import gui.MainGUI;
+
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.List;
@@ -34,6 +36,8 @@ public class RemoveDescription implements SelectionListener {
 				list.setSelection(index-1);
 			}
 		}
+		
+		MainGUI.modifyStateFlag();
 		
 	}
 

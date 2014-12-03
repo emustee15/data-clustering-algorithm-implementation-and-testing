@@ -513,6 +513,7 @@ public class RandomDataGenerator extends Shell
 			{
 				doRandomization();
 				tabFolder.setSelection(tbtmGeneratedPiVector);
+				MainGUI.modifyStateFlag();
 
 			}
 
@@ -535,7 +536,7 @@ public class RandomDataGenerator extends Shell
 					MainGUI.getInstance().openPiVector(piVector);
 					MainGUI.getInstance().setFocus();
 				}
-
+				MainGUI.modifyStateFlag();
 			}
 
 			@Override
@@ -556,7 +557,7 @@ public class RandomDataGenerator extends Shell
 					currentSelection.setTechnique(RandomizableRankedData.DISTANCE_SWAP);
 					setFixedSwapMode(false);
 				}
-
+				MainGUI.modifyStateFlag();
 			}
 
 			@Override
@@ -577,7 +578,7 @@ public class RandomDataGenerator extends Shell
 				{
 					currentSelection.setProbabilityOfSwap(probabilityOfSwaps.getSelection());
 				}
-
+				MainGUI.modifyStateFlag();
 			}
 
 			@Override
@@ -599,7 +600,7 @@ public class RandomDataGenerator extends Shell
 					currentSelection.setTechnique(RandomizableRankedData.RANDOM_SWAP);
 					setFixedSwapMode(false);
 				}
-
+				MainGUI.modifyStateFlag();
 			}
 
 			@Override
@@ -630,6 +631,7 @@ public class RandomDataGenerator extends Shell
 						dialog.open("A 3x3 symmetric swap requires a ranking with 9 elements.");
 					}
 				}
+				MainGUI.modifyStateFlag();
 
 			}
 
@@ -657,6 +659,7 @@ public class RandomDataGenerator extends Shell
 						currentSelection.setNumberOfChildren(numberOfChildren.getSelection());
 					}
 				}
+				MainGUI.modifyStateFlag();
 
 			}
 
@@ -689,6 +692,7 @@ public class RandomDataGenerator extends Shell
 					minRankings.setEnabled(false);
 					maxRankings.setEnabled(false);
 				}
+				MainGUI.modifyStateFlag();
 
 			}
 
@@ -708,6 +712,7 @@ public class RandomDataGenerator extends Shell
 			{
 				minRankings.setMaximum(maxRankings.getSelection());
 				currentSelection.setMaxPartialRankings(maxRankings.getSelection());
+				MainGUI.modifyStateFlag();
 
 			}
 
@@ -727,6 +732,7 @@ public class RandomDataGenerator extends Shell
 			{
 				maxRankings.setMinimum(minRankings.getSelection());
 				currentSelection.setMinPartialRankings(minRankings.getSelection());
+				MainGUI.modifyStateFlag();
 
 			}
 
@@ -746,6 +752,7 @@ public class RandomDataGenerator extends Shell
 				if (currentSelection != null)
 				{
 					currentSelection.setNumberOfSwaps(numberOfSwaps.getSelection());
+					MainGUI.modifyStateFlag();
 				}
 
 			}

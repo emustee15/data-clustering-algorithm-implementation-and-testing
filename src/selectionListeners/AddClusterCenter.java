@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
 import gui.ErrorDialog;
+import gui.MainGUI;
 import gui.RandomDataGenerator;
 
 public class AddClusterCenter implements SelectionListener
@@ -38,16 +39,18 @@ public class AddClusterCenter implements SelectionListener
 	{
 		try
 		{
+
 			RandomizableRankedData data = (RandomizableRankedData)parseLineOfRankedDataFile(text.getText(),RANDOMIZED_RANKED_DATA);
 			list.add(data.toString());
 			RandomDataGenerator.getInstance().addClusterCenter(data);
 			list.setSelection(list.getItemCount()-1);
 			RandomDataGenerator.getInstance().setCurrentSelection(list.getItemCount()-1);
+			MainGUI.modifyStateFlag();
 		}
 		catch (NumberFormatException nfEx)
 		{
 			ErrorDialog dialog = new ErrorDialog(RandomDataGenerator.getInstance());
-			dialog.open("Bad Formatting.");
+			dialog.open("Bad Formatting. See help for valid formatting.");
 		}
 	}
 	

@@ -1,6 +1,8 @@
 package selectionListeners;
 
+import gui.MainGUI;
 import gui.RandomDataGenerator;
+
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.List;
@@ -45,6 +47,7 @@ public class RemoveClusterCenter implements SelectionListener
 				RandomDataGenerator.getInstance().noSelection();
 			}
 		}
+		MainGUI.modifyStateFlag();
 
 	}
 

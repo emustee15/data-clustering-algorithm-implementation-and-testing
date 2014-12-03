@@ -1,7 +1,8 @@
 package selectionListeners;
 
+import exception.InvalidCharacterException;
 import gui.ErrorDialog;
-import gui.RandomDataGenerator;
+import gui.MainGUI;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.List;
@@ -28,15 +29,20 @@ public class AddDescriptions implements SelectionListener {
 	public void widgetSelected(SelectionEvent arg0) {
 		try
 		{
+			if (descriptions.getText().contains("~") || descriptions.getText().contains("\\"))
+			{
+				throw new InvalidCharacterException();
+			}
 			String data = (descriptions.getText());
 			list.add(data);
 			list.setSelection(list.getItemCount()-1);
 			descriptions.setText("");
+			MainGUI.modifyStateFlag();
 		}
-		catch (NumberFormatException nfEx)
+		catch (InvalidCharacterException icEx)
 		{
-			ErrorDialog dialog = new ErrorDialog(RandomDataGenerator.getInstance());
-			dialog.open("Bad Formatting.");
+			ErrorDialog dialog = new ErrorDialog(MainGUI.getInstance());
+			dialog.open("Bad Formatting.\nPlease do not use the '\\' or '~' character.");
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package selectionListeners;
 
 import gui.ErrorDialog;
+import gui.MainGUI;
 import gui.RandomDataGenerator;
 import main.RankedData;
 
@@ -27,6 +28,7 @@ public class ChangeClusterCenterBehavior extends AddClusterCenter
 				RankedData data = parseLineOfRankedDataFile(text.getText(), RANKED_DATA);
 				list.setItem(list.getSelectionIndex(), data.toString());
 				RandomDataGenerator.getInstance().modifyDataOfCurrentCluster(data);
+				MainGUI.modifyStateFlag();
 			}
 		}
 		catch (NumberFormatException nfEx)
