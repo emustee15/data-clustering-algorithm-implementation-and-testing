@@ -54,6 +54,7 @@ import selectionListeners.ZoomInBehavior;
 import selectionListeners.ZoomOutBehavior;
 
 import org.eclipse.swt.widgets.List;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class MainGUI extends Shell
 {
@@ -127,8 +128,9 @@ public class MainGUI extends Shell
 	private MainGUI(Display display)
 	{
 		super(display, SWT.SHELL_TRIM);
+		setImage(SWTResourceManager.getImage(MainGUI.class, "/images/icon_small.png"));
 		instance = this;
-		setMinimumSize(new Point(640, 480));
+		setMinimumSize(new Point(710, 528));
 		setLayout(new GridLayout(2, false));
 		Menu menu = new Menu(this, SWT.BAR);
 		setMenuBar(menu);

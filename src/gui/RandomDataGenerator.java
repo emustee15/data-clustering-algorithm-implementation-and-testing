@@ -31,6 +31,7 @@ import selectionListeners.RemoveClusterCenter;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class RandomDataGenerator extends Shell
 {
@@ -117,6 +118,7 @@ public class RandomDataGenerator extends Shell
 	private RandomDataGenerator(Display display)
 	{
 		super(display, SWT.SHELL_TRIM);
+		setImage(SWTResourceManager.getImage(RandomDataGenerator.class, "/images/icon_small.png"));
 		if (randomizableRankedData == null)
 		{
 			randomizableRankedData = new ArrayList<>();
@@ -374,6 +376,7 @@ public class RandomDataGenerator extends Shell
 			distanceSwap.setSelection(false);
 			randomSwap.setSelection(true);
 			symmetricSwap.setSelection(false);
+			break;
 		case RandomizableRankedData.SYMMETRIC_SWAP:
 			distanceSwap.setSelection(false);
 			randomSwap.setSelection(false);
@@ -440,8 +443,7 @@ public class RandomDataGenerator extends Shell
 			if (currentSelection.getSize() != 9)
 			{
 				ErrorDialog dialog = new ErrorDialog(getShell());
-				symmetricSwap.setSelection(false);
-				distanceSwap.setSelection(true);
+				setTechnique(RandomizableRankedData.DISTANCE_SWAP);
 				currentSelection.setTechnique(RandomizableRankedData.DISTANCE_SWAP);
 				dialog.open("A 3x3 symmetric swap requires a ranking with 9 elements. Reverting to distance swap.");
 				setFixedSwapMode(false);
