@@ -249,7 +249,7 @@ public class MainGUI extends Shell
 
 		Label lblNumberClusters = new Label(composite, SWT.NONE);
 		lblNumberClusters.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNumberClusters.setText("Number Clusters");
+		lblNumberClusters.setText("Number of Clusters");
 
 		numClusters = new Spinner(composite, SWT.BORDER);
 		numClusters.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -258,6 +258,7 @@ public class MainGUI extends Shell
 		numClusters.addSelectionListener(modifiedState);
 	
 		Label lblCompleteRankings = new Label(composite, SWT.NONE);
+		lblCompleteRankings.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		lblCompleteRankings.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblCompleteRankings.setText("Complete Rankings");
 
@@ -334,6 +335,7 @@ public class MainGUI extends Shell
 		TabItem tbtmClusterCenters = new TabItem(displayTabs, SWT.NONE);
 		tbtmClusterCenters.setText("Cluster Centers");
 		StyledText clusterText_1 = new StyledText(displayTabs, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.READ_ONLY);
+		clusterText_1.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		tbtmClusterCenters.setControl(clusterText_1);
 
 		TabItem tbtmQvector = new TabItem(displayTabs, SWT.NONE);
