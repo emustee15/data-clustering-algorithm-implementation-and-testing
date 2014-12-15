@@ -73,7 +73,7 @@ public class FileLoader
 				String line;
 				while ((line = reader.readLine()) != null)
 				{
-					partialRankings.add(parseLineOfRankedDataFile(line));
+					partialRankings.add(parseLineOfRankedDataFile(line,count+1));
 					count++;
 				}
 
@@ -116,7 +116,7 @@ public class FileLoader
 			if (!testingMode)
 			{
 				errorDialog
-					.open("File contains ranked data with a 0 in it. Please use only nonzero integers.");
+					.open("Error on line " + zifEx.getLine() + ".\nFile contains ranked data with a 0 in it. Please use only nonzero integers.");
 			}
 			
 		}
@@ -125,7 +125,7 @@ public class FileLoader
 			if (!testingMode)
 			{
 				errorDialog
-					.open("File contains a ranked data set with duplicate values. Please read the Help menu for formatting guidelines.");
+					.open("Eror on line" + diEx.getLine() + ". File contains duplicated " + diEx.getInteger() +"s.\nFile contains a ranked data set with duplicate values. Please read the Help menu for formatting rules.");
 			}
 			
 		}
@@ -180,7 +180,7 @@ public class FileLoader
 	}
 
 	// This method parses one line of a ranked data file.
-	public static RankedData parseLineOfRankedDataFile(String line)
+	public static RankedData parseLineOfRankedDataFile(String line,int lineCount)
 			throws EmptyPiVectorException, ZeroInFileException, DuplicateIntegerException
 	{
 		RankedData rankedData = new RankedData(new int[] {});
@@ -192,7 +192,7 @@ public class FileLoader
 			{
 				if (i == 0)
 				{
-					throw new ZeroInFileException();
+					throw new ZeroInFileException(lineCount);
 				}
 				else 
 				{
@@ -211,7 +211,7 @@ public class FileLoader
 			{
 				if (Math.abs(rankedData.getListElements().get(i)) == Math.abs(rankedData.getListElements().get(j)))
 				{
-					throw new DuplicateIntegerException();
+					throw new DuplicateIntegerException(Math.abs(rankedData.getListElements().get(j)), lineCount);
 				}
 			}
 		}

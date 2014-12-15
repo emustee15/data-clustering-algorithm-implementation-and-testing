@@ -1,5 +1,7 @@
 package selectionListeners;
 
+import exception.DuplicateIntegerException;
+import exception.ZeroInFileException;
 import gui.ErrorDialog;
 import gui.MainGUI;
 import gui.RandomDataGenerator;
@@ -35,6 +37,16 @@ public class ChangeClusterCenterBehavior extends AddClusterCenter
 		{
 			ErrorDialog dialog = new ErrorDialog(RandomDataGenerator.getInstance());
 			dialog.open("Bad Formatting.");
+		}
+		catch (ZeroInFileException e)
+		{
+			ErrorDialog dialog = new ErrorDialog(RandomDataGenerator.getInstance());
+			dialog.open("Error: Line cannot contain '0'. Please remove 0s.");
+		}
+		catch (DuplicateIntegerException e)
+		{
+			ErrorDialog dialog = new ErrorDialog(RandomDataGenerator.getInstance());
+			dialog.open("Error: Line contains duplicated " + e.getInteger() +"s. Only one " + e.getInteger() + " is allowed.");
 		}
 	}
 

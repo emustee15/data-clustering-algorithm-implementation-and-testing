@@ -8,7 +8,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
-public class AddDescriptions implements SelectionListener {
+public class AddDescriptions implements SelectionListener
+{
 
 	protected List list;
 	protected Text descriptions;
@@ -19,33 +20,37 @@ public class AddDescriptions implements SelectionListener {
 		this.descriptions = descriptions;
 
 	}
-	@Override
-	public void widgetDefaultSelected(SelectionEvent arg0) {
 
+	@Override
+	public void widgetDefaultSelected(SelectionEvent arg0)
+	{
 
 	}
 
 	@Override
-	public void widgetSelected(SelectionEvent arg0) {
+	public void widgetSelected(SelectionEvent arg0)
+	{
 		try
 		{
-			if (descriptions.getText().contains("~") || descriptions.getText().contains("\\"))
+			if (descriptions.getText().contains("~"))
 			{
-				throw new InvalidCharacterException();
+				throw new InvalidCharacterException('~');
+			}
+			else if (descriptions.getText().contains("\\"))
+			{
+				throw new InvalidCharacterException('\\');
 			}
 			String data = (descriptions.getText());
 			list.add(data);
-			list.setSelection(list.getItemCount()-1);
+			list.setSelection(list.getItemCount() - 1);
 			descriptions.setText("");
 			MainGUI.modifyStateFlag();
 		}
 		catch (InvalidCharacterException icEx)
 		{
 			ErrorDialog dialog = new ErrorDialog(MainGUI.getInstance());
-			dialog.open("Bad Formatting.\nPlease do not use the '\\' or '~' character.");
+			dialog.open("Bad Formatting.\nPlease do not use the '" + icEx.getInvalidChar() + "' character.");
 		}
 	}
-	
-
 
 }

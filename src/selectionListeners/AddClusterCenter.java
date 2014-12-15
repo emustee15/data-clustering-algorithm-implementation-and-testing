@@ -9,6 +9,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
+import exception.DuplicateIntegerException;
+import exception.ZeroInFileException;
 import gui.ErrorDialog;
 import gui.MainGUI;
 import gui.RandomDataGenerator;
@@ -52,10 +54,20 @@ public class AddClusterCenter implements SelectionListener
 			ErrorDialog dialog = new ErrorDialog(RandomDataGenerator.getInstance());
 			dialog.open("Bad Formatting. See help for valid formatting.");
 		}
+		catch (ZeroInFileException e)
+		{
+			ErrorDialog dialog = new ErrorDialog(RandomDataGenerator.getInstance());
+			dialog.open("Error: Line cannot contain '0'. Please remove 0s.");
+		}
+		catch (DuplicateIntegerException e)
+		{
+			ErrorDialog dialog = new ErrorDialog(RandomDataGenerator.getInstance());
+			dialog.open("Error: Line contains duplicated " + e.getInteger() +"s. Only one " + e.getInteger() + " is allowed.");
+		}
 	}
 	
 	
-	public RankedData parseLineOfRankedDataFile(String line, int type)
+	public RankedData parseLineOfRankedDataFile(String line, int type) throws ZeroInFileException, DuplicateIntegerException
 	{
 		RankedData rankedData = null;
 		
@@ -70,6 +82,22 @@ public class AddClusterCenter implements SelectionListener
 			if (i != null)
 			{
 				rankedData.addToList(i);
+			}
+			
+			if (i == 0)
+			{
+				throw new ZeroInFileException(0);
+			}
+		}
+		
+		for (int i=0; i<rankedData.getListElements().size()-1; i++)
+		{
+			for (int j=i+1; j<rankedData.getListElements().size(); j++)
+			{
+				if (Math.abs(rankedData.getListElements().get(i)) == Math.abs(rankedData.getListElements().get(j)))
+				{
+					throw new DuplicateIntegerException(Math.abs(rankedData.getListElements().get(j)), 0);
+				}
 			}
 		}
 
