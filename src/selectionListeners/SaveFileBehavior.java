@@ -38,7 +38,7 @@ public class SaveFileBehavior implements SelectionListener
 
 			String[] filterExt = { "*.rnkr" };
 			dialog.setFilterExtensions(filterExt);
-			dialog.setFilterNames(new String[] { "*.rnkr (Ranked Data Settings File" });
+			dialog.setFilterNames(new String[] { "*.rnkr (Ranked Data Settings File)" });
 			dialog.setText("Save Session");
 			selectedFile = dialog.open();
 
