@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class ListChangedBehavior implements SelectionListener
 {
-
+	// This class is called upon when the list changes in the random data generator. 
 	private List list;
 	private Text text;
 	public ListChangedBehavior(List list, Text text)

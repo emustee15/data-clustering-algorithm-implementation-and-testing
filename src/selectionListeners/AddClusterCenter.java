@@ -17,6 +17,7 @@ import gui.RandomDataGenerator;
 
 public class AddClusterCenter implements SelectionListener
 {
+	// This class adds a cluter center to the random data generator.
 	static String[] appropriateDelimeters = new String[] { ", ", " ", ",", " ," };
 	
 	protected List list;

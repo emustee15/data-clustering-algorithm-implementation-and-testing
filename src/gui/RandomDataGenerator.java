@@ -35,6 +35,13 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 public class RandomDataGenerator extends Shell
 {
+	/*
+	 * This class allows the user to generate a data set to be used for analyzation. The
+	 * user creates supposed cluster centers, and each of the data around a cluster center
+	 * is scrambled into a certain number of children. The scrambling has different effects
+	 * depending on which swap startegy is chosen. Swapping of data occurs in the
+	 * main.RandomizableRankedData class. 
+	 */
 	private static RandomDataGenerator instance;
 	private static ArrayList<RandomizableRankedData> randomizableRankedData;
 	private Button randomizedLengths, btnAnalyzeButton, btnGenerateData;
@@ -85,6 +92,7 @@ public class RandomDataGenerator extends Shell
 	 * @param display
 	 */
 
+	// This method starts the random data generator. 
 	public static void startRandomDataGenerator()
 	{
 		if (instance == null)
@@ -115,6 +123,7 @@ public class RandomDataGenerator extends Shell
 		}
 	}
 
+	// This method creates all the controls of the random data generator. 
 	private RandomDataGenerator(Display display)
 	{
 		super(display, SWT.SHELL_TRIM);
@@ -298,36 +307,47 @@ public class RandomDataGenerator extends Shell
 		// Disable the check that prevents subclassing of SWT components
 	}
 
+	// Returns the selection of randomized lengths. If true, this means that each ranking should have
+	// a random length at the minimum size and a maximum length at the maximum size
 	public boolean getRandomizedLengths()
 	{
 		return randomizedLengths.getSelection();
 	}
 
+	// Returns how likely a swap should occur. 0 means there is no chance, and 100 means it
+	// will happen every single time. 
 	public int getProbabilityOfSwap()
 	{
 		return probabilityOfSwaps.getSelection();
 	}
 
+	// This method gets the number of times two elements in a ranking should be swapped. 
 	public int getNumberOfSwaps()
 	{
 		return numberOfSwaps.getSelection();
 	}
 
+	// Gets the instance of the generator, part of the singleton pattern. 
 	public static RandomDataGenerator getInstance()
 	{
 		return instance;
 	}
 
+	// Adds a ranking to the supposed cluster centers. 
 	public void addClusterCenter(RandomizableRankedData clusterCenter)
 	{
 		randomizableRankedData.add(clusterCenter);
 	}
 
+	// removes a ranking from the cluster centers
 	public void removeClusterCenter(int index)
 	{
 		randomizableRankedData.remove(index);
 	}
 
+	// This method is called when the user selects a different index in the list of 
+	// cluster centers. It changes all of the controls on the screen to match the 
+	// settings of the selected cluster center. 
 	public void setCurrentSelection(int index)
 	{
 		currentSelection = randomizableRankedData.get(index);
@@ -363,6 +383,7 @@ public class RandomDataGenerator extends Shell
 		
 	}
 
+	// This method sets the swapping technique for the cluster center
 	private void setTechnique(int technique)
 	{
 		switch (technique)
@@ -385,6 +406,8 @@ public class RandomDataGenerator extends Shell
 		}
 	}
 
+	// This method is called when nothing is selected. All controls are to be disabled
+	// if nothing is selected
 	public void noSelection()
 	{
 		randomizedLengths.setEnabled(false);
@@ -399,6 +422,8 @@ public class RandomDataGenerator extends Shell
 
 	}
 
+	// This method actually creates the piVector by calling each of the cluster centers to 
+	// provide child elements through the nextRankedData() element. 
 	public void doRandomization()
 	{
 		if (randomizableRankedData.size() == 0)
@@ -431,6 +456,7 @@ public class RandomDataGenerator extends Shell
 		piVectorText.setText(piVectorString);
 	}
 
+	// This method changes the contents of a cluster center. 
 	public void modifyDataOfCurrentCluster(RankedData data)
 	{
 		currentSelection.setData(data);
@@ -452,11 +478,13 @@ public class RandomDataGenerator extends Shell
 
 	}
 
+	// This method returns the generated pi vector
 	public static ArrayList<RankedData> getPiVector()
 	{
 		return piVector;
 	}
 
+	// This method takes a settings memento in and restores its previous state. 
 	public static void openSettings(Settings settings)
 	{
 		randomizableRankedData = settings.getRandomizableRankings();
@@ -472,6 +500,8 @@ public class RandomDataGenerator extends Shell
 		}
 	}
 
+	// This method is called when the random data generator is actually opened. The memento 
+	// isn't actually used to restore settings until the random data generator is opened. 
 	private void openSettingsInternal(Settings settings)
 	{
 
@@ -500,11 +530,14 @@ public class RandomDataGenerator extends Shell
 
 	}
 
+	// this method returns all of the supposed cluster centers. 
 	public static ArrayList<RandomizableRankedData> getRandomizeableRankedData()
 	{
 		return randomizableRankedData;
 	}
 
+	// this method creates selection listeners used for each of the controls. Since each selection listener is rather
+	// small, it would be painful to make these into their own classes, so they are created here instead. 
 	public void createSelectionListeners()
 	{
 		btnGenerateData.addSelectionListener(new SelectionListener()
@@ -769,6 +802,10 @@ public class RandomDataGenerator extends Shell
 
 	}
 
+	// This method sets whether fixed swap mode is on or off. Fixed swap mode on means
+	// that each cluster center will have a fixed number of children multiplied by some
+	// multiplier. This means that a 3x3 symmetric cluster will have a multiple of 20 
+	// children. 
 	private void setFixedSwapMode(boolean mode)
 	{
 		// static swap mode is on, we make a fixed number of swaps so there is
@@ -789,6 +826,8 @@ public class RandomDataGenerator extends Shell
 		}
 	}
 	
+	
+	// This method returns the supposed clusters as ranked data rather than randomizeable ranked data. 
 	public static ArrayList<RankedData> getSupposedClusters()
 	{
 		

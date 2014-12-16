@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.List;
 
 public class RemoveDescription implements SelectionListener {
 
+	// This class removes a description from the description list.
 	private List list;
 	
 	

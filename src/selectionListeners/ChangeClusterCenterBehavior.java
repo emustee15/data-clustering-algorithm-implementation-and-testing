@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Text;
 public class ChangeClusterCenterBehavior extends AddClusterCenter
 {
 
+	// This class changes the elements of the currently selected cluster center in the random data generator. 
 	public ChangeClusterCenterBehavior(List list, Text text)
 	{
 		super(list, text);

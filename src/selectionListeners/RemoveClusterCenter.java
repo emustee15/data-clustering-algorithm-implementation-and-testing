@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.List;
 public class RemoveClusterCenter implements SelectionListener
 {
 
+	// This class removes the currently selected cluster center from the random data generator.
 	private List list;
 
 	public RemoveClusterCenter(List list)

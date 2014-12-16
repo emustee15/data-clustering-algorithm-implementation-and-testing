@@ -10,6 +10,8 @@ import org.eclipse.swt.widgets.FileDialog;
 
 public class SaveFileBehavior implements SelectionListener
 {
+	// This class is called upon when the user selects File>Export Results, or 
+	// File > Save Session
 	private FileType type;
 
 	private boolean saveSuccessful;

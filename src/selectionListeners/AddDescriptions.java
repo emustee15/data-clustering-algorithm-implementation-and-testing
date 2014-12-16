@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class AddDescriptions implements SelectionListener
 {
-
+	// This class adds descriptions to the description list.
 	protected List list;
 	protected Text descriptions;
 

@@ -6,6 +6,7 @@ import org.eclipse.swt.events.SelectionListener;
 public class RandomDataGeneratorStartBehavior implements SelectionListener
 {
 
+	// This class starts the random data generator.
 	@Override
 	public void widgetDefaultSelected(SelectionEvent arg0)
 	{

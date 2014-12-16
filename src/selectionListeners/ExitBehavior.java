@@ -9,7 +9,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.MessageBox;
 
-// This class is used when the program quits.
+// This class is used when the program quits. It checks if the user changed any
+// settings before close. If any settings were changed, then a prompt is shown 
+// asking if they wish  to save the settings. 
 
 public class ExitBehavior implements SelectionListener
 {

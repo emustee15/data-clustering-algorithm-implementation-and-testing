@@ -6,7 +6,8 @@ import java.util.ArrayList;
 public class Settings implements Serializable
 {
 	/**
-	 * 
+	 * This class follows the memento pattern (not perfectly) by encapsulating the state of the 
+	 * program and saving it to disk and restoring it from disk when requested by the user. 
 	 */
 	private static final long serialVersionUID = 2L;
 	private int numberClusters;

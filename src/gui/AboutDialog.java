@@ -13,6 +13,8 @@ import selectionListeners.CloseDialogBehavior;
 public class AboutDialog extends Dialog
 {
 
+	// This about dialog was built with Window Builder Pro and gives credit to the authors
+	// of the program. 
 	protected Shell shlAboutRankedData;
 
 	/**
@@ -61,7 +63,7 @@ public class AboutDialog extends Dialog
 		Label lblRankedDataClusterer = new Label(shlAboutRankedData, SWT.NONE);
 		lblRankedDataClusterer.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.NORMAL));
 		lblRankedDataClusterer.setBounds(352, 10, 134, 192);
-		lblRankedDataClusterer.setText("Ranked Data Clusterer \r\n\r\nVersion 1.0\r\n\r\nEric Mustee\r\nDan Skrodzki\r\nBrenan Mikolajczyk\r\n\r\nDecember 2014");
+		lblRankedDataClusterer.setText("Ranked Data Clusterer \r\n\r\nVersion 1.1 Final\r\n\r\nEric Mustee\r\nDan Skrodzki\r\nBrenan Mikolajczyk\r\n\r\nDecember 2014");
 		
 		Button btnGotIt = new Button(shlAboutRankedData, SWT.NONE);
 		btnGotIt.setBounds(411, 329, 75, 25);

@@ -545,6 +545,8 @@ public class MainGUI extends Shell
 		return instance;
 	}
 
+	// This method returns a single item from the description list. The number is returned
+	// if no description is given. 
 	public static String getDesciptList(int index)
 	{
 		boolean isNegative = index < 0;
@@ -568,6 +570,7 @@ public class MainGUI extends Shell
 		}
 	}
 
+	// This method takes a settings memento and restores the program's state from the file. 
 	public void openSettings(Settings settings)
 	{
 		numClusters.setSelection(settings.getNumberClusters());
@@ -599,6 +602,7 @@ public class MainGUI extends Shell
 
 	}
 
+	// This method saves the settings to disk at a specified file path. 
 	public void saveSettings(String filepath)
 	{
 		Settings settings;
@@ -651,16 +655,20 @@ public class MainGUI extends Shell
 		}
 	}
 
+	// This method gets how many times the test should take place. 
 	public int getNumberOfRuns()
 	{
 		return numberOfRuns.getSelection();
 	}
 
+	// This method sets the text for the cumulative runs tab. 
 	public void setCumulitiveRunsText(String text)
 	{
 		cumulitiveRunsText.setText(text);
 	}
 
+	// This method is called when the user selects File>Export Results. It exports the text of all the tabs
+	// to a formatted file so it may be read by anyone without the program. 
 	public void exportResults(String file)
 	{
 		BufferedWriter out = null;
@@ -679,7 +687,6 @@ public class MainGUI extends Shell
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally
@@ -701,6 +708,7 @@ public class MainGUI extends Shell
 		}
 	}
 
+	// This method writes a portion of the cluster analyzer to disk using a buffered writer. 
 	private void writeOneSection(BufferedWriter out, String heading, String body) throws IOException
 	{
 		out.write(heading + "\r\n");
@@ -710,6 +718,8 @@ public class MainGUI extends Shell
 
 	}
 
+	// This method is used when the user selects Select All or Copy from the Edit menu.
+	// It returns the selected tab.
 	public SuperStyledText getActiveTab()
 	{
 		int index = displayTabs.getSelectionIndex();
@@ -717,21 +727,28 @@ public class MainGUI extends Shell
 		return styledTexts.get(index);
 	}
 	
+	// This boolean returns whether the user modified any settings or not. 
 	public static boolean getModifiedState()
 	{
 		return modified;
 	}
 	
+	// This method flags the modified flag, meaning the user changed some setting. This means that we need to ask 
+	// if it is okay to close the program before exiting.
 	public static void modifyStateFlag()
 	{
 		modified = true;
 	}
 	
+	// This method is called when the user saves the session, meaning that nothing was modified since
+	// the last save. 
 	public static void resetModifiedState()
 	{
 		modified = false;
 	}
 	
+	// This adapter modifies the modified flag. It SHOULD be attached to any control the execution of the
+	// cluster analyzer process. 
 	public static SelectionAdapter modifiedState = new SelectionAdapter()
 	{
 		@Override

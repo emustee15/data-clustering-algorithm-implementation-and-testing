@@ -8,6 +8,7 @@ import org.eclipse.swt.events.SelectionListener;
 public class CopyBehavior implements SelectionListener
 {
 
+	// This class is called when the Edit>Copy is selected.
 	@Override
 	public void widgetDefaultSelected(SelectionEvent arg0)
 	{
