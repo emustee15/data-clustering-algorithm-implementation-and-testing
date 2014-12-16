@@ -4,6 +4,8 @@ public class GFunctionComputer
 	
 
 	// This class does not work on a vector, but is rather just a function of three variables.
+	// This class is particularly important because it involves Dr. Rinker's research into 
+	// Simplifying the G-Function through algebraic manipulation. 
 	
 	public double compute(double x, double t, int n)
 	{
